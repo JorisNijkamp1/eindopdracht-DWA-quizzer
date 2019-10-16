@@ -1,6 +1,6 @@
 # The Quizzer
 
-##Functionaliteiten
+## Functionaliteiten
 
  - [ ] Het spel word gespeeld in **teams**. Dus eigenlijk is 1 team gewoon 1 speler (maar in het echt is het dus 3 tot 8 spelers maar dat maakt voor ons niets uit).
  - [ ] *A Quizz Night* bestaat meestal al uit **2 tot 6 teams**.
