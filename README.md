@@ -23,7 +23,7 @@
 ### 2. The Quizz Master app functionaliteiten
 
 *Deze master app wordt beheert door de Quizz Master en kan de volgende taken uitvoeren:*
- - [ ] De Quizz Night beginnen and het open voor spelers en teams (applications).
+ - [ ] De Quizz Night beginnen en het open voor spelers en teams (applications).
  - [ ] Teams accepteren en weigeren.
  - [ ] De quizz beginnen met alle teams die mee doen.
  - [ ] Quinzz Round (met 12 vragen) en drie categorieën selecteren en dan "Start round" klikken om te beginnen.
