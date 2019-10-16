@@ -45,3 +45,18 @@
  
  2.1 Try to merge your work often (at least daily). If you postpone merging until the end, you won’t suffer any conflicts until the final day. However, the merge conflict you’ll face then will probably be too big to solve before the deadline. 
  
+ 
+ ##EXTRA FEATURES 
+ When you’re confident that you’ve implemented all of the aspects mentioned in this document you can consider adding a few extra features. We award bonus points for these extra features, granted that your application would get a passing mark without them. Feel	free	to	add	your	own	functionalities	or	rules.	Here	are	a	few	ideas:		
+ 
+ • The team selfie — Use the HTML5 API to access the phone’s camera and allow the team to take a selfie that they can send with their team application. The photo can then be shown on the score board.  
+ 
+ • PhoneGap — It’s a lot easier than you think to wrap the client side part of an SPA in a native Android or iOS app. A tool that is often used for this purpose is called ‘PhoneGap’. 
+ 
+ • Funny badges — Allow the Quizz Master to send funny or encouraging badges to teams whenever he or she wants. Examples of this could be badges saying “Funny answer”, “Awkward typo”, “Fast and furious”, etc. The badges don’t need to count towards the final score. 
+ 
+ • Thinking time — Instead of having the Quizz Master manually close a question, you could implement a clock that starts counting down as soon as the question has started and closes the question when it reaches zero. The scoreboard could show this clock in real time. 
+ 
+ • History — The app remembers the teams, allowing competition and rivalry that spans multiple Quizz Nights. 
+ 
+ • Automated test – Mongoose models and/or Express routes are automatically tested by test scripts that make use of Mocha (or any other framework). 
