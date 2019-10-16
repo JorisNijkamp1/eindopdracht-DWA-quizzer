@@ -45,16 +45,10 @@
  - [ ] Wanneer de huidige quizvraag wordt gesloten, worden alle teamantwoorden weergegeven. Zodra een antwoord is goedgekeurd of afgewezen wordt dit ook weergegeven en worden de teamscores bijgewerkt.
  
  ## HINT
-
- 
 1. Recommended WebSocket architecture Deciding which part of the communication should be implemented using WebSockets and which part    using plain old HTTP is by no means trivial. In theory you could    build your entire application using only WebSockets.  The recommended approach is to implement all communication involving  Quizzer data using HTTP. Whenever the server has new data, use  WebSockets to notify the clients and let the client make an HTTP  request to fetch the data. 
-  
-  1.1 This architecture is by no means the most efficient solution, but it makes it much easier to structure your app. Exclusively using WebSockets can easily lead to a nasty mess.  
-
- 2. Cooperation and merge conflicts When working together on a shared code base, merge conflicts are a part of life. You can mitigate the risk of this annoyance by defining clearly separated chunks of functionality and avoid working on the same chunk at the same time. An example of two chunks is the React- and the Express-part (but you could also define smaller chunks).  
- 
- 2.1 Try to merge your work often (at least daily). If you postpone merging until the end, you won’t suffer any conflicts until the final day. However, the merge conflict you’ll face then will probably be too big to solve before the deadline. 
- 
+    1.1 This architecture is by no means the most efficient solution, but it makes it much easier to structure your app. Exclusively using WebSockets can easily lead to a nasty mess.  
+2. Cooperation and merge conflicts When working together on a shared code base, merge conflicts are a part of life. You can mitigate the risk of this annoyance by defining clearly separated chunks of functionality and avoid working on the same chunk at the same time. An example of two chunks is the React- and the Express-part (but you could also define smaller chunks).  
+    2.1 Try to merge your work often (at least daily). If you postpone merging until the end, you won’t suffer any conflicts until the final day. However, the merge conflict you’ll face then will probably be too big to solve before the deadline. 
  
  ## EXTRA FEATURES
 When you’re confident that you’ve implemented all of the aspects mentioned in this document you can consider adding a few extra features. We award bonus points for these extra features, granted that your application would get a passing mark without them. Feel	free	to	add	your	own	functionalities	or	rules.	Here	are	a	few	ideas:		
