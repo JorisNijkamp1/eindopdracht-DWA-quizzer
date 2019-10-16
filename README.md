@@ -20,3 +20,14 @@
  - [ ] Een speler moet zich als een team kunnen aanmelden, daarbij moeten ze een teamnaam kunnen invoeren. De teamnaam moet worden goedgekeurd of afgewezen door de Quizmaster.
  - [ ] De Team app toont de huidige vraag waarbij het team een antwoord kan invoeren.
 
+### 2. The Quizz Master app functionaliteiten
+
+*Deze master app wordt beheert door de Quizz Master en kan de volgende taken uitvoeren:*
+ - [ ] De Quizz Night beginnen and het open voor spelers en teams (applications).
+ - [ ] Teams accepteren en weigeren.
+ - [ ] De quizz beginnen met alle teams die mee doen.
+ - [ ] Quinzz Round (met 12 vragen) en drie categorieën selecteren en dan "Start round" klikken om te beginnen.
+ - [ ] Na een Quizz Round beslissen om nog een ronde te spelen of om te stoppen met de Quizz Night.
+ - [ ] De volgende vraag selecteren. Dit is een interessant scherm.
+ - [ ] Start de geselecteerde vraag door op een knop te drukken. Nadat dit is gebeurt laat de Score Board en het Team App de vraag zien. En kunnen de teams hun antwoord invullen. Teams kunnen de vraag beantwoordden tot dat de Quizz Master de vraagt sluiten door op een knop te drukken.
+ - [ ] De antwoordden van de teams lezen en bepalen of het antwoord goed of fout is.
