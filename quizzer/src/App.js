@@ -9,8 +9,8 @@ function App() {
   return (
       <Container>
           <Row>
-              <Col md={{ span: 4, offset: 4 }} fluid>
-                  <Nav defaultActiveKey="/home" className="flex-column text-center">
+              <Col md={{ span: 4, offset: 4 }} fluid className="h-100">
+                  <Nav defaultActiveKey="/home" className="flex-column text-center min-vh-100 justify-content-center">
                       <Nav.Link className="btn btn-outline-primary">Quiz master</Nav.Link>
                       <Nav.Link eventKey="link-1" className="btn btn-outline-success">Team</Nav.Link>
                       <Nav.Link eventKey="link-2" className="btn btn-outline-info">Scoreboard</Nav.Link>
