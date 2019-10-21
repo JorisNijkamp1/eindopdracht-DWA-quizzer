@@ -3,17 +3,26 @@ import logo from './logo.svg';
 import './App.css';
 import Card from "react-bootstrap/Card";
 import ListGroup from "react-bootstrap/ListGroup";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import ButtonToolbar from "react-bootstrap/ButtonToolbar";
+import Button from "react-bootstrap/Button";
+import Nav from "react-bootstrap/Nav";
 
 function App() {
   return (
-      <Card style={{ width: '18rem' }}>
-        <Card.Header>Quizzer</Card.Header>
-        <ListGroup variant="flush">
-          <ListGroup.Item>Quiz master</ListGroup.Item>
-          <ListGroup.Item>Player</ListGroup.Item>
-          <ListGroup.Item>Beamer</ListGroup.Item>
-        </ListGroup>
-      </Card>
+      <Container>
+          <Row>
+              <Col md={{ span: 4, offset: 4 }} fluid>
+                  <Nav defaultActiveKey="/home" className="flex-column text-center">
+                      <Nav.Link className="btn btn-outline-primary">Quiz master</Nav.Link>
+                      <Nav.Link eventKey="link-1" className="btn btn-outline-success">Team</Nav.Link>
+                      <Nav.Link eventKey="link-2" className="btn btn-outline-info">Scoreboard</Nav.Link>
+                  </Nav>
+              </Col>
+          </Row>
+      </Container>
   );
 }
 
