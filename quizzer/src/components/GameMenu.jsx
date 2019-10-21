@@ -9,13 +9,13 @@ class GameMenu extends React.Component {
     render() {
         return (
             <Container>
-                <Row>
+                <Row className="min-vh-100">
                     <Col md={{span: 8, offset: 2}}>
                         <h1 className="text-center display-1">Quizzer Night</h1>
                     </Col>
                     <Col md={{span: 4, offset: 4}} className="h-100">
                         <Nav defaultActiveKey="/home"
-                             className="flex-column text-center min-vh-100 justify-content-center">
+                             className="flex-column text-center justify-content-center">
                             <Link to="/quiz-master" className="btn btn-outline-primary">Quiz master</Link>
                             <Link to="/new-team" className="btn btn-outline-success">Team</Link>
                             <Link to="/scoreboard" className="btn btn-outline-info">Scoreboard</Link>
