@@ -21,7 +21,6 @@ theWebSocketServer.on('connection', function connection(websocket) {
     websocket.on('message', function incoming(message) {
         console.log(JSON.parse(message));
         const data = JSON.parse(message);
-        websocket.userName = data.userName;
 
         if (data.messageType === 'NEW CONNECTION') {
             theWebSocketServer.clients.forEach(function (client) {
@@ -31,22 +30,12 @@ theWebSocketServer.on('connection', function connection(websocket) {
                 }));
             });
         }
+    });
+});
 
-        websocket.on('close', function () {
-            theWebSocketServer.clients.forEach(function (client) {
-                client.send(JSON.stringify({
-                    messageType: "NEW PLAYER",
-                    totalPlayers: theWebSocketServer.clients.size
-                }));
-            });
-            console.log('CONNECTION CLOSED')
-        })
+theHttpServer.on('request', theExpressApp);
+theHttpServer.listen(3001,
+    function () {
+        console.log("The Server is lisening on port 3001.")
     });
 
-    theHttpServer.on('request', theExpressApp);
-    theHttpServer.listen(3000,
-        function () {
-            console.log("The Server is lisening on port 3000.")
-        });
-
-});
