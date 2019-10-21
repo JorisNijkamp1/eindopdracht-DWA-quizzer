@@ -23,7 +23,7 @@ class CreateGame extends React.Component {
                             <Button variant="primary" type="submit">
                                 Spel aanmaken
                             </Button>
-                            <Link to="/" className="btn btn-secondary">Annuleren</Link>
+                            <Link to="/" className="btn btn-link">Annuleren</Link>
                         </Form>
                     </Col>
                 </Row>
