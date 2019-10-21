@@ -5,6 +5,7 @@ import {
     Switch,
     Route
 } from "react-router-dom";
+import CreateGame from "./components/quiz-master/CreateGame";
 
 class App extends React.Component {
 
@@ -56,7 +57,7 @@ class App extends React.Component {
                     <GameMenu/>
                 </Route>
                 <Route path="/quiz-master">
-                    <GameMenu/>
+                    <CreateGame/>
                 </Route>
                 <Route path="/new-team">
                     <GameMenu/>
