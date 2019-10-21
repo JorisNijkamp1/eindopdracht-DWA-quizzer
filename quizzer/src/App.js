@@ -1,6 +1,8 @@
 import React from 'react';
 import './App.css';
 import GameMenu from "./components/GameMenu";
+import TeamsBeheren from "./components/quiz-master/TeamsBeheren";
+import Categorieen from "./components/quiz-master/Categorieen";
 import {
     Switch,
     Route
@@ -56,9 +58,17 @@ class App extends React.Component {
                 <Route exact path="/">
                     <GameMenu/>
                 </Route>
+                /* QUIZ MASTER PATHS DIT MOET DENK IK NOG ANDERS SAMEN EMT AARON NAAR KIJKEN */
                 <Route path="/quiz-master">
                     <CreateGame/>
                 </Route>
+                <Route path="/teamsBeheren">
+                    <TeamsBeheren/>
+                </Route>
+                <Route path="/categorieen">
+                    <Categorieen/>
+                </Route>
+
                 <Route path="/new-team">
                     <GameMenu/>
                 </Route>
