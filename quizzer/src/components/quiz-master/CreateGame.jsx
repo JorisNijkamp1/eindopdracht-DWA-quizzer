@@ -6,31 +6,96 @@ import Row from "react-bootstrap/Row";
 import Button from "react-bootstrap/Button";
 import {Link} from "react-router-dom";
 
-class CreateGame extends React.Component {
+import {openWebSocket} from '../../serverCommunication';
+import {Redirect} from "react-router-dom";
 
-    handleOnclick = e => {
-        e.preventDefault();
-        console.log("hoi")
+class CreateGame extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            gameRoomName: '',
+            status: false,
+        };
+    }
+
+    onChangeGameRoomName = (e) => {
+        this.setState({
+            gameRoomName: e.target.value
+        })
     };
+
+    onOpenSocket = () => {
+        console.log("onOpenSocket");
+        let ws = openWebSocket();
+    };
+
+    handleSubmit = e => {
+        e.preventDefault();
+        console.log(this.state.gameRoomName);
+
+        const url = 'http://localhost:3001/api/game';
+        let data = {
+            gameRoomName: this.state.gameRoomName
+        };
+        const options = {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+            mode: 'cors'
+        };
+
+        fetch(url, options)
+            .then(response => response.json())
+            .then(data => {
+                    if (data.gameRoomNameAccepted === true) {
+                        return this.setState({
+                            status: "success"
+                        })
+                    } else if (data.gameRoomNameAccepted === false) {
+                        this.setState({status: 'error'});
+                    }
+                }
+            );
+    };
+
+    errorMessage() {
+        if (this.state.status === "error") {
+            return "is-invalid"
+        }
+    }
+
+    ifSuccess() {
+        if (this.state.status === "success") {
+            return <Redirect to="/teamsbeheren" />
+        }
+    }
 
     render() {
         return (
             <Container>
+                {this.ifSuccess()}
                 <Row className="min-vh-100">
                     <Col md={{span: 8, offset: 2}}>
                         <h1 className="text-center display-1">Quizzer Night</h1>
                     </Col>
                     <Col md={{span: 4, offset: 4}} className="h-100">
-                        <Form onSubmit={this.handleOnclick}>
+                        <Form onSubmit={this.handleSubmit}>
                             <Form.Group controlId="exampleForm.ControlInput1">
-                                <Form.Label column="2">Vul hier de game room naam in</Form.Label>
-                                <Form.Control type="text" placeholder="Game room naam"/>
+                                <Form.Label>Vul hier de game room naam in</Form.Label>
+                                <Form.Control value={this.state.gameRoomName}
+                                              onChange={this.onChangeGameRoomName}
+                                              type="text"
+                                              placeholder="Game room naam"
+                                              className={this.errorMessage()}
+                                              required/>
+                                <div className="invalid-feedback">Deze gameroom bestaat al!</div>
                             </Form.Group>
-                            <Link to="/teamsBeheren">
-                                <Button variant="primary" type="submit">
-                                    Spel aanmaken
-                                </Button>
-                            </Link>
+                            <Button variant="primary" type="submit">
+                                Spel aanmaken
+                            </Button>
                             <Link to="/" className="btn btn-link">Annuleren</Link>
                         </Form>
                     </Col>
