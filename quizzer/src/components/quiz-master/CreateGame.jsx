@@ -1,4 +1,7 @@
 import React from "react";
+import * as ReactRedux from 'react-redux';
+import {createGameStatusAction} from '../../action-reducers/createGame-actionReducer';
+
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/Col";
@@ -9,12 +12,11 @@ import {Link} from "react-router-dom";
 import {openWebSocket} from '../../serverCommunication';
 import {Redirect} from "react-router-dom";
 
-class CreateGame extends React.Component {
+class CreateGameUI extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             gameRoomName: '',
-            status: false,
         };
     }
 
@@ -31,7 +33,6 @@ class CreateGame extends React.Component {
 
     handleSubmit = e => {
         e.preventDefault();
-        console.log(this.state.gameRoomName);
 
         const url = 'http://localhost:3001/api/game';
         let data = {
@@ -51,25 +52,23 @@ class CreateGame extends React.Component {
             .then(response => response.json())
             .then(data => {
                     if (data.gameRoomNameAccepted === true) {
-                        return this.setState({
-                            status: "success"
-                        })
+                        this.props.doChangeStatus("success")
                     } else if (data.gameRoomNameAccepted === false) {
-                        this.setState({status: 'error'});
+                        this.props.doChangeStatus("error")
                     }
                 }
             );
     };
 
     errorMessage() {
-        if (this.state.status === "error") {
+        if (this.props.status === "error") {
             return "is-invalid"
         }
     }
 
     ifSuccess() {
-        if (this.state.status === "success") {
-            return <Redirect to="/teamsbeheren" />
+        if (this.props.status === "success") {
+            return <Redirect to="/teamsbeheren"/>
         }
     }
 
@@ -105,4 +104,16 @@ class CreateGame extends React.Component {
     }
 }
 
-export default CreateGame
+function mapStateToProps(state) {
+    return {
+        status: state.createGame.status,
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        doChangeStatus: (status) => dispatch(createGameStatusAction(status)),
+    }
+}
+
+export const CreateGame = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(CreateGameUI);

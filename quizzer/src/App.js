@@ -1,10 +1,15 @@
 import React from 'react';
+
 import './App.css';
 import GameMenu from "./components/GameMenu";
 import TeamsBeheren from "./components/quiz-master/TeamsBeheren";
 import Categorieen from "./components/quiz-master/Categorieen";
 import {Switch, Route} from "react-router-dom";
-import CreateGame from "./components/quiz-master/CreateGame";
+import {CreateGame} from "./components/quiz-master/CreateGame";
+
+//============================================================================
+//  The React component that renders the UI for the entire App.
+//----------------------------------------------------------------------------
 
 class App extends React.Component {
 
@@ -36,4 +41,4 @@ class App extends React.Component {
     }
 }
 
-export default App;
+export default App
