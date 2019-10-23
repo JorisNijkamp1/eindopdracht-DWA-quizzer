@@ -4,6 +4,8 @@ import './App.css';
 import GameMenu from "./components/GameMenu";
 import TeamsBeheren from "./components/quiz-master/TeamsBeheren";
 import Categorieen from "./components/quiz-master/Categorieen";
+import TeamAanmaken from "./components/team-app/TeamAanmaken";
+import Vragen from "./components/quiz-master/Vragen";
 import {Switch, Route} from "react-router-dom";
 import {CreateGame} from "./components/quiz-master/CreateGame";
 import {openWebSocket} from "./serverCommunication";
@@ -35,9 +37,12 @@ class App extends React.Component {
                 <Route path="/categorieen">
                     <Categorieen/>
                 </Route>
+                <Route path="/vragen">
+                    <Vragen/>
+                </Route>
 
                 <Route path="/new-team">
-                    <GameMenu/>
+                    <TeamAanmaken/>
                 </Route>
                 <Route path="/scoreboard">
                     <GameMenu/>
