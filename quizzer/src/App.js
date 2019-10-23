@@ -6,12 +6,18 @@ import TeamsBeheren from "./components/quiz-master/TeamsBeheren";
 import Categorieen from "./components/quiz-master/Categorieen";
 import {Switch, Route} from "react-router-dom";
 import {CreateGame} from "./components/quiz-master/CreateGame";
+import {openWebSocket} from "./serverCommunication";
 
 //============================================================================
 //  The React component that renders the UI for the entire App.
 //----------------------------------------------------------------------------
 
 class App extends React.Component {
+
+    componentDidMount() {
+        console.log("Verbonden met websocket verbinding");
+        let ws = openWebSocket();
+    }
 
     render() {
         return (

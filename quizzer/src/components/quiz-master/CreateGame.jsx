@@ -9,7 +9,6 @@ import Row from "react-bootstrap/Row";
 import Button from "react-bootstrap/Button";
 import {Link} from "react-router-dom";
 
-import {openWebSocket} from '../../serverCommunication';
 import {Redirect} from "react-router-dom";
 
 class CreateGameUI extends React.Component {
@@ -24,11 +23,6 @@ class CreateGameUI extends React.Component {
         this.setState({
             gameRoomName: e.target.value
         })
-    };
-
-    onOpenSocket = () => {
-        console.log("onOpenSocket");
-        let ws = openWebSocket();
     };
 
     handleSubmit = e => {

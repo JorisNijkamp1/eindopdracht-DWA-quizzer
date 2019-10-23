@@ -52,19 +52,6 @@ app.post('/api/game', (req, res, next) => {
 
 httpServer.on('upgrade', (req, networkSocket, head) => {
     sessionParser(req, {}, () => {
-        // The 'req' parameter contains the HTTP request that is for the upgrade
-        // request to the websocket protocol.
-        // We can refuse the upgrade request by returning from this function
-        // (and closing the network connection for this request)
-
-        // if (req.session.gameRoomName === undefined) {
-        //     console.log('Error gameRoomName session is undefined')
-        //     networkSocket.destroy();
-        //     return;
-        // }
-
-        console.log('Session is parsed and player have created a game room!');
-
         // Everything is fine. We tell the websocket server to
         // initiate a new websocket connection for this request
         // and emit a new connection event passing in the
@@ -75,11 +62,12 @@ httpServer.on('upgrade', (req, networkSocket, head) => {
     });
 });
 
-
+let playerCount = 0;
 websocketServer.on('connection', (socket, req) => {
+    playerCount++; // Add 1 to total amount of players
 
-    console.log('Connection created: ');
-    console.log(games);
+    console.log('A new player is connected');
+    console.log('Current gamerooms: ' + games);
 
     socket.on('message', (message) => {
         req.session.reload((err) => {   // if we don't call reload(), we'll get a old copy
