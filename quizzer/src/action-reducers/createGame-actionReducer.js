@@ -23,7 +23,6 @@ export function createGameReducer(state = initialCreateGameState, action) {
                 status: action.status,
             };
             return {...state, ...changes};
-
         default:
             return state;
     }
