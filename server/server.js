@@ -84,9 +84,12 @@ websocketServer.on('connection', (socket, req) => {
 
     console.log('A new player is connected');
     console.log('Current gamerooms: ' + games);
+    console.log(req.session);
 
+    req.session.save();
     socket.on('message', (message) => {
-        req.session.reload((err) => {   // if we don't call reload(), we'll get a old copy
+        req.session.reload((err) => {
+            // if we don't call reload(), we'll get a old copy
             // of the session, and won't see changes made by
             // Express routes (like '/logout', above)
 
