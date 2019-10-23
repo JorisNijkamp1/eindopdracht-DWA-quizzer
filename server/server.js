@@ -1,5 +1,5 @@
 'use strict';
-
+const mongoose = require('mongoose');
 const session = require('express-session');
 const express = require('express');
 const cors = require('cors');               // needed for using webpack-devserver with express server
@@ -113,4 +113,12 @@ websocketServer.on('connection', (socket, req) => {
 
 // Start the server.
 const port = process.env.PORT || 3001;
-httpServer.listen(port, () => console.log(`Listening on http://localhost:${port}`));
+httpServer.listen(port, () => {
+    mongoose.connect(`mongodb://localhost:27017/quizzer`,  {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+    }, () => {
+        console.log(`game server started on port http://localhost:${port}`);
+    });
+    console.log(`Listening on http://localhost:${port}`)
+});

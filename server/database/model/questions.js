@@ -4,15 +4,15 @@ const mongoose = require('mongoose');
 const questionSchema = new mongoose.Schema({
     question: {
         type: String,
-        required: false,
+        required: true,
     },
     answer: {
         type: String,
-        required: false,
+        required: true,
     },
     category: {
         type: String,
-        required: false,
+        required: true,
     }
 });
 
