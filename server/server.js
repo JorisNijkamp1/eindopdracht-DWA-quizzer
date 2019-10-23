@@ -7,6 +7,11 @@ const bodyParser = require('body-parser')
 const http = require('http');
 const WebSocket = require('ws');
 
+mongoose.set('useCreateIndex', true);
+//Database model
+require('./database/model/games');
+const Games = mongoose.model("Games");
+
 const app = express();
 
 // needed to make all requests from client work with this server.
@@ -30,17 +35,35 @@ const httpServer = http.createServer(app);
 // Create the Web socket server.
 const websocketServer = new WebSocket.Server({noServer: true});
 
-let games = [];
-app.post('/api/game', (req, res) => {
-    req.session.gameRoomName = req.body.gameRoomName;
-    console.log(req.session);
+app.post('/api/game', async (req, res) => {
+    //Game room name
+    const gameRoomName = req.body.gameRoomName;
 
-    if (!games.includes(req.body.gameRoomName)) {
-        games.push(req.body.gameRoomName);
+    //Check if gameRoomName is already in mongoDB
+    const gameRoomExits = await Games.findOne({_id: gameRoomName});
+
+    //If gameRoomName isn't in mongoDB
+    if (!gameRoomExits) {
+
+        //create gameRoomName
+        var newGame = new Games({
+            _id: gameRoomName
+        });
+
+        //save gameRoomName document to MongoDB
+        newGame.save(function (err, game) {
+            if (err) return console.error(err);
+            console.log(game._id + " saved to Games collection.");
+        });
+
+        //set session gameRoomName
+        req.session.gameRoomName = gameRoomName;
+
+        //send result
         res.json({
             gameRoomNameAccepted: true,
             QuizMaster: true,
-            gameRoomName: req.body.gameRoomName
+            gameRoomName: gameRoomName
         });
     } else {
         res.json({
@@ -49,15 +72,38 @@ app.post('/api/game', (req, res) => {
     }
 });
 
-app.post('/api/team', (req, res) => {
-    req.session.gameRoomName = req.body.gameRoomName;
-    console.log(req.session);
 
-    if (games.includes(req.body.gameRoomName)) {
+app.post('/api/team', async (req, res) => {
+    const gameRoomName = req.body.gameRoomName;
+    const teamName = req.body.teamName;
+
+    //Check if gameRoomName is already in mongoDB
+    let currentGameRoom = await Games.findOne({_id: gameRoomName});
+
+    //If gameRoomName is in mongoDB
+    if (currentGameRoom) {
+
+        //ToDo: Dit gaat nog niet goed, de teamanam staat in Mongoose op unique, maar je kan meerdere teams toevoegen
+        //Add a new team to a current Game in mongoDB
+        Games.updateOne(
+            { "_id": gameRoomName},
+            { "$push": { "teams": teamName } },
+            function (err, raw) {
+                if (err) return handleError(err);
+                console.log('Team succesfully added to Gameroom');
+            }
+        );
+
+        //set session gameRoomName
+        req.session.gameRoomName = gameRoomName;
+
+        //set session teamName
+        req.session.teamName = teamName;
+
         res.json({
             gameRoomAccepted: true,
-            gameRoomName: req.body.gameRoomName,
-            teamName: req.body.teamName,
+            gameRoomName: gameRoomName,
+            teamName: teamName,
         });
     } else {
         res.json({
@@ -83,7 +129,7 @@ let playerCount = 0;
 websocketServer.on('connection', (socket, req) => {
 
     console.log('A new player is connected');
-    console.log('Current gamerooms: ' + games);
+    // console.log('Current gamerooms: ' + games);
     console.log(req.session);
 
     req.session.save();
@@ -105,7 +151,6 @@ websocketServer.on('connection', (socket, req) => {
 
     socket.on('close', function close() {
         console.log('disconnected');
-        console.log(games);
     });
 
 });
@@ -114,11 +159,10 @@ websocketServer.on('connection', (socket, req) => {
 // Start the server.
 const port = process.env.PORT || 3001;
 httpServer.listen(port, () => {
-    mongoose.connect(`mongodb://localhost:27017/quizzer`,  {
+    mongoose.connect(`mongodb://localhost:27017/quizzer`, {
         useNewUrlParser: true,
         useUnifiedTopology: true
     }, () => {
         console.log(`game server started on port http://localhost:${port}`);
     });
-    console.log(`Listening on http://localhost:${port}`)
 });
