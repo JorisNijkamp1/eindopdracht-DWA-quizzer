@@ -31,7 +31,7 @@ const httpServer = http.createServer(app);
 const websocketServer = new WebSocket.Server({noServer: true});
 
 let games = [];
-app.post('/api/game', (req, res, next) => {
+app.post('/api/game', (req, res) => {
     req.session.gameRoomName = req.body.gameRoomName;
     console.log(req.session);
 
@@ -45,6 +45,23 @@ app.post('/api/game', (req, res, next) => {
     } else {
         res.json({
             gameRoomNameAccepted: false,
+        });
+    }
+});
+
+app.post('/api/team', (req, res) => {
+    req.session.gameRoomName = req.body.gameRoomName;
+    console.log(req.session);
+
+    if (games.includes(req.body.gameRoomName)) {
+        res.json({
+            gameRoomAccepted: true,
+            gameRoomName: req.body.gameRoomName,
+            teamName: req.body.teamName,
+        });
+    } else {
+        res.json({
+            gameRoomAccepted: false,
         });
     }
 });
@@ -64,7 +81,6 @@ httpServer.on('upgrade', (req, networkSocket, head) => {
 
 let playerCount = 0;
 websocketServer.on('connection', (socket, req) => {
-    playerCount++; // Add 1 to total amount of players
 
     console.log('A new player is connected');
     console.log('Current gamerooms: ' + games);
@@ -73,30 +89,12 @@ websocketServer.on('connection', (socket, req) => {
         req.session.reload((err) => {   // if we don't call reload(), we'll get a old copy
             // of the session, and won't see changes made by
             // Express routes (like '/logout', above)
+
+            console.log('aanpassen session');
+
             if (err) {
                 throw err
             }
-
-            // Here we can now use session parameters, because we called the sessionParser
-            // in the verifyClient function
-
-            if (req.session.userName == undefined) {
-                // The session does not contain the name of a user, so this this client
-                // has probably logged out.
-                // We'll simply ignore any messages from this client.
-                console.log(`Ignoring message from logged out user: "${message}"`);
-                return;
-            }
-
-            req.session.messageCounter++;
-            console.log(`${req.session.messageCounter}th WS message from ${req.session.userName}: "${message}"`);
-
-            // broadcast this message to all connected browsers
-            const outMessage = `[${req.session.userName} / ${req.session.messageCounter}]: ${message}`
-            websocketServer.clients.forEach(function (client) {
-                client.send(outMessage);
-            });
-
             req.session.save()  // If we don't call save(), Express routes like '/logout' (above)
                                 // will not see the changes we make to the session in this socket code.
         })

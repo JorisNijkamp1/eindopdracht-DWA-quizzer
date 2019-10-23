@@ -1,5 +1,6 @@
 import {combineReducers} from 'redux';
 import {createGameReducer} from "../createGame-actionReducer";
+import {createTeamReducer} from "../createTeam-actionReducer";
 
 //===========================================================================
 //  THE REDUX APPLICATION STORE
@@ -9,6 +10,7 @@ import {createGameReducer} from "../createGame-actionReducer";
 
 const allReducers = combineReducers({
     createGame: createGameReducer,
+    createTeam: createTeamReducer,
 });
 
 export default allReducers
