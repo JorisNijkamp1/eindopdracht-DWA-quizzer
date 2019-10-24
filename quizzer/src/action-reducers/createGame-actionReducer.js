@@ -10,9 +10,17 @@ export function createGameStatusAction(status) {
     };
 }
 
+export function createGameRoomAction(gameRoom) {
+    return {
+        type: "createGameRoomAction",
+        gameRoom: gameRoom
+    };
+}
+
 // Reducer:
 const initialCreateGameState = {
     status: false,
+    gameRoom: null,
 };
 
 export function createGameReducer(state = initialCreateGameState, action) {
@@ -21,6 +29,11 @@ export function createGameReducer(state = initialCreateGameState, action) {
         case 'createGameStatusAction':
             changes = {
                 status: action.status,
+            };
+            return {...state, ...changes};
+        case 'createGameRoomAction':
+            changes = {
+                gameRoom: action.gameRoom,
             };
             return {...state, ...changes};
         default:

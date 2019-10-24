@@ -1,6 +1,6 @@
 import React from "react";
 import * as ReactRedux from 'react-redux';
-import {createGameStatusAction} from '../../action-reducers/createGame-actionReducer';
+import {createGameStatusAction, createGameRoomAction} from '../../action-reducers/createGame-actionReducer';
 
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
@@ -47,6 +47,7 @@ class CreateGameUI extends React.Component {
             .then(data => {
                     if (data.gameRoomNameAccepted === true) {
                         this.props.doChangeStatus("success")
+                        this.props.doChangeGameRoom(data.gameRoomName);
                     } else if (data.gameRoomNameAccepted === false) {
                         this.props.doChangeStatus("error")
                     }
@@ -62,7 +63,7 @@ class CreateGameUI extends React.Component {
 
     ifSuccess() {
         if (this.props.status === "success") {
-            return <Redirect to="/teamsbeheren"/>
+            // return <Redirect to="/teamsbeheren"/>
         }
     }
 
@@ -101,12 +102,14 @@ class CreateGameUI extends React.Component {
 function mapStateToProps(state) {
     return {
         status: state.createGame.status,
+        gameRoom: state.createGame.gameRoom,
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
         doChangeStatus: (status) => dispatch(createGameStatusAction(status)),
+        doChangeGameRoom: (gameRoom) => dispatch(createGameRoomAction(gameRoom)),
     }
 }
 
