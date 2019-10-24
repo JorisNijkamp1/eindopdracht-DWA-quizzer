@@ -13,7 +13,7 @@ const gamesSchema = new mongoose.Schema({
     },
     teams: {
         team_naam: {
-            type: String,
+            type: Array,
             // required: true,
             // unique: true
         },

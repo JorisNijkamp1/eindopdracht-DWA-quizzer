@@ -47,7 +47,10 @@ app.post('/api/game', async (req, res) => {
 
         //create gameRoomName
         var newGame = new Games({
-            _id: gameRoomName
+            _id: gameRoomName,
+            teams: {
+                team_naam: []
+            }
         });
 
         //save gameRoomName document to MongoDB
@@ -77,35 +80,34 @@ app.post('/api/team', async (req, res) => {
     const gameRoomName = req.body.gameRoomName;
     const teamName = req.body.teamName;
 
-    //Check if gameRoomName is already in mongoDB
-    let currentGameRoom = await Games.findOne({_id: gameRoomName});
+    //Get current game
+    let currentGame = await Games.findOne({_id: gameRoomName});
 
-    //If gameRoomName is in mongoDB
-    if (currentGameRoom) {
+    if (currentGame) {
+        //Checks if team isn't already in current game
+        if (!currentGame.teams.team_naam.includes(teamName)) {
 
-        //ToDo: Dit gaat nog niet goed, de teamanam staat in Mongoose op unique, maar je kan meerdere teams toevoegen
-        //Add a new team to a current Game in mongoDB
-        Games.updateOne(
-            { "_id": gameRoomName},
-            { "$push": { "teams": teamName } },
-            function (err, raw) {
-                if (err) return handleError(err);
-                console.log('Team succesfully added to Gameroom');
-            }
-        );
+            //Push teamName to teams array
+            currentGame.teams.team_naam.push(teamName)
 
-        //set session gameRoomName
-        req.session.gameRoomName = gameRoomName;
-
-        //set session teamName
-        req.session.teamName = teamName;
-
-        res.json({
-            gameRoomAccepted: true,
-            gameRoomName: gameRoomName,
-            teamName: teamName,
-        });
+            //Save to mongoDB
+            currentGame.save(function (err) {
+                if (err) return console.error(err);
+                console.log('Team toegevoegd')
+                res.json({
+                    gameRoomAccepted: true,
+                    gameRoomName: gameRoomName,
+                    teamName: teamName,
+                });
+            });
+        } else {
+            console.log('team bestaat al')
+            res.json({
+                gameRoomAccepted: false,
+            });
+        }
     } else {
+        console.log('Gameroom bestaat niet')
         res.json({
             gameRoomAccepted: false,
         });
@@ -128,9 +130,9 @@ httpServer.on('upgrade', (req, networkSocket, head) => {
 let playerCount = 0;
 websocketServer.on('connection', (socket, req) => {
 
-    console.log('A new player is connected');
-    // console.log('Current gamerooms: ' + games);
-    console.log(req.session);
+    // console.log('A new player is connected');
+    // // console.log('Current gamerooms: ' + games);
+    // console.log(req.session);
 
     req.session.save();
     socket.on('message', (message) => {
