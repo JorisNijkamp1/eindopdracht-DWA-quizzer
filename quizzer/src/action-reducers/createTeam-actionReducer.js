@@ -3,24 +3,39 @@
 //---------------------------------------------------------------------
 
 // Action creators:
-export function createTeamStatusAction(status) {
+export function createGameRoomStatusAction(status) {
     return {
-        type: "createTeamStatusAction",
+        type: "createGameRoomStatusAction",
         status: status
     };
 }
 
+export function createTeamNameStatusAction(status) {
+    return {
+        type: "createTeamNameStatusAction",
+        status: status
+    };
+}
+
+
 // Reducer:
 const initialCreateTeamState = {
-    status: false,
+    gameRoomAccepted: null,
+    teamNameAccepted: false,
 };
 
 export function createTeamReducer(state = initialCreateTeamState, action) {
     let changes = null;
     switch (action.type) {
-        case 'createTeamStatusAction':
+        case 'createGameRoomStatusAction':
             changes = {
-                status: action.status,
+                gameRoomAccepted: action.status,
+            };
+            return {...state, ...changes};
+
+        case 'createTeamNameStatusAction':
+            changes = {
+                teamNameAccepted: action.status,
             };
             return {...state, ...changes};
 

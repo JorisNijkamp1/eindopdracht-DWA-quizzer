@@ -4,8 +4,7 @@ import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import {Redirect} from "react-router-dom";
-import {createTeamStatusAction} from "../../action-reducers/createTeam-actionReducer";
+import {createGameRoomStatusAction, createTeamNameStatusAction} from "../../action-reducers/createTeam-actionReducer";
 import * as ReactRedux from "react-redux";
 
 class TeamAanmakenUI extends React.Component {
@@ -51,25 +50,29 @@ class TeamAanmakenUI extends React.Component {
         fetch(url, options)
             .then(response => response.json())
             .then(data => {
+                console.log(data)
                     if (data.gameRoomAccepted === true) {
-                        this.props.doChangeStatus("success")
+                        this.props.doChangeGameRoomStatus(data.gameRoomAccepted)
+                        if (data.teamRoomStatus === true) {
+                            this.props.doChangeTeamNameStatus(data.teamNameAccepted)
+                        }
                     } else if (data.gameRoomAccepted === false) {
-                        this.props.doChangeStatus("error")
+                        this.props.doChangeGameRoomStatus(data.gameRoomAccepted)
                     }
                 }
             );
     };
 
     errorMessage() {
-        if (this.props.status === "error") {
+        if (this.props.gameRoomAccepted === false) {
             return "is-invalid"
         }
     }
 
     //ToDo
     ifSuccess() {
-        if (this.props.status === "success") {
-            console.log('Team geaccepteerd!');
+        if (this.props.gameRoomAccepted === true) {
+            console.log('Team verstuurd naar Quizmaster!');
             //return <Redirect to="/teamsbeheren"/>
         }
     }
@@ -114,13 +117,15 @@ class TeamAanmakenUI extends React.Component {
 
 function mapStateToProps(state) {
     return {
-        status: state.createTeam.status,
+        gameRoomAccepted: state.createTeam.gameRoomAccepted,
+        teamNameAccepted: state.createTeam.teamNameAccepted
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        doChangeStatus: (status) => dispatch(createTeamStatusAction(status)),
+        doChangeGameRoomStatus: (gameRoomAccepted) => dispatch(createGameRoomStatusAction(gameRoomAccepted)),
+        doChangeTeamNameStatus: (teamNameAccepted) => dispatch(createTeamNameStatusAction(teamNameAccepted)),
     }
 }
 

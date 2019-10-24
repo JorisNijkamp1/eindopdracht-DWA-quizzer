@@ -96,6 +96,7 @@ app.post('/api/team', async (req, res) => {
                 console.log('Team toegevoegd')
                 res.json({
                     gameRoomAccepted: true,
+                    teamRoomStatus: true,
                     gameRoomName: gameRoomName,
                     teamName: teamName,
                 });
@@ -109,13 +110,15 @@ app.post('/api/team', async (req, res) => {
         } else {
             console.log('team bestaat al')
             res.json({
-                gameRoomAccepted: false,
+                gameRoomAccepted: true,
+                teamRoomStatus: false
             });
         }
     } else {
         console.log('Gameroom bestaat niet')
         res.json({
             gameRoomAccepted: false,
+            teamRoomStatus: false
         });
     }
 });
