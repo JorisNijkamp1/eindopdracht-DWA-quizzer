@@ -52,8 +52,10 @@ class TeamAanmakenUI extends React.Component {
             .then(data => {
                     if (data.gameRoomAccepted === true) {
                         this.props.doChangeGameRoomStatus(data.gameRoomAccepted)
-                        if (data.teamRoomStatus === 'pending') {
-                            this.props.doChangeTeamNameStatus(data.teamRoomStatus)
+                        if (data.teamNameStatus === 'pending') {
+                            this.props.doChangeTeamNameStatus(data.teamNameStatus)
+                        }else if (data.teamNameStatus === 'error') {
+                            this.props.doChangeTeamNameStatus(data.teamNameStatus)
                         }
                     } else if (data.gameRoomAccepted === false) {
                         this.props.doChangeGameRoomStatus(data.gameRoomAccepted)
@@ -62,8 +64,14 @@ class TeamAanmakenUI extends React.Component {
             );
     };
 
-    errorMessage() {
+    gameRoomError() {
         if (this.props.gameRoomAccepted === false) {
+            return "is-invalid"
+        }
+    }
+
+    teamNameError() {
+        if (this.props.teamNameStatus === 'error') {
             return "is-invalid"
         }
     }
@@ -73,9 +81,7 @@ class TeamAanmakenUI extends React.Component {
             console.log('Team verstuurd naar Quizmaster!');
             return <p>Team aanvraag verstuurd, wacht op de quizz-master</p>
         } else {
-            return <Button variant="primary" type="submit">
-                Bevestigen
-            </Button>
+            return <Button variant="primary" type="submit">Bevestigen</Button>
         }
     }
 
@@ -93,7 +99,7 @@ class TeamAanmakenUI extends React.Component {
                                 <Form.Control type="text"
                                               value={this.state.gameRoomName}
                                               onChange={this.onChangeGameRoomName}
-                                              className={this.errorMessage()}
+                                              className={this.gameRoomError()}
                                               placeholder="Game room naam"/>
                                 <div className="invalid-feedback">Deze gameroom bestaat niet!</div>
                             </Form.Group>
@@ -102,7 +108,9 @@ class TeamAanmakenUI extends React.Component {
                                 <Form.Control type="text"
                                               value={this.state.teamName}
                                               onChange={this.onChangeTeamName}
+                                              className={this.teamNameError()}
                                               placeholder="team naam"/>
+                                <div className="invalid-feedback">Deze teamnaam bestaat al!</div>
                             </Form.Group>
                             {this.isPending()}
                         </Form>
