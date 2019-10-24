@@ -17,7 +17,7 @@ class GameMenu extends React.Component {
                         <Nav defaultActiveKey="/home" className="flex-column text-center justify-content-center">
                             <Link to="/quiz-master" className="btn btn-outline-primary">Quiz master</Link>
                             <Link to="/new-team" className="btn btn-outline-success">Team</Link>
-                            <Link to="/scoreboard" className="btn btn-outline-info">Scoreboard</Link>
+                            <Link to="/scorebord-overzicht" className="btn btn-outline-info">Scoreboard</Link>
                         </Nav>
                     </Col>
                 </Row>
