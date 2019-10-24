@@ -71,7 +71,11 @@ class TeamAanmakenUI extends React.Component {
     isPending() {
         if (this.props.teamNameAccepted === 'pending') {
             console.log('Team verstuurd naar Quizmaster!');
-            return <p>Team aanvraag verstuurd</p>
+            return <p>Team aanvraag verstuurd, wacht op de quizz-master</p>
+        } else {
+            return <Button variant="primary" type="submit">
+                Bevestigen
+            </Button>
         }
     }
 
@@ -101,9 +105,6 @@ class TeamAanmakenUI extends React.Component {
                                               placeholder="team naam"/>
                             </Form.Group>
                             {this.isPending()}
-                            <Button variant="primary" type="submit">
-                                Bevestigen
-                            </Button>
                         </Form>
                     </Col>
                 </Row>

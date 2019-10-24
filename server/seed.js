@@ -1,9 +1,7 @@
 const mongoose = require('mongoose');
 require('./database/model/games');
 require('./database/model/questions');
-
 const dbName = 'quizzer';
-
 const db = mongoose.connection;
 const Games = mongoose.model('Games');
 const Questions = mongoose.model('Questions');
@@ -12,6 +10,7 @@ mongoose.connect(`mongodb://localhost:27017/${dbName}`, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 }).then(() => {
+    console.log("connection succesvol")
     return seedGames();
 }).then(() => {
     return seedQuestions();
@@ -4245,7 +4244,6 @@ async function seedQuestions() {
             "category": "Sport"
         }
     ])
-
 }
 
 
