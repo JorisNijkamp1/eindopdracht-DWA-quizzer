@@ -15,7 +15,7 @@ const gamesSchema = new mongoose.Schema({
         team_naam: {
             type: String,
             // required: true,
-            unique: true
+            // unique: true
         },
         team_score: {
             type: Number,
