@@ -69,7 +69,7 @@ class TeamAanmakenUI extends React.Component {
     }
 
     isPending() {
-        if (this.props.teamNameAccepted === 'pending') {
+        if (this.props.teamNameStatus === 'pending') {
             console.log('Team verstuurd naar Quizmaster!');
             return <p>Team aanvraag verstuurd</p>
         }
@@ -115,14 +115,14 @@ class TeamAanmakenUI extends React.Component {
 function mapStateToProps(state) {
     return {
         gameRoomAccepted: state.createTeam.gameRoomAccepted,
-        teamNameAccepted: state.createTeam.teamNameAccepted
+        teamNameStatus: state.createTeam.teamNameStatus
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
         doChangeGameRoomStatus: (gameRoomAccepted) => dispatch(createGameRoomStatusAction(gameRoomAccepted)),
-        doChangeTeamNameStatus: (teamNameAccepted) => dispatch(createTeamNameStatusAction(teamNameAccepted)),
+        doChangeTeamNameStatus: (teamNameStatus) => dispatch(createTeamNameStatusAction(teamNameStatus)),
     }
 }
 

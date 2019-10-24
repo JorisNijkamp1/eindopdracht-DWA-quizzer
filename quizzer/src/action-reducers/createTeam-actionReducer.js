@@ -21,7 +21,7 @@ export function createTeamNameStatusAction(status) {
 // Reducer:
 const initialCreateTeamState = {
     gameRoomAccepted: null,
-    teamNameAccepted: false,
+    teamNameStatus: false,
 };
 
 export function createTeamReducer(state = initialCreateTeamState, action) {
@@ -35,7 +35,7 @@ export function createTeamReducer(state = initialCreateTeamState, action) {
 
         case 'createTeamNameStatusAction':
             changes = {
-                teamNameAccepted: action.status,
+                teamNameStatus: action.status,
             };
             return {...state, ...changes};
 
