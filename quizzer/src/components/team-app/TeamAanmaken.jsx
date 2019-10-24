@@ -50,11 +50,10 @@ class TeamAanmakenUI extends React.Component {
         fetch(url, options)
             .then(response => response.json())
             .then(data => {
-                console.log(data)
                     if (data.gameRoomAccepted === true) {
                         this.props.doChangeGameRoomStatus(data.gameRoomAccepted)
-                        if (data.teamRoomStatus === true) {
-                            this.props.doChangeTeamNameStatus(data.teamNameAccepted)
+                        if (data.teamRoomStatus === 'pending') {
+                            this.props.doChangeTeamNameStatus(data.teamRoomStatus)
                         }
                     } else if (data.gameRoomAccepted === false) {
                         this.props.doChangeGameRoomStatus(data.gameRoomAccepted)
@@ -69,19 +68,16 @@ class TeamAanmakenUI extends React.Component {
         }
     }
 
-    //ToDo
-    ifSuccess() {
-        if (this.props.gameRoomAccepted === true) {
+    isPending() {
+        if (this.props.teamNameAccepted === 'pending') {
             console.log('Team verstuurd naar Quizmaster!');
-            //return <Redirect to="/teamsbeheren"/>
+            return <p>Team aanvraag verstuurd</p>
         }
     }
-
 
     render() {
         return (
             <Container>
-                {this.ifSuccess()}
                 <Row className="min-vh-100">
                     <Col md={{span: 8, offset: 2}}>
                         <h1 className="text-center display-1">Quizzer Night</h1>
@@ -104,6 +100,7 @@ class TeamAanmakenUI extends React.Component {
                                               onChange={this.onChangeTeamName}
                                               placeholder="team naam"/>
                             </Form.Group>
+                            {this.isPending()}
                             <Button variant="primary" type="submit">
                                 Bevestigen
                             </Button>

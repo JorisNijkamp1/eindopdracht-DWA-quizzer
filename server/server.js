@@ -96,7 +96,7 @@ app.post('/api/team', async (req, res) => {
                 console.log('Team toegevoegd')
                 res.json({
                     gameRoomAccepted: true,
-                    teamRoomStatus: true,
+                    teamRoomStatus: 'pending',
                     gameRoomName: gameRoomName,
                     teamName: teamName,
                 });
