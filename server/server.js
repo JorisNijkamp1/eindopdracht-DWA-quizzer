@@ -100,6 +100,12 @@ app.post('/api/team', async (req, res) => {
                     teamName: teamName,
                 });
             });
+
+            //set session gameRoomName
+            req.session.gameRoomName = gameRoomName;
+
+            //set session teamName
+            req.session.teamName = teamName;
         } else {
             console.log('team bestaat al')
             res.json({
@@ -130,9 +136,8 @@ httpServer.on('upgrade', (req, networkSocket, head) => {
 let playerCount = 0;
 websocketServer.on('connection', (socket, req) => {
 
-    // console.log('A new player is connected');
-    // // console.log('Current gamerooms: ' + games);
-    // console.log(req.session);
+    console.log('A new player is connected');
+    console.log(req.session);
 
     req.session.save();
     socket.on('message', (message) => {
