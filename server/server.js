@@ -35,6 +35,15 @@ const httpServer = http.createServer(app);
 // Create the Web socket server.
 const websocketServer = new WebSocket.Server({noServer: true});
 
+app.get('/api/games/:gameRoom/teams', async (req, res) => {
+    const gameRoom = req.params.gameRoom;
+
+    let currentGame = await Games.find({_id: gameRoom});
+
+    console.log(currentGame.teams);
+    res.json("test");
+});
+
 app.post('/api/game', async (req, res) => {
     //Game room name
     const gameRoomName = req.body.gameRoomName;
@@ -74,7 +83,6 @@ app.post('/api/game', async (req, res) => {
         });
     }
 });
-
 
 app.post('/api/team', async (req, res) => {
     const gameRoomName = req.body.gameRoomName;

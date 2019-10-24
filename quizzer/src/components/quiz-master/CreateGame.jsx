@@ -63,7 +63,7 @@ class CreateGameUI extends React.Component {
 
     ifSuccess() {
         if (this.props.status === "success") {
-            // return <Redirect to="/teamsbeheren"/>
+            return <Redirect to="/teamsbeheren"/>
         }
     }
 

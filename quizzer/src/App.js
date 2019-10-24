@@ -2,7 +2,7 @@ import React from 'react';
 
 import './App.css';
 import GameMenu from "./components/GameMenu";
-import TeamsBeheren from "./components/quiz-master/TeamsBeheren";
+import {TeamsBeheren} from "./components/quiz-master/TeamsBeheren";
 import Categorieen from "./components/quiz-master/Categorieen";
 import {TeamAanmaken} from "./components/team-app/TeamAanmaken";
 import Vragen from "./components/quiz-master/Vragen";
