@@ -35,6 +35,9 @@ const httpServer = http.createServer(app);
 // Create the Web socket server.
 const websocketServer = new WebSocket.Server({noServer: true});
 
+/*====================================
+| GET ALL TEAMS FROM A GAMEROOM
+*/
 app.get('/api/games/:gameRoom/teams', async (req, res) => {
     const gameRoom = req.params.gameRoom;
 
@@ -45,7 +48,48 @@ app.get('/api/games/:gameRoom/teams', async (req, res) => {
     })
 });
 
+/*====================================
+| DELETING A TEAM
+*/
+app.delete('/api/games/:gameRoom/team/:teamName', async (req, res) => {
+    const gameRoom = req.params.gameRoom;
+    const teamName = req.params.teamName;
 
+    //Check of isset session gameRoomName & is quizMaster
+    if (req.session.gameRoomName === gameRoom && req.session.quizMaster) {
+
+        //get current game
+        let currentGame = await Games.findOne({_id: gameRoom});
+
+        //find the team in the array
+        currentGame.teams.forEach(function (arrayItem, key) {
+            if (arrayItem['_id'] === teamName) {
+                currentGame.teams.splice(key, 1)
+            }
+        });
+
+        //save gameRoomName document to MongoDB
+        currentGame.save(function (err, game) {
+            if (err) return console.error(err);
+            console.log(teamName + " verwijderd uit gameRoom: " + game._id);
+        });
+
+        return res.json({
+            success: true,
+        })
+    }
+});
+
+/*====================================
+| ACCEPTING A TEAM
+*/
+app.put('/api/games/:gameRoom/team/:teamName', async (req, res) => {
+    console.log('TEAM ACCEPTEREN');
+});
+
+/*====================================
+| CREATE A NEW GAMEROOM
+*/
 app.post('/api/game', async (req, res) => {
     //Game room name
     const gameRoomName = req.body.gameRoomName;
@@ -86,6 +130,9 @@ app.post('/api/game', async (req, res) => {
     }
 });
 
+/*====================================
+| CREATE A NEW TEAM
+*/
 app.post('/api/team', async (req, res) => {
     const gameRoomName = req.body.gameRoomName;
     const teamName = req.body.teamName;
@@ -107,28 +154,29 @@ app.post('/api/team', async (req, res) => {
         //Checks if team isn't already in current game
         if (isTeamNameAvailable) {
 
-        currentGame.teams.push({
-            _id: teamName,
-            team_score: 0
-        });
-
-        //Save to mongoDB
-        currentGame.save(function (err) {
-            if (err) return console.error(err);
-            console.log('Team toegevoegd');
-            res.json({
-                gameRoomAccepted: true,
-                teamNameStatus: 'pending',
-                gameRoomName: gameRoomName,
-                teamName: teamName,
+            currentGame.teams.push({
+                _id: teamName,
+                approved: false,
+                team_score: 0
             });
-        });
 
-        //set session gameRoomName
-        req.session.gameRoomName = gameRoomName;
+            //Save to mongoDB
+            currentGame.save(function (err) {
+                if (err) return console.error(err);
+                console.log('Team toegevoegd');
+                res.json({
+                    gameRoomAccepted: true,
+                    teamNameStatus: 'pending',
+                    gameRoomName: gameRoomName,
+                    teamName: teamName,
+                });
+            });
 
-        //set session teamName
-        req.session.teamName = teamName;
+            //set session gameRoomName
+            req.session.gameRoomName = gameRoomName;
+
+            //set session teamName
+            req.session.teamName = teamName;
         } else {
             console.log('team bestaat al')
             res.json({
@@ -160,7 +208,6 @@ httpServer.on('upgrade', (req, networkSocket, head) => {
 
 var totalPlayers = 0;
 var players = {};
-
 websocketServer.on('connection', (socket, req) => {
 
     console.log('A new player is connected');
@@ -197,15 +244,6 @@ websocketServer.on('connection', (socket, req) => {
                 throw err
             }
 
-            // //example to send all users a message
-            // if (data.messageType === 'NEW CONNECTION') {
-            //     websocketServer.clients.forEach(function (client) {
-            //         client.send(JSON.stringify({
-            //             messageType: "NEW PLAYER",
-            //         }));
-            //     });
-            // }
-
             if (data.messageType === 'NEW TEAM') {
                 for (var key in players) {
                     if (players.hasOwnProperty(key)) {
@@ -218,6 +256,10 @@ websocketServer.on('connection', (socket, req) => {
                         }
                     }
                 }
+            }
+
+            if (data.messageType === 'TEAM DELETED') {
+                console.log('TEAM DELETED SERVER MSG')
             }
 
             req.session.save()

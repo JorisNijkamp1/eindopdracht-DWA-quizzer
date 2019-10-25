@@ -2,6 +2,7 @@ import {theStore} from './index'
 import {getGameRoomTeamsAction} from "./action-reducers/createGame-actionReducer";
 
 let theSocket;
+
 export function openWebSocket() {
     if (theSocket) {
         theSocket.onerror = null;
@@ -21,13 +22,13 @@ export function openWebSocket() {
         var message = JSON.parse(eventInfo.data);
 
         switch (message.messageType) {
-            case "NEW PLAYER":
-                console.log(message.serverMessage);
-                break;
-
             case "NEW TEAM":
                 console.log('Nieuw team aangemaakt');
                 getTeams()
+                break;
+
+            case "TEAM DELETED":
+                console.log('JE BENT VERWIJDERD');
                 break;
 
             default:
@@ -42,6 +43,41 @@ export function createTeam() {
     theSocket.onopen = function (eventInfo) {
         let message = {
             messageType: "NEW TEAM",
+        };
+
+        theSocket.sendJSON(message);
+    };
+}
+
+export function deleteTeam(gameRoom, teamName) {
+    if (gameRoom && teamName) {
+        const url = `http://localhost:3001/api/games/${gameRoom}/team/${teamName}`;
+
+        const options = {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+            mode: 'cors'
+        };
+
+        return fetch(url, options).then(response => {
+            if (response.status !== 200) console.log("Er gaat iets fout" + response.status);
+            response.json().then(data => {
+                if (data.success) {
+                    getTeams();
+                    teamDeleted();
+                }
+            });
+        }).catch(err => console.log(err))
+    }
+}
+
+function teamDeleted() {
+    theSocket.onopen = function (eventInfo) {
+        let message = {
+            messageType: "TEAM DELETED",
         };
 
         theSocket.sendJSON(message);
@@ -68,8 +104,6 @@ function getTeams() {
             console.log("Er gaat iets fout" + response.status);
         }
         response.json().then(data => {
-            console.log(data)
-            // this.props.gameRoomTeamsActionRoom(data.teams)
             theStore.dispatch(getGameRoomTeamsAction(data.teams))
         });
     }).catch(err => {

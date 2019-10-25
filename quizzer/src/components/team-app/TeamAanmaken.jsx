@@ -119,7 +119,7 @@ class TeamAanmakenUI extends React.Component {
         )
     }
 
-    isPending() {
+    checkTeamNameStatus() {
         if (this.props.teamNameStatus === 'pending') {
             console.log('Team verstuurd naar Quizmaster!');
             return (
@@ -144,7 +144,7 @@ class TeamAanmakenUI extends React.Component {
     }
 
     render() {
-        return this.isPending()
+        return this.checkTeamNameStatus()
     }
 }
 
