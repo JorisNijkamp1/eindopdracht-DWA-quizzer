@@ -9,7 +9,7 @@ import Row from "react-bootstrap/Row";
 import Button from "react-bootstrap/Button";
 import {Link} from "react-router-dom";
 import {TeamsBeheren} from "./TeamsBeheren";
-import {onMessage, openWebSocket} from "../../serverCommunication";
+import {openWebSocket} from "../../websocket";
 
 class CreateGameUI extends React.Component {
     constructor(props) {
@@ -49,7 +49,6 @@ class CreateGameUI extends React.Component {
                         this.props.doChangeStatus("success")
                         this.props.doChangeGameRoom(data.gameRoomName);
                         openWebSocket();
-                        onMessage();
                     } else if (data.gameRoomNameAccepted === false) {
                         this.props.doChangeStatus("error")
                     }

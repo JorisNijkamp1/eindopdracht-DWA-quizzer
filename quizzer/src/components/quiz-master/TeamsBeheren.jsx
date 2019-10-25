@@ -7,34 +7,8 @@ import Button from "react-bootstrap/Button";
 import {Link} from "react-router-dom";
 import {Card} from "react-bootstrap";
 import {getGameRoomTeamsAction} from "../../action-reducers/createGame-actionReducer";
-import {openWebSocket} from "../../serverCommunication";
 
 class TeamsBeherenUI extends React.Component {
-
-    webSocketCall = () => {
-        const url = `http://localhost:3001/api/games/${this.props.gameRoom}/teams`;
-
-        const options = {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            credentials: 'include',
-            mode: 'cors'
-        };
-
-        return fetch(url, options).then(response => {
-            if (response.status !== 200) {
-                console.log("Er gaat iets fout" + response.status);
-            }
-            response.json().then(data => {
-                console.log(data.teams)
-                this.props.gameRoomTeamsActionRoom(data.teams)
-            });
-        }).catch(err => {
-            console.log(err);
-        })
-    };
 
     getTeams() {
         return (
@@ -74,11 +48,6 @@ class TeamsBeherenUI extends React.Component {
                                 Start de ronde
                             </Button>
                         </Link>
-                    </Col>
-                    <Col className={"text-center"} md={{span: 4, offset: 4}}>
-                        <Button variant="primary" onClick={this.webSocketCall}>
-                            ws call
-                        </Button>
                     </Col>
                     {this.getTeams()}
                 </Row>

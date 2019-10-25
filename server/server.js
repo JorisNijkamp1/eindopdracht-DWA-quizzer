@@ -191,15 +191,14 @@ websocketServer.on('connection', (socket, req) => {
                 throw err
             }
 
-            //example to send all users a message
-            if (data.messageType === 'NEW CONNECTION') {
-                websocketServer.clients.forEach(function (client) {
-                    client.send(JSON.stringify({
-                        messageType: "NEW PLAYER",
-                        serverMessage: 'dit is mijn server bericht aan jullie'
-                    }));
-                });
-            }
+            // //example to send all users a message
+            // if (data.messageType === 'NEW CONNECTION') {
+            //     websocketServer.clients.forEach(function (client) {
+            //         client.send(JSON.stringify({
+            //             messageType: "NEW PLAYER",
+            //         }));
+            //     });
+            // }
 
             if (data.messageType === 'NEW TEAM') {
                 for (var key in players) {

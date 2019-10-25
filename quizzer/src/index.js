@@ -20,10 +20,12 @@ import {BrowserRouter as Router} from "react-router-dom";
 //     return result;
 // };
 
-const theStore = Redux.createStore(allReducers,
+export const theStore = Redux.createStore(allReducers,
     applyMiddleware(
         // logger
     ));
+
+
 
 const mainComponent =
     <ReactRedux.Provider store={theStore}>
