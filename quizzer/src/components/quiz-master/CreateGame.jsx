@@ -66,10 +66,10 @@ class CreateGameUI extends React.Component {
         return (
             <Container>
                 <Row className="min-vh-100">
-                    <Col md={{span: 8, offset: 2}}>
+                    <Col xs={{span: 12}} md={{span: 12}}>
                         <h1 className="text-center display-1">Quizzer Night</h1>
                     </Col>
-                    <Col md={{span: 4, offset: 4}} className="h-100">
+                    <Col md={{span: 8, offset: 2}} className="h-100">
                         <Form onSubmit={this.handleSubmit}>
                             <Form.Group controlId="exampleForm.ControlInput1">
                                 <Form.Label>Vul hier de game room naam in</Form.Label>
@@ -78,6 +78,7 @@ class CreateGameUI extends React.Component {
                                               type="text"
                                               placeholder="Game room naam"
                                               className={this.errorMessage()}
+                                              autoComplete="off"
                                               required/>
                                 <div className="invalid-feedback">Deze gameroom bestaat al!</div>
                             </Form.Group>

@@ -6,7 +6,9 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import {createGameRoomStatusAction, createTeamNameStatusAction} from "../../action-reducers/createTeam-actionReducer";
 import * as ReactRedux from "react-redux";
-import {createTeam, onMessage, openWebSocket} from "../../serverCommunication";
+import {createTeam, openWebSocket} from "../../websocket";
+import {PropagateLoader} from 'react-spinners';
+import {Link} from "react-router-dom";
 
 class TeamAanmakenUI extends React.Component {
 
@@ -55,10 +57,9 @@ class TeamAanmakenUI extends React.Component {
                         this.props.doChangeGameRoomStatus(data.gameRoomAccepted);
                         if (data.teamNameStatus === 'pending') {
                             this.props.doChangeTeamNameStatus(data.teamNameStatus);
-                            openWebSocket();
-                            createTeam();
-                            onMessage();
-                        }else if (data.teamNameStatus === 'error') {
+                            openWebSocket();    //open websocket connection
+                            createTeam();       //send message createTeam
+                        } else if (data.teamNameStatus === 'error') {
                             this.props.doChangeTeamNameStatus(data.teamNameStatus)
                         }
                     } else if (data.gameRoomAccepted === false) {
@@ -80,23 +81,14 @@ class TeamAanmakenUI extends React.Component {
         }
     }
 
-    isPending() {
-        if (this.props.teamNameStatus === 'pending') {
-            console.log('Team verstuurd naar Quizmaster!');
-            return <p>Team aanvraag verstuurd, wacht op de quizz-master</p>
-        } else {
-            return <Button variant="primary" type="submit">Bevestigen</Button>
-        }
-    }
-
-    render() {
+    joinGameForm() {
         return (
             <Container>
                 <Row className="min-vh-100">
-                    <Col md={{span: 8, offset: 2}}>
+                    <Col xs={{span: 12}} md={{span: 12}}>
                         <h1 className="text-center display-1">Quizzer Night</h1>
                     </Col>
-                    <Col md={{span: 4, offset: 4}} className="h-100">
+                    <Col md={{span: 8, offset: 2}} className="h-100">
                         <Form onSubmit={this.handleSubmit}>
                             <Form.Group controlId="exampleForm.ControlInput1">
                                 <Form.Label>Vul hier de game room naam in</Form.Label>
@@ -104,7 +96,8 @@ class TeamAanmakenUI extends React.Component {
                                               value={this.state.gameRoomName}
                                               onChange={this.onChangeGameRoomName}
                                               className={this.gameRoomError()}
-                                              placeholder="Game room naam"/>
+                                              placeholder="Game room naam"
+                                              autoComplete="off"/>
                                 <div className="invalid-feedback">Deze gameroom bestaat niet!</div>
                             </Form.Group>
                             <Form.Group controlId="exampleForm.ControlInput1">
@@ -113,15 +106,45 @@ class TeamAanmakenUI extends React.Component {
                                               value={this.state.teamName}
                                               onChange={this.onChangeTeamName}
                                               className={this.teamNameError()}
-                                              placeholder="team naam"/>
+                                              placeholder="team naam"
+                                              autoComplete="off"/>
                                 <div className="invalid-feedback">Deze teamnaam bestaat al!</div>
                             </Form.Group>
-                            {this.isPending()}
+                            <Button variant="primary" type="submit">Bevestigen</Button>
+                            <Link to="/" className="btn btn-link">Annuleren</Link>
                         </Form>
                     </Col>
                 </Row>
             </Container>
         )
+    }
+
+    isPending() {
+        if (this.props.teamNameStatus === 'pending') {
+            console.log('Team verstuurd naar Quizmaster!');
+            return (
+                <Container>
+                    <Row className="min-vh-100">
+                        <Col xs={{span: 12}}>
+                            <div className="d-flex align-items-center justify-content-center h-100">
+                                <PropagateLoader
+                                    sizeUnit={"px"}
+                                    size={30}
+                                    color={'#123abc'}
+                                    loading="true"
+                                />
+                            </div>
+                        </Col>
+                    </Row>
+                </Container>
+            )
+        } else {
+            return this.joinGameForm()
+        }
+    }
+
+    render() {
+        return this.isPending()
     }
 }
 

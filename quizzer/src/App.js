@@ -11,7 +11,6 @@ import VragenBeheren from "./components/quiz-master/VragenBeheren";
 import EindRonde from "./components/quiz-master/EindRonde";
 import {Switch, Route} from "react-router-dom";
 import {CreateGame} from "./components/quiz-master/CreateGame";
-import { openWebSocket, getWebSocket, startLogin, startLogout } from './serverCommunication';
 import ScorebordBeoordeling from "./components/score-bord/ScorebordBeoordeling";
 
 

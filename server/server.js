@@ -105,7 +105,6 @@ app.post('/api/team', async (req, res) => {
             //Push teamName to teams array
             currentGame.teams.team_naam.push(teamName);
 
-
             //Save to mongoDB
             currentGame.save(function (err) {
                 if (err) return console.error(err);

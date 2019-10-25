@@ -38,6 +38,16 @@ export function openWebSocket() {
     return theSocket;
 }
 
+export function createTeam() {
+    theSocket.onopen = function (eventInfo) {
+        let message = {
+            messageType: "NEW TEAM",
+        };
+
+        theSocket.sendJSON(message);
+    };
+}
+
 function getTeams() {
     let store = theStore.getState();
     let gameRoom = store.createGame.gameRoom;

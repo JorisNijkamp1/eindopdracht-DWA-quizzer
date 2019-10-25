@@ -40,14 +40,27 @@ class TeamsBeherenUI extends React.Component {
             <Container>
                 <Row className="min-vh-100">
                     <Col md={{span: 8, offset: 2}}>
-                        <h1 className="text-center display-1">Quizzer Night</h1>
+                        <h1 className="text-center display-3">Quizzer Night</h1>
+                        <h3 className="text-center">Welkom Quiz master!</h3>
+                        <h5 className={"text-center"}>
+                            <b>Gameroom naam:</b>
+                            <br/>
+                            <u>
+                                {this.props.gameRoom}
+                            </u>
+                        </h5>
+                        <div className={"justify-content-center align-items-center"}>
+                            <div className="row h-100 justify-content-center align-items-center">
+                                <Link to="/categorieen">
+                                    <Button variant="outline-success" type="submit">
+                                        Start quiz
+                                    </Button>
+                                </Link>
+                            </div>
+                        </div>
                     </Col>
-                    <Col className={"text-center"} md={{span: 4, offset: 4}}>
-                        <Link to="/categorieen">
-                            <Button variant="primary" type="submit">
-                                Start de ronde
-                            </Button>
-                        </Link>
+                    <Col className={"text-center"}>
+
                     </Col>
                     {this.getTeams()}
                 </Row>
