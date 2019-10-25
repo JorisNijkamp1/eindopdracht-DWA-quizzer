@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Team = require('./teams');
 
 //Create schema
 const gamesSchema = new mongoose.Schema({
@@ -12,15 +13,7 @@ const gamesSchema = new mongoose.Schema({
         // required: true,
     },
     teams: {
-        team_naam: {
-            type: Array,
-            // required: true,
-            // unique: true
-        },
-        team_score: {
-            type: Number,
-            // required: true,
-        }
+        type: [{type: Team, ref: "Team"}],
     },
     rondes: {
         ronde_id: {

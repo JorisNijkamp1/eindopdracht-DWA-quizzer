@@ -68,7 +68,7 @@ function getTeams() {
             console.log("Er gaat iets fout" + response.status);
         }
         response.json().then(data => {
-            console.log(data.teams)
+            console.log(data)
             // this.props.gameRoomTeamsActionRoom(data.teams)
             theStore.dispatch(getGameRoomTeamsAction(data.teams))
         });

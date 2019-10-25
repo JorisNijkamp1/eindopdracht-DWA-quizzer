@@ -13,12 +13,11 @@ class TeamsBeherenUI extends React.Component {
     getTeams() {
         return (
             this.props.gameRoomTeams.map((teamName, i) => {
-                    console.log('Teamnaam is: ' + teamName);
                     return (
-                        <Col key={teamName} md={{span: 6}}>
+                        <Col key={teamName['_id']} md={{span: 6}}>
                             <Card>
                                 <Card.Body>
-                                    <Card.Title className="text-center">{teamName}</Card.Title>
+                                    <Card.Title className="text-center">{teamName['_id']}</Card.Title>
                                     <Card.Text className="text-center">Team accepteren?</Card.Text>
                                     <Button variant="success" className={"float-left"} type="submit">
                                         Ja
