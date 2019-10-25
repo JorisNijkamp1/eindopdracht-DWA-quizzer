@@ -13,16 +13,16 @@ import {BrowserRouter as Router} from "react-router-dom";
 // The logger middleware is adapted from code out of http://www.pro-react.com/materials/ch06-alt-redux.pdf.
 // We use it because it is also useful to see the redux-actions happening in the normal console
 // (together with error-messages).
-const logger = (store) => (next) => (action) => {
-    console.log('ACTION:', action.type, action);
-    let result = next(action);
-    console.log('STATE AFTER ACTION:', action.type, store.getState());
-    return result;
-};
+// const logger = (store) => (next) => (action) => {
+//     console.log('ACTION:', action.type, action);
+//     let result = next(action);
+//     console.log('STATE AFTER ACTION:', action.type, store.getState());
+//     return result;
+// };
 
 const theStore = Redux.createStore(allReducers,
     applyMiddleware(
-        logger
+        // logger
     ));
 
 const mainComponent =

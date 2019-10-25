@@ -6,6 +6,7 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import {createGameRoomStatusAction, createTeamNameStatusAction} from "../../action-reducers/createTeam-actionReducer";
 import * as ReactRedux from "react-redux";
+import {createTeam, onMessage, openWebSocket} from "../../serverCommunication";
 
 class TeamAanmakenUI extends React.Component {
 
@@ -51,9 +52,12 @@ class TeamAanmakenUI extends React.Component {
             .then(response => response.json())
             .then(data => {
                     if (data.gameRoomAccepted === true) {
-                        this.props.doChangeGameRoomStatus(data.gameRoomAccepted)
+                        this.props.doChangeGameRoomStatus(data.gameRoomAccepted);
                         if (data.teamNameStatus === 'pending') {
-                            this.props.doChangeTeamNameStatus(data.teamNameStatus)
+                            this.props.doChangeTeamNameStatus(data.teamNameStatus);
+                            openWebSocket();
+                            createTeam();
+                            onMessage();
                         }else if (data.teamNameStatus === 'error') {
                             this.props.doChangeTeamNameStatus(data.teamNameStatus)
                         }

@@ -38,11 +38,15 @@ const websocketServer = new WebSocket.Server({noServer: true});
 app.get('/api/games/:gameRoom/teams', async (req, res) => {
     const gameRoom = req.params.gameRoom;
 
-    let currentGame = await Games.find({_id: gameRoom});
+    let currentGame = await Games.findOne({_id: gameRoom});
 
     console.log(currentGame.teams);
-    res.json("test");
+
+    return res.json({
+        teams: currentGame.teams.team_naam,
+    })
 });
+
 
 app.post('/api/game', async (req, res) => {
     //Game room name
@@ -71,6 +75,9 @@ app.post('/api/game', async (req, res) => {
         //set session gameRoomName
         req.session.gameRoomName = gameRoomName;
 
+        //set session quizMaster = true
+        req.session.quizMaster = true;
+
         //send result
         res.json({
             gameRoomNameAccepted: true,
@@ -96,12 +103,13 @@ app.post('/api/team', async (req, res) => {
         if (!currentGame.teams.team_naam.includes(teamName)) {
 
             //Push teamName to teams array
-            currentGame.teams.team_naam.push(teamName)
+            currentGame.teams.team_naam.push(teamName);
+
 
             //Save to mongoDB
             currentGame.save(function (err) {
                 if (err) return console.error(err);
-                console.log('Team toegevoegd')
+                console.log('Team toegevoegd');
                 res.json({
                     gameRoomAccepted: true,
                     teamNameStatus: 'pending',
@@ -144,26 +152,70 @@ httpServer.on('upgrade', (req, networkSocket, head) => {
     });
 });
 
-let playerCount = 0;
+var totalPlayers = 0;
+var players = {};
+
 websocketServer.on('connection', (socket, req) => {
 
     console.log('A new player is connected');
     console.log(req.session);
-
     req.session.save();
+
+    const gameRoom = req.session.gameRoomName;
+    const quizMaster = req.session.quizMaster;
+
+    totalPlayers = totalPlayers + 1;
+    socket.id = totalPlayers;
+
+    //Als er een session is met een gameRoomName zet je de gameRoomName in de socket
+    if (gameRoom) {
+        players[socket.id] = socket;
+        players[socket.id].gameRoomName = gameRoom;
+
+        //console.log(players[socket.id].gameRoomName);
+
+        //als diegene de quizmaster is, krijgt hij dat ook in zijn socket
+        if (quizMaster) {
+            players[socket.id].quizMaster = true;
+            //console.log(players[socket.id].quizMaster);
+        }
+    }
+
     socket.on('message', (message) => {
         req.session.reload((err) => {
-            // if we don't call reload(), we'll get a old copy
-            // of the session, and won't see changes made by
-            // Express routes (like '/logout', above)
 
-            console.log('aanpassen session');
+            //convert json message to a javascript object
+            const data = JSON.parse(message);
 
             if (err) {
                 throw err
             }
-            req.session.save()  // If we don't call save(), Express routes like '/logout' (above)
-                                // will not see the changes we make to the session in this socket code.
+
+            //example to send all users a message
+            if (data.messageType === 'NEW CONNECTION') {
+                websocketServer.clients.forEach(function (client) {
+                    client.send(JSON.stringify({
+                        messageType: "NEW PLAYER",
+                        serverMessage: 'dit is mijn server bericht aan jullie'
+                    }));
+                });
+            }
+
+            if (data.messageType === 'NEW TEAM') {
+                for (var key in players) {
+                    if (players.hasOwnProperty(key)) {
+                        if (players[key].quizMaster && players[key].gameRoomName === gameRoom) {
+                            console.log('You are a quizmaster')
+
+                            players[key].send(JSON.stringify({
+                                messageType: "NEW TEAM",
+                            }));
+                        }
+                    }
+                }
+            }
+
+            req.session.save()
         })
     });
 

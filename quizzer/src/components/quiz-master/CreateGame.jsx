@@ -8,8 +8,8 @@ import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Button from "react-bootstrap/Button";
 import {Link} from "react-router-dom";
-
-import {Redirect} from "react-router-dom";
+import {TeamsBeheren} from "./TeamsBeheren";
+import {onMessage, openWebSocket} from "../../serverCommunication";
 
 class CreateGameUI extends React.Component {
     constructor(props) {
@@ -48,6 +48,8 @@ class CreateGameUI extends React.Component {
                     if (data.gameRoomNameAccepted === true) {
                         this.props.doChangeStatus("success")
                         this.props.doChangeGameRoom(data.gameRoomName);
+                        openWebSocket();
+                        onMessage();
                     } else if (data.gameRoomNameAccepted === false) {
                         this.props.doChangeStatus("error")
                     }
@@ -61,16 +63,9 @@ class CreateGameUI extends React.Component {
         }
     }
 
-    ifSuccess() {
-        if (this.props.status === "success") {
-            return <Redirect to="/teamsbeheren"/>
-        }
-    }
-
-    render() {
+    createGameForm() {
         return (
             <Container>
-                {this.ifSuccess()}
                 <Row className="min-vh-100">
                     <Col md={{span: 8, offset: 2}}>
                         <h1 className="text-center display-1">Quizzer Night</h1>
@@ -96,6 +91,14 @@ class CreateGameUI extends React.Component {
                 </Row>
             </Container>
         )
+    }
+
+    render() {
+        if (this.props.status === "success") {
+            return <TeamsBeheren/>
+        } else {
+            return this.createGameForm()
+        }
     }
 }
 

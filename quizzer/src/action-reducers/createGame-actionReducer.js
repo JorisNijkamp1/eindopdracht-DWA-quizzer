@@ -17,10 +17,18 @@ export function createGameRoomAction(gameRoom) {
     };
 }
 
+export function getGameRoomTeamsAction(gameRoomTeams) {
+    return {
+        type: "getGameRoomTeamsAction",
+        gameRoomTeams: gameRoomTeams
+    };
+}
+
 // Reducer:
 const initialCreateGameState = {
     status: false,
     gameRoom: null,
+    gameRoomTeams: []
 };
 
 export function createGameReducer(state = initialCreateGameState, action) {
@@ -31,11 +39,19 @@ export function createGameReducer(state = initialCreateGameState, action) {
                 status: action.status,
             };
             return {...state, ...changes};
+
         case 'createGameRoomAction':
             changes = {
                 gameRoom: action.gameRoom,
             };
             return {...state, ...changes};
+
+        case 'getGameRoomTeamsAction':
+            changes = {
+                gameRoomTeams: action.gameRoomTeams,
+            };
+            return {...state, ...changes};
+
         default:
             return state;
     }

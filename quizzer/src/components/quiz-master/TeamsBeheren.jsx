@@ -6,13 +6,14 @@ import Row from "react-bootstrap/Row";
 import Button from "react-bootstrap/Button";
 import {Link} from "react-router-dom";
 import {Card} from "react-bootstrap";
-import {createGameRoomAction} from "../../action-reducers/createGame-actionReducer";
+import {getGameRoomTeamsAction} from "../../action-reducers/createGame-actionReducer";
+import {openWebSocket} from "../../serverCommunication";
 
 class TeamsBeherenUI extends React.Component {
-    handleSubmit = e => {
-        e.preventDefault();
+
+    webSocketCall = () => {
         const url = `http://localhost:3001/api/games/${this.props.gameRoom}/teams`;
-        console.log(url)
+
         const options = {
             method: 'GET',
             headers: {
@@ -22,17 +23,43 @@ class TeamsBeherenUI extends React.Component {
             mode: 'cors'
         };
 
-        fetch(url, options).then(response => {
+        return fetch(url, options).then(response => {
             if (response.status !== 200) {
                 console.log("Er gaat iets fout" + response.status);
             }
             response.json().then(data => {
-                console.log(data)
+                console.log(data.teams)
+                this.props.gameRoomTeamsActionRoom(data.teams)
             });
         }).catch(err => {
             console.log(err);
         })
     };
+
+    getTeams() {
+        return (
+            this.props.gameRoomTeams.map((teamName, i) => {
+                    console.log('Teamnaam is: ' + teamName);
+                    return (
+                        <Col key={teamName} md={{span: 6}}>
+                            <Card>
+                                <Card.Body>
+                                    <Card.Title className="text-center">{teamName}</Card.Title>
+                                    <Card.Text className="text-center">Team accepteren?</Card.Text>
+                                    <Button variant="success" className={"float-left"} type="submit">
+                                        Ja
+                                    </Button>
+                                    <Button variant="danger" className={"float-right"} type="submit">
+                                        Nee
+                                    </Button>
+                                </Card.Body>
+                            </Card>
+                        </Col>
+                    )
+                }
+            )
+        )
+    }
 
     render() {
         return (
@@ -49,24 +76,11 @@ class TeamsBeherenUI extends React.Component {
                         </Link>
                     </Col>
                     <Col className={"text-center"} md={{span: 4, offset: 4}}>
-                        <Button variant="primary" type="submit" onClick={this.handleSubmit}>
+                        <Button variant="primary" onClick={this.webSocketCall}>
                             ws call
                         </Button>
                     </Col>
-                    <Col md={{span: 6}}>
-                        <Card>
-                            <Card.Body>
-                                <Card.Title className="text-center">Teamnaam 1</Card.Title>
-                                <Card.Text className="text-center">Team accepteren?</Card.Text>
-                                <Button variant="success" className={"float-left"} type="submit">
-                                    Ja
-                                </Button>
-                                <Button variant="danger" className={"float-right"} type="submit">
-                                    Nee
-                                </Button>
-                            </Card.Body>
-                        </Card>
-                    </Col>
+                    {this.getTeams()}
                 </Row>
             </Container>
         )
@@ -76,12 +90,13 @@ class TeamsBeherenUI extends React.Component {
 function mapStateToProps(state) {
     return {
         gameRoom: state.createGame.gameRoom,
+        gameRoomTeams: state.createGame.gameRoomTeams
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        doChangeGameRoom: (gameRoom) => dispatch(createGameRoomAction(gameRoom)),
+        gameRoomTeamsActionRoom: (gameRoomTeams) => dispatch(getGameRoomTeamsAction(gameRoomTeams)),
     }
 }
 
