@@ -17,11 +17,26 @@ export function createTeamNameStatusAction(status) {
     };
 }
 
+export function getTeamNameAction(getTeamName) {
+    return {
+        type: "getTeamNameAction",
+        getTeamName: getTeamName
+    };
+}
+
+export function getGameNameAction(getGameName) {
+    return {
+        type: "getGameNameAction",
+        getGameName: getGameName
+    };
+}
 
 // Reducer:
 const initialCreateTeamState = {
     gameRoomAccepted: null,
     teamNameStatus: false,
+    teamRoomName: null,
+    gameRoomName: null
 };
 
 export function createTeamReducer(state = initialCreateTeamState, action) {
@@ -36,6 +51,17 @@ export function createTeamReducer(state = initialCreateTeamState, action) {
         case 'createTeamNameStatusAction':
             changes = {
                 teamNameStatus: action.status,
+            };
+            return {...state, ...changes};
+        case 'getTeamNameAction':
+            changes = {
+                teamRoomName: action.getTeamName,
+            };
+            return {...state, ...changes};
+
+        case 'getGameNameAction':
+            changes = {
+                gameRoomName: action.getGameName,
             };
             return {...state, ...changes};
 
