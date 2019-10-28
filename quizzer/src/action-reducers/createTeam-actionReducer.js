@@ -53,6 +53,7 @@ export function createTeamReducer(state = initialCreateTeamState, action) {
                 teamNameStatus: action.status,
             };
             return {...state, ...changes};
+
         case 'getTeamNameAction':
             changes = {
                 teamRoomName: action.getTeamName,

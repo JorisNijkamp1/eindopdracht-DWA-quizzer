@@ -12,7 +12,7 @@ require('./database/model/games');
 const Games = mongoose.model("Games");
 
 const app = express();
-
+ 
 // needed to make all requests from client work with this server.
 app.use(cors({origin: true, credentials: true}));
 app.options("*", cors({origin: true, credentials: true}));

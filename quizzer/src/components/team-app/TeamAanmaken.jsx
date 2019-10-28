@@ -176,11 +176,13 @@ class TeamAanmakenUI extends React.Component {
                     <Col xs={{span: 12}} md={{span: 12}}>
                         <h1 className="text-center display-1">Quizzer Night</h1>
                     </Col>
-                    <Alert className={"h-25 d-inline-block"} variant="success">
-                        <Alert.Heading className={"text-center"}>{this.props.teamRoomName} is
+
+                    <Alert className={"h-25 d-inline-block w-100"} variant="success">
+                        <Alert.Heading className={"text-center"}><strong>{this.props.teamRoomName}</strong> is
                             geaccepteerd!!</Alert.Heading>
-                        <p>
-                            Wacht totdat de Quizz Master van {this.props.gameRoomName} het spel gaat starten!
+                        <p className={"text-center"}>
+                            Wacht totdat de Quizz Master van <strong>{this.props.gameRoomName}</strong> het spel gaat
+                            starten!
                         </p>
                     </Alert>
                 </Row>
