@@ -1,27 +1,65 @@
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import Nav from "react-bootstrap/Nav";
 import React from "react";
-import Container from "react-bootstrap/Container";
 import {Link} from "react-router-dom";
 
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {faUser, faUsers, faDesktop} from '@fortawesome/free-solid-svg-icons'
+
+
 class GameMenu extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            menuClass: '',
+        };
+    }
+
+    toggleClass() {
+        if (this.state.menuClass === 'close') {
+            return this.setState({
+                menuClass: ''
+            })
+        } else {
+            return this.setState({
+                menuClass: 'close'
+            })
+        }
+    };
+
     render() {
         return (
-            <Container>
-                <Row className="min-vh-100">
-                    <Col md={{span: 8, offset: 2}}>
-                        <h1 className="text-center display-3">Quizzer Night</h1>
-                    </Col>
-                    <Col md={{span: 4, offset: 4}}>
-                        <Nav defaultActiveKey="/home" className="flex-column text-center justify-content-center">
-                            <Link to="/quiz-master" className="btn btn-outline-primary">Quiz master</Link>
-                            <Link to="/new-team" className="btn btn-outline-success">Team</Link>
-                            <Link to="/scorebord" className="btn btn-outline-info">Scoreboard</Link>
-                        </Nav>
-                    </Col>
-                </Row>
-            </Container>
+            <div>
+                <div className={`base ${this.state.menuClass}`} onClick={() => {
+                    this.toggleClass()
+                }}>
+                    <div className="menu">
+                        <div className="icon">
+                            <div className="bar"></div>
+                        </div>
+                    </div>
+                    <div className="icons">
+                        <FontAwesomeIcon icon={faUser} aria-hidden="true"/>
+                        <FontAwesomeIcon icon={faUsers} aria-hidden="true"/>
+                        <FontAwesomeIcon icon={faDesktop} aria-hidden="true"/>
+                    </div>
+                    <div className="section">
+                        <div className="cover1">
+                            <div className="cover2">
+                                <Link to="/new-team" className="content"></Link>
+                            </div>
+                        </div>
+                    </div>
+                    <Link to="/quiz-master" className="section-static top"></Link>
+                    <Link to="/scorebord" className="section-static bottom"></Link>
+                </div>
+                <div className="h-100 row align-items-center vh-100">
+                    <h1 className="col-12 text-center display-2" style={{color: "white"}}>
+                        <b>Pub Game</b>
+                        <br/>
+                        <span className="display-3">Quizzer Night</span>
+                    </h1>
+                </div>
+            </div>
         )
     }
 }

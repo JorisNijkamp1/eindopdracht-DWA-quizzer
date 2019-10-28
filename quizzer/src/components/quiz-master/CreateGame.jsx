@@ -12,6 +12,7 @@ import Button from "react-bootstrap/Button";
 import {Link} from "react-router-dom";
 import {TeamsBeheren} from "./TeamsBeheren";
 import {openWebSocket} from "../../websocket";
+import Card from "react-bootstrap/Card";
 
 class CreateGameUI extends React.Component {
     constructor(props) {
@@ -73,21 +74,26 @@ class CreateGameUI extends React.Component {
                     </Col>
                     <Col md={{span: 8, offset: 2}} className="h-100">
                         <Form onSubmit={this.handleSubmit}>
-                            <Form.Group controlId="exampleForm.ControlInput1">
-                                <Form.Label>Vul hier de game room naam in</Form.Label>
-                                <Form.Control value={this.state.gameRoomName}
-                                              onChange={this.onChangeGameRoomName}
-                                              type="text"
-                                              placeholder="Game room naam"
-                                              className={this.errorMessage()}
-                                              autoComplete="off"
-                                              required/>
-                                <div className="invalid-feedback">Deze gameroom bestaat al!</div>
-                            </Form.Group>
-                            <Button variant="primary" type="submit">
-                                Spel aanmaken
-                            </Button>
-                            <Link to="/" className="btn btn-link">Annuleren</Link>
+                            <Card bg="dark" border="danger" text="white">
+                                <Card.Header>Maak een nieuwe Quizzer aan</Card.Header>
+                                <Card.Body>
+                                    <Form.Group>
+                                        <Form.Label>Vul hier de game room naam in</Form.Label>
+                                        <Form.Control value={this.state.gameRoomName}
+                                                      onChange={this.onChangeGameRoomName}
+                                                      type="text"
+                                                      placeholder="Game room naam"
+                                                      className={this.errorMessage()}
+                                                      autoComplete="off"
+                                                      required/>
+                                        <div className="invalid-feedback">Deze game room naam is al bezet <span role={"img"} aria-label={""}>😢</span></div>
+                                    </Form.Group>
+                                    <Button variant="danger" type="submit">
+                                        Spel aanmaken
+                                    </Button>
+                                    <Link to="/" className="btn btn-link">Annuleren</Link>
+                                </Card.Body>
+                            </Card>
                         </Form>
                     </Col>
                 </Row>

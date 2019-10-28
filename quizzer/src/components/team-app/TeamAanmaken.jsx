@@ -19,7 +19,7 @@ import 'react-notifications-component/dist/theme.css'
 import {store} from 'react-notifications-component';
 import 'react-notifications-component/dist/theme.css';
 import TeamCategory from "./TeamCategory";
-import TeamQuestions from "./TeamQuestions";
+import Card from "react-bootstrap/Card";
 
 class TeamAanmakenUI extends React.Component {
 
@@ -139,30 +139,41 @@ class TeamAanmakenUI extends React.Component {
                         <h1 className="text-center display-3">Quizzer Night</h1>
                     </Col>
                     <Col md={{span: 8, offset: 2}} className="h-100">
-                        <Form onSubmit={this.handleSubmit}>
-                            <Form.Group controlId="exampleForm.ControlInput1">
-                                <Form.Label>Vul hier de game room naam in</Form.Label>
-                                <Form.Control type="text"
-                                              value={this.state.gameRoomName}
-                                              onChange={this.onChangeGameRoomName}
-                                              className={this.gameRoomError()}
-                                              placeholder="Game room naam"
-                                              autoComplete="off"/>
-                                <div className="invalid-feedback">Deze gameroom bestaat niet!</div>
-                            </Form.Group>
-                            <Form.Group controlId="exampleForm.ControlInput1">
-                                <Form.Label>Vul hier uw team naam in.</Form.Label>
-                                <Form.Control type="text"
-                                              value={this.state.teamName}
-                                              onChange={this.onChangeTeamName}
-                                              className={this.teamNameError()}
-                                              placeholder="team naam"
-                                              autoComplete="off"/>
-                                <div className="invalid-feedback">Deze teamnaam bestaat al!</div>
-                            </Form.Group>
-                            <Button variant="primary" type="submit">Bevestigen</Button>
-                            <Link to="/" className="btn btn-link">Annuleren</Link>
-                        </Form>
+                        <Card bg="dark" border="danger" text="white">
+                            <Card.Header>Join een bestaande Quizzer</Card.Header>
+                            <Card.Body>
+                                <Form onSubmit={this.handleSubmit}>
+                                    <Form.Group>
+                                        <Form.Label>Vul hier een bestaande game room in</Form.Label>
+                                        <Form.Control type="text"
+                                                      value={this.state.gameRoomName}
+                                                      onChange={this.onChangeGameRoomName}
+                                                      className={this.gameRoomError()}
+                                                      placeholder="Game room naam"
+                                                      autoComplete="off"/>
+                                        <div className="invalid-feedback">
+                                            Huh, deze game room bestaat niet
+                                            <span role={"img"} aria-label={""}>😨</span>
+                                        </div>
+                                    </Form.Group>
+                                    <Form.Group>
+                                        <Form.Label>Vul hier uw team naam in.</Form.Label>
+                                        <Form.Control type="text"
+                                                      value={this.state.teamName}
+                                                      onChange={this.onChangeTeamName}
+                                                      className={this.teamNameError()}
+                                                      placeholder="team naam"
+                                                      autoComplete="off"/>
+                                        <div className="invalid-feedback">
+                                            Huh, deze team naam is bezet
+                                            <span role={"img"} aria-label={""}>😪</span>
+                                        </div>
+                                    </Form.Group>
+                                    <Button variant="danger" type="submit">Bevestigen</Button>
+                                    <Link to="/" className="btn btn-link">Annuleren</Link>
+                                </Form>
+                            </Card.Body>
+                        </Card>
                     </Col>
                 </Row>
             </Container>

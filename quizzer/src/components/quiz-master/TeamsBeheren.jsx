@@ -1,15 +1,12 @@
 import React from "react";
 import * as ReactRedux from "react-redux";
-import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Button from "react-bootstrap/Button";
 import {Card} from "react-bootstrap";
-import {getGameRoomTeamsAction} from "../../action-reducers/createGame-actionReducer";
 import {acceptTeam, deleteTeam, startGame} from "../../websocket";
 import Badge from "react-bootstrap/Badge";
 import {Categorieen} from "./Categorieen";
-import TeamCategory from "../team-app/TeamCategory";
 import {getGameNameAction} from "../../action-reducers/createTeam-actionReducer";
 
 class TeamsBeherenUI extends React.Component {
@@ -45,7 +42,7 @@ class TeamsBeherenUI extends React.Component {
                     }
 
                     return (
-                        <Col key={teamName['_id']} md={{span: 6}}>
+                        <Col>
                             <Card>
                                 <Card.Body>
                                     <Card.Title className="text-center">{teamName['_id']}</Card.Title>
@@ -80,38 +77,46 @@ class TeamsBeherenUI extends React.Component {
     checkGameStatus() {
         if (this.props.currentGameStatus === 'choose_categories') {
             return <Categorieen/>
-        }else {
+        } else {
             return (
-                <Container>
-                    <Row className="min-vh-100">
-                        <Col md={{span: 8, offset: 2}}>
-                            <h1 className="text-center display-3">Quizzer Night</h1>
-                            <h3 className="text-center">Welkom Quiz master!</h3>
-                            <h5 className={"text-center"}>
-                                <b>Gameroom naam:</b>
-                                <br/>
-                                <u>
-                                    {this.props.gameRoom}
-                                </u>
-                            </h5>
-                            <div className={"justify-content-center align-items-center"}>
-                                <div className="row h-100 justify-content-center align-items-center">
+                <div className="container-fluid px-md-5">
+                    <div className="row py-5 text-white">
+                        <div className="col-lg-9 mx-auto text-center">
+                            <h1 className="display-4">Quizzer Night</h1>
+                            <p className="lead mb-0">Dit is het quiz master paneel</p>
+                        </div>
+                    </div>
+
+                    <div className="rounded">
+                        <div className="row">
+                            <div className="col-lg-4 mb-4 mb-lg-0">
+                                <div className="nav flex-column bg-white shadow-sm font-italic rounded p-3">
+                                    <h3 className={"text-center"}>Quiz info</h3>
+                                    <hr/>
+                                    <p><b>Gameroom naam:</b> {this.props.gameRoom}</p>
                                     {this.startGameButton()}
                                 </div>
                             </div>
-                        </Col>
-                        <Col className={"text-center"}>
 
-                        </Col>
-                        {this.getTeams()}
-                    </Row>
-                </Container>
+                            <div className="col-lg-8 mb-5">
+                                <div className="p-5 bg-white d-flex align-items-center shadow-sm rounded h-100">
+                                    <div className="demo-content">
+                                        <p className="lead font-italic"><b>- Teams</b></p>
+                                        <Row>
+                                            {this.getTeams()}
+                                        </Row>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             )
         }
     }
 
     render() {
-        return this.checkGameStatus()
+        return this.checkGameStatus();
     }
 }
 
