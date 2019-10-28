@@ -5,7 +5,12 @@ import Row from "react-bootstrap/Row";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Alert from "react-bootstrap/Alert";
-import {createGameRoomStatusAction, createTeamNameStatusAction} from "../../action-reducers/createTeam-actionReducer";
+import {
+    createGameRoomStatusAction,
+    createTeamNameStatusAction,
+    getTeamNameAction,
+    getGameNameAction
+} from "../../action-reducers/createTeam-actionReducer";
 import * as ReactRedux from "react-redux";
 import {openWebSocket, sendNewTeamMSG} from "../../websocket";
 import {PropagateLoader} from 'react-spinners';
@@ -78,6 +83,8 @@ class TeamAanmakenUI extends React.Component {
                         this.props.doChangeGameRoomStatus(data.gameRoomAccepted);
                         if (data.teamNameStatus === 'pending') {
                             this.props.doChangeTeamNameStatus(data.teamNameStatus);
+                            this.props.doChangeTeamName(data.teamName);
+                            this.props.doChangeGameRoom(data.gameRoomName);
                             openWebSocket();    //open websocket connection
                             sendNewTeamMSG();       //send message createTeam
                         } else if (data.teamNameStatus === 'error') {
@@ -170,22 +177,23 @@ class TeamAanmakenUI extends React.Component {
                         <h1 className="text-center display-1">Quizzer Night</h1>
                     </Col>
                     <Alert className={"h-25 d-inline-block"} variant="success">
-                        <Alert.Heading className={"text-center"}>Jullie team is geaccepteerd!!</Alert.Heading>
+                        <Alert.Heading className={"text-center"}>{this.props.teamRoomName} is
+                            geaccepteerd!!</Alert.Heading>
                         <p>
-                            Wacht totdat alle teams aangemeld zijn en de Quizz Master het spel gaat beginnnen!
+                            Wacht totdat de Quizz Master van {this.props.gameRoomName} het spel gaat starten!
                         </p>
                     </Alert>
                 </Row>
             </Container>
-
         )
     }
 
     checkTeamNameStatus() {
         if (this.props.teamNameStatus === 'pending') {
-            return this.loadingAnimation();
-        } else if (this.props.teamNameStatus === 'success') {
             return this.teamAccepted();
+            // return this.loadingAnimation();
+        } else if (this.props.teamNameStatus === 'success') {
+            // return this.teamAccepted();
         } else {
             return this.joinGameForm();
         }
@@ -199,7 +207,9 @@ class TeamAanmakenUI extends React.Component {
 function mapStateToProps(state) {
     return {
         gameRoomAccepted: state.createTeam.gameRoomAccepted,
-        teamNameStatus: state.createTeam.teamNameStatus
+        teamNameStatus: state.createTeam.teamNameStatus,
+        teamRoomName: state.createTeam.teamRoomName,
+        gameRoomName: state.createTeam.gameRoomName,
     }
 }
 
@@ -207,6 +217,8 @@ function mapDispatchToProps(dispatch) {
     return {
         doChangeGameRoomStatus: (gameRoomAccepted) => dispatch(createGameRoomStatusAction(gameRoomAccepted)),
         doChangeTeamNameStatus: (teamNameStatus) => dispatch(createTeamNameStatusAction(teamNameStatus)),
+        doChangeTeamName: (teamName) => dispatch(getTeamNameAction(teamName)),
+        doChangeGameRoom: (gameRoomName) => dispatch(getGameNameAction(gameRoomName))
     }
 }
 
