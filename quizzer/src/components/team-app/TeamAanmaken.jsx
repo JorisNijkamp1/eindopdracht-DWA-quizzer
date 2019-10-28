@@ -4,6 +4,7 @@ import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+import Alert from "react-bootstrap/Alert";
 import {createGameRoomStatusAction, createTeamNameStatusAction} from "../../action-reducers/createTeam-actionReducer";
 import * as ReactRedux from "react-redux";
 import {openWebSocket, sendNewTeamMSG} from "../../websocket";
@@ -101,6 +102,7 @@ class TeamAanmakenUI extends React.Component {
         }
     }
 
+    // Deze fucntie wordt in geladen als team status pending is
     loadingAnimation() {
         return (
             <Container>
@@ -120,6 +122,7 @@ class TeamAanmakenUI extends React.Component {
         )
     }
 
+    // Deze fucntie wordt in geladen als team status niet geset is
     joinGameForm() {
         return (
             <Container>
@@ -158,11 +161,31 @@ class TeamAanmakenUI extends React.Component {
         )
     }
 
+    // Deze fucntie wordt in geladen als team status success is
+    teamAccepted() {
+        return (
+            <Container>
+                <Row className="min-vh-100">
+                    <Col xs={{span: 12}} md={{span: 12}}>
+                        <h1 className="text-center display-1">Quizzer Night</h1>
+                    </Col>
+                    <Alert className={"h-25 d-inline-block"} variant="success">
+                        <Alert.Heading className={"text-center"}>Jullie team is geaccepteerd!!</Alert.Heading>
+                        <p>
+                            Wacht totdat alle teams aangemeld zijn en de Quizz Master het spel gaat beginnnen!
+                        </p>
+                    </Alert>
+                </Row>
+            </Container>
+
+        )
+    }
+
     checkTeamNameStatus() {
         if (this.props.teamNameStatus === 'pending') {
             return this.loadingAnimation();
         } else if (this.props.teamNameStatus === 'success') {
-            // do something
+            return this.teamAccepted();
         } else {
             return this.joinGameForm()
         }
