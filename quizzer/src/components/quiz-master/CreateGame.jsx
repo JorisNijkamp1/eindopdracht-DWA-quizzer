@@ -1,6 +1,9 @@
 import React from "react";
 import * as ReactRedux from 'react-redux';
-import {createGameStatusAction, createGameRoomAction} from '../../action-reducers/createGame-actionReducer';
+import {
+    createGameRoomAction,
+    createGameFormValidationAction
+} from '../../action-reducers/createGame-actionReducer';
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/Col";
@@ -45,18 +48,18 @@ class CreateGameUI extends React.Component {
             .then(response => response.json())
             .then(data => {
                     if (data.gameRoomNameAccepted === true) {
-                        this.props.doChangeStatus("success")
+                        this.props.doChangeGameFormValidation("success")
                         this.props.doChangeGameRoom(data.gameRoomName);
                         openWebSocket();
                     } else if (data.gameRoomNameAccepted === false) {
-                        this.props.doChangeStatus("error")
+                        this.props.doChangeGameFormValidation("error")
                     }
                 }
             );
     };
 
     errorMessage() {
-        if (this.props.status === "error") {
+        if (this.props.formValidation === "error") {
             return "is-invalid"
         }
     }
@@ -93,7 +96,7 @@ class CreateGameUI extends React.Component {
     }
 
     render() {
-        if (this.props.status === "success") {
+        if (this.props.formValidation === "success") {
             return <TeamsBeheren/>
         } else {
             return this.createGameForm()
@@ -103,14 +106,14 @@ class CreateGameUI extends React.Component {
 
 function mapStateToProps(state) {
     return {
-        status: state.createGame.status,
+        formValidation: state.createGame.formValidation,
         gameRoom: state.createGame.gameRoom,
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        doChangeStatus: (status) => dispatch(createGameStatusAction(status)),
+        doChangeGameFormValidation: (formValidation) => dispatch(createGameFormValidationAction(formValidation)),
         doChangeGameRoom: (gameRoom) => dispatch(createGameRoomAction(gameRoom)),
     }
 }

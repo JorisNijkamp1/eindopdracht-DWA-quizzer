@@ -194,7 +194,7 @@ export function startGame(gameRoom) {
             if (response.status !== 200) console.log("Er gaat iets fout" + response.status);
             response.json().then(data => {
                 if (data.success) {
-                    sendChooseCategoriesMSG(gameRoom)
+                    sendChooseCategoriesMSG()
                 }
             });
         }).catch(err => console.log(err))
@@ -204,10 +204,9 @@ export function startGame(gameRoom) {
 /*========================================
 | Websocket send TEAM ACCEPT
 */
-function sendChooseCategoriesMSG(gameRoom) {
+function sendChooseCategoriesMSG() {
     let message = {
         messageType: "CHOOSE CATEGORIES",
-        gameRoom: gameRoom
     };
 
     theSocket.sendJSON(message);

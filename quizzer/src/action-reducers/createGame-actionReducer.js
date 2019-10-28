@@ -3,10 +3,10 @@
 //---------------------------------------------------------------------
 
 // Action Creators:
-export function createGameStatusAction(status) {
+export function createGameFormValidationAction(formValidation) {
     return {
-        type: "createGameStatusAction",
-        status: status
+        type: "createGameFormValidationAction",
+        formValidation: formValidation
     };
 }
 
@@ -26,7 +26,7 @@ export function getGameRoomTeamsAction(gameRoomTeams) {
 
 // Reducer:
 const initialCreateGameState = {
-    status: false,
+    formValidation: false,
     gameRoom: null,
     gameRoomTeams: []
 };
@@ -34,9 +34,9 @@ const initialCreateGameState = {
 export function createGameReducer(state = initialCreateGameState, action) {
     let changes = null;
     switch (action.type) {
-        case 'createGameStatusAction':
+        case 'createGameFormValidationAction':
             changes = {
-                status: action.status,
+                formValidation: action.formValidation,
             };
             return {...state, ...changes};
 
