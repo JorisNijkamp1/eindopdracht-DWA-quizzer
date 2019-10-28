@@ -8,7 +8,6 @@ const http = require('http');
 const WebSocket = require('ws');
 
 mongoose.set('useCreateIndex', true);
-//Database model
 require('./database/model/games');
 const Games = mongoose.model("Games");
 
@@ -272,12 +271,14 @@ websocketServer.on('connection', (socket, req) => {
                 throw err
             }
 
+            /*====================================
+            | TO: QuizMaster
+            | Send NEW TEAM msg
+            */
             if (data.messageType === 'NEW TEAM') {
                 for (var key in players) {
                     if (players.hasOwnProperty(key)) {
                         if (players[key].quizMaster && players[key].gameRoomName === gameRoom) {
-                            console.log('You are a quizmaster')
-
                             players[key].send(JSON.stringify({
                                 messageType: "NEW TEAM",
                             }));
@@ -286,6 +287,10 @@ websocketServer.on('connection', (socket, req) => {
                 }
             }
 
+            /*====================================
+            | TO: Specific Team
+            | Send TEAM ACCEPTED msg
+            */
             if (data.messageType === 'TEAM ACCEPTED') {
                 let data = JSON.parse(message);
                 for (var key in players) {
@@ -299,6 +304,10 @@ websocketServer.on('connection', (socket, req) => {
                 }
             }
 
+            /*====================================
+            | TO: Specific Team
+            | Send TEAM DELETED msg
+            */
             if (data.messageType === 'TEAM DELETED') {
                 let data = JSON.parse(message);
                 for (var key in players) {

@@ -147,7 +147,7 @@ export function acceptTeam(gameRoom, teamName) {
             if (response.status !== 200) console.log("Er gaat iets fout" + response.status);
             response.json().then(data => {
                 if (data.success) {
-                    sendTeamAcceptMSG(teamName);
+                    getTeams().then(r => sendTeamAcceptMSG(teamName));
                 }
             });
         }).catch(err => console.log(err))

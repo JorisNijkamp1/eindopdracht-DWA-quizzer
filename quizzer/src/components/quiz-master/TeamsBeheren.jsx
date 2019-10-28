@@ -8,24 +8,48 @@ import {Link} from "react-router-dom";
 import {Card} from "react-bootstrap";
 import {getGameRoomTeamsAction} from "../../action-reducers/createGame-actionReducer";
 import {acceptTeam, deleteTeam} from "../../websocket";
+import Badge from "react-bootstrap/Badge";
 
 class TeamsBeherenUI extends React.Component {
 
     getTeams() {
         return (
             this.props.gameRoomTeams.map((teamName, i) => {
+
+                    let teamStatus;
+                    if (teamName['approved']) {
+                        teamStatus = (
+
+                            <div className="text-center">
+                                <Badge pill variant="success">
+                                    Geaccepteerd
+                                </Badge>
+                            </div>
+                        )
+                    } else {
+                        teamStatus = (
+                            <div>
+                                <Card.Text className="text-center">Team accepteren?</Card.Text>
+                                <Button variant="success" className={"float-left"} onClick={() => {
+                                    acceptTeam(this.props.gameRoom, teamName['_id'])
+                                }}>
+                                    Ja
+                                </Button>
+                                <Button variant="danger" className={"float-right"} onClick={() => {
+                                    deleteTeam(this.props.gameRoom, teamName['_id'])
+                                }}>
+                                    Nee
+                                </Button>
+                            </div>
+                        )
+                    }
+
                     return (
                         <Col key={teamName['_id']} md={{span: 6}}>
                             <Card>
                                 <Card.Body>
                                     <Card.Title className="text-center">{teamName['_id']}</Card.Title>
-                                    <Card.Text className="text-center">Team accepteren?</Card.Text>
-                                    <Button variant="success" className={"float-left"} onClick={() => { acceptTeam(this.props.gameRoom, teamName['_id']) }}>
-                                        Ja
-                                    </Button>
-                                    <Button variant="danger" className={"float-right"} onClick={() => { deleteTeam(this.props.gameRoom, teamName['_id']) }}>
-                                        Nee
-                                    </Button>
+                                    {teamStatus}
                                 </Card.Body>
                             </Card>
                         </Col>
