@@ -12,7 +12,7 @@ require('./database/model/games');
 const Games = mongoose.model("Games");
 
 const app = express();
- 
+
 // needed to make all requests from client work with this server.
 app.use(cors({origin: true, credentials: true}));
 app.options("*", cors({origin: true, credentials: true}));
@@ -33,6 +33,29 @@ const httpServer = http.createServer(app);
 
 // Create the Web socket server.
 const websocketServer = new WebSocket.Server({noServer: true});
+
+/*====================================
+| JOIN GAME WITH SCOREBORD
+*/
+
+app.get('/api/games/:gameRoom/scorebord', async (req, res) => {
+    const gameRoomName = req.params.gameRoom;
+
+    //Get current game
+    let currentGame = await Games.findOne({_id: gameRoomName});
+
+    //Check if game exits
+    if (currentGame) {
+        await res.json({
+            success: true,
+            gameRoomName: gameRoomName,
+        });
+    } else {
+        await res.json({
+            success: false,
+        });
+    }
+});
 
 /*====================================
 | GET ALL TEAMS FROM A GAMEROOM

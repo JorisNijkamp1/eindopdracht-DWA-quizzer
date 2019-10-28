@@ -1,6 +1,7 @@
 import {combineReducers} from 'redux';
 import {createGameReducer} from "../createGame-actionReducer";
 import {createTeamReducer} from "../createTeam-actionReducer";
+import {createScorebordReducer} from "../createScorebord-actionReducer";
 
 //===========================================================================
 //  THE REDUX APPLICATION STORE
@@ -11,6 +12,7 @@ import {createTeamReducer} from "../createTeam-actionReducer";
 const allReducers = combineReducers({
     createGame: createGameReducer,
     createTeam: createTeamReducer,
+    createScorebord: createScorebordReducer
 });
 
 export default allReducers
