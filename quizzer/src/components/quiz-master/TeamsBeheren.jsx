@@ -9,6 +9,8 @@ import {getGameRoomTeamsAction} from "../../action-reducers/createGame-actionRed
 import {acceptTeam, deleteTeam, startGame} from "../../websocket";
 import Badge from "react-bootstrap/Badge";
 import Categorieen from "./Categorieen";
+import TeamCategory from "../team-app/TeamCategory";
+import {getGameNameAction} from "../../action-reducers/createTeam-actionReducer";
 
 class TeamsBeherenUI extends React.Component {
 
@@ -65,8 +67,7 @@ class TeamsBeherenUI extends React.Component {
                     button = (
                         <Button variant="outline-success" type="submit" onClick={() => {
                             startGame(this.props.gameRoom)
-                        }
-                        }>
+                        }}>
                             Start quiz
                         </Button>
                     )
@@ -76,46 +77,55 @@ class TeamsBeherenUI extends React.Component {
         return button
     }
 
-    render() {
-        return (
-            <Container>
-                <Row className="min-vh-100">
-                    <Col md={{span: 8, offset: 2}}>
-                        <h1 className="text-center display-3">Quizzer Night</h1>
-                        <h3 className="text-center">Welkom Quiz master!</h3>
-                        <h5 className={"text-center"}>
-                            <b>Gameroom naam:</b>
-                            <br/>
-                            <u>
-                                {this.props.gameRoom}
-                            </u>
-                        </h5>
-                        <div className={"justify-content-center align-items-center"}>
-                            <div className="row h-100 justify-content-center align-items-center">
-                                {this.startGameButton()}
+    checkGameStatus() {
+        if (this.props.currentGameStatus === 'choose_categories') {
+            return <Categorieen/>
+        }else {
+            return (
+                <Container>
+                    <Row className="min-vh-100">
+                        <Col md={{span: 8, offset: 2}}>
+                            <h1 className="text-center display-3">Quizzer Night</h1>
+                            <h3 className="text-center">Welkom Quiz master!</h3>
+                            <h5 className={"text-center"}>
+                                <b>Gameroom naam:</b>
+                                <br/>
+                                <u>
+                                    {this.props.gameRoom}
+                                </u>
+                            </h5>
+                            <div className={"justify-content-center align-items-center"}>
+                                <div className="row h-100 justify-content-center align-items-center">
+                                    {this.startGameButton()}
+                                </div>
                             </div>
-                        </div>
-                    </Col>
-                    <Col className={"text-center"}>
+                        </Col>
+                        <Col className={"text-center"}>
 
-                    </Col>
-                    {this.getTeams()}
-                </Row>
-            </Container>
-        )
+                        </Col>
+                        {this.getTeams()}
+                    </Row>
+                </Container>
+            )
+        }
+    }
+
+    render() {
+        return this.checkGameStatus()
     }
 }
 
 function mapStateToProps(state) {
     return {
         gameRoom: state.createGame.gameRoom,
-        gameRoomTeams: state.createGame.gameRoomTeams
+        gameRoomTeams: state.createGame.gameRoomTeams,
+        currentGameStatus: state.createGame.currentGameStatus
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        gameRoomTeamsActionRoom: (gameRoomTeams) => dispatch(getGameRoomTeamsAction(gameRoomTeams)),
+        doChangeGameRoom: (gameRoomName) => dispatch(getGameNameAction(gameRoomName))
     }
 }
 
