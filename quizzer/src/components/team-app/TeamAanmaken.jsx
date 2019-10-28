@@ -6,9 +6,13 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import {createGameRoomStatusAction, createTeamNameStatusAction} from "../../action-reducers/createTeam-actionReducer";
 import * as ReactRedux from "react-redux";
-import {createTeam, openWebSocket} from "../../websocket";
+import {openWebSocket, sendNewTeamMSG} from "../../websocket";
 import {PropagateLoader} from 'react-spinners';
 import {Link} from "react-router-dom";
+import 'react-notifications-component/dist/theme.css'
+import {store} from 'react-notifications-component';
+import 'react-notifications-component/dist/theme.css';
+
 
 class TeamAanmakenUI extends React.Component {
 
@@ -18,6 +22,22 @@ class TeamAanmakenUI extends React.Component {
             gameRoomName: '',
             teamName: '',
         };
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (this.props.teamNameStatus === 'deleted') {
+            store.addNotification({
+                title: 'Quizzer',
+                message: 'Je bent uit de game gekickt 😂',
+                type: 'danger',                          // 'default', 'success', 'info', 'warning'
+                container: 'top-right',                  // where to position the notifications
+                animationIn: ["animated", "fadeIn"],     // animate.css classes that's applied
+                animationOut: ["animated", "fadeOut"],   // animate.css classes that's applied
+                dismiss: {
+                    duration: 3000
+                }
+            })
+        }
     }
 
     onChangeGameRoomName = (e) => {
@@ -58,7 +78,7 @@ class TeamAanmakenUI extends React.Component {
                         if (data.teamNameStatus === 'pending') {
                             this.props.doChangeTeamNameStatus(data.teamNameStatus);
                             openWebSocket();    //open websocket connection
-                            createTeam();       //send message createTeam
+                            sendNewTeamMSG();       //send message createTeam
                         } else if (data.teamNameStatus === 'error') {
                             this.props.doChangeTeamNameStatus(data.teamNameStatus)
                         }
@@ -79,6 +99,25 @@ class TeamAanmakenUI extends React.Component {
         if (this.props.teamNameStatus === 'error') {
             return "is-invalid"
         }
+    }
+
+    loadingAnimation() {
+        return (
+            <Container>
+                <Row className="min-vh-100">
+                    <Col xs={{span: 12}}>
+                        <div className="d-flex align-items-center justify-content-center h-100">
+                            <PropagateLoader
+                                sizeUnit={"px"}
+                                size={30}
+                                color={'#123abc'}
+                                loading="true"
+                            />
+                        </div>
+                    </Col>
+                </Row>
+            </Container>
+        )
     }
 
     joinGameForm() {
@@ -121,23 +160,9 @@ class TeamAanmakenUI extends React.Component {
 
     checkTeamNameStatus() {
         if (this.props.teamNameStatus === 'pending') {
-            console.log('Team verstuurd naar Quizmaster!');
-            return (
-                <Container>
-                    <Row className="min-vh-100">
-                        <Col xs={{span: 12}}>
-                            <div className="d-flex align-items-center justify-content-center h-100">
-                                <PropagateLoader
-                                    sizeUnit={"px"}
-                                    size={30}
-                                    color={'#123abc'}
-                                    loading="true"
-                                />
-                            </div>
-                        </Col>
-                    </Row>
-                </Container>
-            )
+            return this.loadingAnimation();
+        } else if (this.props.teamNameStatus === 'success') {
+            // do something
         } else {
             return this.joinGameForm()
         }

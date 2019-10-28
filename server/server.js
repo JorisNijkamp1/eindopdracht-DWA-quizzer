@@ -216,6 +216,7 @@ websocketServer.on('connection', (socket, req) => {
 
     const gameRoom = req.session.gameRoomName;
     const quizMaster = req.session.quizMaster;
+    const teamName = req.session.teamName;
 
     totalPlayers = totalPlayers + 1;
     socket.id = totalPlayers;
@@ -224,6 +225,7 @@ websocketServer.on('connection', (socket, req) => {
     if (gameRoom) {
         players[socket.id] = socket;
         players[socket.id].gameRoomName = gameRoom;
+        players[socket.id].teamName = teamName;
 
         //console.log(players[socket.id].gameRoomName);
 
@@ -259,7 +261,16 @@ websocketServer.on('connection', (socket, req) => {
             }
 
             if (data.messageType === 'TEAM DELETED') {
-                console.log('TEAM DELETED SERVER MSG')
+                let data = JSON.parse(message);
+                for (var key in players) {
+                    if (players.hasOwnProperty(key)) {
+                        if (!players[key].quizMaster && players[key].gameRoomName === gameRoom && players[key].teamName === data.teamName) {
+                            players[key].send(JSON.stringify({
+                                messageType: "TEAM DELETED",
+                            }));
+                        }
+                    }
+                }
             }
 
             req.session.save()

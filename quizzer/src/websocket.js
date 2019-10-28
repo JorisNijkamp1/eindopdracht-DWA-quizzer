@@ -1,6 +1,9 @@
 import {theStore} from './index'
 import {getGameRoomTeamsAction} from "./action-reducers/createGame-actionReducer";
+import {createTeamNameStatusAction} from "./action-reducers/createTeam-actionReducer"
 
+const port = 3001;
+const serverHostname = `${window.location.hostname}:${port}`;
 let theSocket;
 
 export function openWebSocket() {
@@ -10,8 +13,7 @@ export function openWebSocket() {
         theSocket.onclose = null;
         theSocket.close();
     }
-    console.log("Opening socket for", `ws://localhost:3001`);
-    theSocket = new WebSocket(`ws://localhost:3001`);
+    theSocket = new WebSocket(`ws://${serverHostname}`);
 
     // this method is not in the official API, but it's very useful.
     theSocket.sendJSON = function (data) {
@@ -23,12 +25,11 @@ export function openWebSocket() {
 
         switch (message.messageType) {
             case "NEW TEAM":
-                console.log('Nieuw team aangemaakt');
                 getTeams()
                 break;
 
             case "TEAM DELETED":
-                console.log('JE BENT VERWIJDERD');
+                theStore.dispatch(createTeamNameStatusAction('deleted'))
                 break;
 
             default:
@@ -39,7 +40,10 @@ export function openWebSocket() {
     return theSocket;
 }
 
-export function createTeam() {
+/*========================================
+| Websocket send NEW TEAM
+*/
+export function sendNewTeamMSG() {
     theSocket.onopen = function (eventInfo) {
         let message = {
             messageType: "NEW TEAM",
@@ -66,22 +70,24 @@ export function deleteTeam(gameRoom, teamName) {
             if (response.status !== 200) console.log("Er gaat iets fout" + response.status);
             response.json().then(data => {
                 if (data.success) {
-                    getTeams();
-                    teamDeleted();
+                    getTeams().then(r => sendTeamDeletedMSG(teamName));
+
                 }
             });
         }).catch(err => console.log(err))
     }
 }
 
-function teamDeleted() {
-    theSocket.onopen = function (eventInfo) {
+/*========================================
+| Websocket send TEAM DELETED
+*/
+function sendTeamDeletedMSG(teamName) {
         let message = {
             messageType: "TEAM DELETED",
+            teamName: teamName
         };
 
         theSocket.sendJSON(message);
-    };
 }
 
 function getTeams() {
