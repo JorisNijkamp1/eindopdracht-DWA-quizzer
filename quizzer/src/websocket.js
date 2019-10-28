@@ -25,15 +25,18 @@ export function openWebSocket() {
 
         switch (message.messageType) {
             case "NEW TEAM":
-                getTeams()
+                getTeams();
+                console.log('NEW TEAM');
                 break;
 
             case "TEAM DELETED":
-                theStore.dispatch(createTeamNameStatusAction('deleted'))
+                theStore.dispatch(createTeamNameStatusAction('deleted'));
+                console.log('TEAM DELETED');
                 break;
 
             case "TEAM ACCEPTED":
-                theStore.dispatch(createTeamNameStatusAction('success'))
+                theStore.dispatch(createTeamNameStatusAction('success'));
+                console.log('TEAM ACCEPTED');
                 break;
 
             default:
