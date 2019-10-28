@@ -381,7 +381,6 @@ websocketServer.on('connection', (socket, req) => {
             | Send message that the QuizMaster is choosing categories
             */
             if (data.messageType === 'CHOOSE CATEGORIES') {
-                let data = JSON.parse(message);
                 for (var key in players) {
                     if (players.hasOwnProperty(key)) {
                         if (!players[key].quizMaster && players[key].gameRoomName === gameRoom) {

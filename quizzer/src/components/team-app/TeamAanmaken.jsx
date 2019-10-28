@@ -176,7 +176,6 @@ class TeamAanmakenUI extends React.Component {
                     <Col xs={{span: 12}} md={{span: 12}}>
                         <h1 className="text-center display-1">Quizzer Night</h1>
                     </Col>
-
                     <Alert className={"h-25 d-inline-block w-100"} variant="success">
                         <Alert.Heading className={"text-center"}><strong>{this.props.teamRoomName}</strong> is
                             geaccepteerd!!</Alert.Heading>
