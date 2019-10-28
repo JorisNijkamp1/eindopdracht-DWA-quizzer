@@ -6,7 +6,6 @@ import Categorieen from "./components/quiz-master/Categorieen";
 import {TeamAanmaken} from "./components/team-app/TeamAanmaken";
 import ScorebordAntwoorden from "./components/score-bord/ScorebordAntwoorden";
 import {ScorebordJoinTeam} from "./components/score-bord/ScorebordJoinTeam";
-import ScorebordOverzichtScore from "./components/score-bord/ScorebordOverzichtScore";
 import Vragen from "./components/quiz-master/Vragen";
 import VragenBeheren from "./components/quiz-master/VragenBeheren";
 import EindRonde from "./components/quiz-master/EindRonde";
@@ -52,11 +51,8 @@ class App extends React.Component {
                         <TeamAanmaken/>
                     </Route>
                     /* SCORE BORD PATHS DIT MOET DENK IK NOG ANDERS SAMEN EMT AARON NAAR KIJKEN */
-                    <Route path="/scorebord-join-team">
+                    <Route path="/scorebord">
                         <ScorebordJoinTeam/>
-                    </Route>
-                    <Route path="/scorebord-overzicht">
-                        <ScorebordOverzichtScore/>
                     </Route>
                     <Route path="/scorebord-antwoorden">
                         <ScorebordAntwoorden/>

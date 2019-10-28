@@ -4,7 +4,6 @@ import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Button from "react-bootstrap/Button";
-import {Link} from "react-router-dom";
 import {Card} from "react-bootstrap";
 import {getGameRoomTeamsAction} from "../../action-reducers/createGame-actionReducer";
 import {acceptTeam, deleteTeam, startGame} from "../../websocket";
