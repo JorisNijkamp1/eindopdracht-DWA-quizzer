@@ -127,6 +127,7 @@ app.post('/api/game', async (req, res) => {
         //create gameRoomName
         var newGame = new Games({
             _id: gameRoomName,
+            game_status: 'lobby'
         });
 
         //save gameRoomName document to MongoDB
