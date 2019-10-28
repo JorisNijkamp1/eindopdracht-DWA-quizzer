@@ -1,6 +1,7 @@
 import {theStore} from './index'
 import {getGameRoomTeamsAction} from "./action-reducers/createGame-actionReducer";
 import {createTeamNameStatusAction} from "./action-reducers/createTeam-actionReducer"
+import {createCurrentGameStatusAction} from "./action-reducers/createGame-actionReducer";
 
 const port = 3001;
 const serverHostname = `${window.location.hostname}:${port}`;
@@ -40,9 +41,14 @@ export function openWebSocket() {
                 break;
 
             case "CHOOSE CATEGORIES":
-                //Do something
+                theStore.dispatch(createCurrentGameStatusAction('choose_categories'));
                 console.log('CHOOSE CATEGORIES');
                 break;
+
+            // case "CHOOSE QUESTIONS":
+            //     theStore.dispatch(createCurrentGameStatusAction('choose_questions'));
+            //     console.log('CHOOSE QUESTIONS');
+            //     break;
 
             default:
                 console.log("Unknown messageType:", message);

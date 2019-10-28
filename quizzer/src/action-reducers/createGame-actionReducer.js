@@ -24,11 +24,19 @@ export function getGameRoomTeamsAction(gameRoomTeams) {
     };
 }
 
+export function createCurrentGameStatusAction(currentGameStatus) {
+    return {
+        type: 'createCurrentGameStatusAction',
+        currentGameStatus: currentGameStatus
+    }
+}
+
 // Reducer:
 const initialCreateGameState = {
     formValidation: false,
     gameRoom: null,
-    gameRoomTeams: []
+    gameRoomTeams: [],
+    currentGameStatus: "sjon"
 };
 
 export function createGameReducer(state = initialCreateGameState, action) {
@@ -49,6 +57,12 @@ export function createGameReducer(state = initialCreateGameState, action) {
         case 'getGameRoomTeamsAction':
             changes = {
                 gameRoomTeams: action.gameRoomTeams,
+            };
+            return {...state, ...changes};
+
+        case 'createCurrentGameStatusAction':
+            changes = {
+                currentGameStatus: action.currentGameStatus,
             };
             return {...state, ...changes};
 

@@ -18,7 +18,8 @@ import {Link} from "react-router-dom";
 import 'react-notifications-component/dist/theme.css'
 import {store} from 'react-notifications-component';
 import 'react-notifications-component/dist/theme.css';
-
+import TeamCategory from "./TeamCategory";
+import TeamQuestions from "./TeamQuestions";
 
 class TeamAanmakenUI extends React.Component {
 
@@ -190,6 +191,13 @@ class TeamAanmakenUI extends React.Component {
     }
 
     checkTeamNameStatus() {
+        if (this.props.currentGameStatus === 'choose_categories' && this.props.teamNameStatus === 'success') {
+            return <TeamCategory/>
+        }
+        // if (this.props.currentGameStatus === 'choose_questions' && this.props.teamNameStatus === 'success') {
+        //     return <TeamQuestions/>
+        // }
+
         if (this.props.teamNameStatus === 'pending') {
             return this.loadingAnimation();
         } else if (this.props.teamNameStatus === 'success') {
@@ -200,7 +208,7 @@ class TeamAanmakenUI extends React.Component {
     }
 
     render() {
-        return this.checkTeamNameStatus()
+        return this.checkTeamNameStatus();
     }
 }
 
@@ -210,6 +218,7 @@ function mapStateToProps(state) {
         teamNameStatus: state.createTeam.teamNameStatus,
         teamRoomName: state.createTeam.teamRoomName,
         gameRoomName: state.createTeam.gameRoomName,
+        currentGameStatus: state.createGame.currentGameStatus
     }
 }
 

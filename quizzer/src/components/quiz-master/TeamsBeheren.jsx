@@ -8,6 +8,7 @@ import {Card} from "react-bootstrap";
 import {getGameRoomTeamsAction} from "../../action-reducers/createGame-actionReducer";
 import {acceptTeam, deleteTeam, startGame} from "../../websocket";
 import Badge from "react-bootstrap/Badge";
+import Categorieen from "./Categorieen";
 
 class TeamsBeherenUI extends React.Component {
 
@@ -64,7 +65,8 @@ class TeamsBeherenUI extends React.Component {
                     button = (
                         <Button variant="outline-success" type="submit" onClick={() => {
                             startGame(this.props.gameRoom)
-                        }}>
+                        }
+                        }>
                             Start quiz
                         </Button>
                     )
