@@ -190,10 +190,9 @@ class TeamAanmakenUI extends React.Component {
 
     checkTeamNameStatus() {
         if (this.props.teamNameStatus === 'pending') {
-            return this.teamAccepted();
-            // return this.loadingAnimation();
+            return this.loadingAnimation();
         } else if (this.props.teamNameStatus === 'success') {
-            // return this.teamAccepted();
+            return this.teamAccepted();
         } else {
             return this.joinGameForm();
         }

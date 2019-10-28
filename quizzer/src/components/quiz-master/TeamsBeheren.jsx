@@ -15,11 +15,9 @@ class TeamsBeherenUI extends React.Component {
     getTeams() {
         return (
             this.props.gameRoomTeams.map((teamName, i) => {
-
                     let teamStatus;
                     if (teamName['approved']) {
                         teamStatus = (
-
                             <div className="text-center">
                                 <Badge pill variant="success">
                                     Geaccepteerd
@@ -59,6 +57,20 @@ class TeamsBeherenUI extends React.Component {
         )
     }
 
+    startGameButton() {
+        let button;
+        if (this.props.gameRoomTeams) {
+            button = (
+                <Link to="/categorieen">
+                    <Button variant="outline-success" type="submit">
+                        Start quiz
+                    </Button>
+                </Link>
+            )
+        }
+        return button
+    }
+
     render() {
         return (
             <Container>
@@ -75,11 +87,7 @@ class TeamsBeherenUI extends React.Component {
                         </h5>
                         <div className={"justify-content-center align-items-center"}>
                             <div className="row h-100 justify-content-center align-items-center">
-                                <Link to="/categorieen">
-                                    <Button variant="outline-success" type="submit">
-                                        Start quiz
-                                    </Button>
-                                </Link>
+                                {this.startGameButton()}
                             </div>
                         </div>
                     </Col>
