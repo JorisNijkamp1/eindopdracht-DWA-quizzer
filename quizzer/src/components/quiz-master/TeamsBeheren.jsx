@@ -59,7 +59,7 @@ class TeamsBeherenUI extends React.Component {
 
     startGameButton() {
         let button;
-        if (this.props.gameRoomTeams) {
+        if (this.props.gameRoomTeams.length > 0) {
             button = (
                 <Link to="/categorieen">
                     <Button variant="outline-success" type="submit">
