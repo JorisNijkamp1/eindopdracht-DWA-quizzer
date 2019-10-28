@@ -4,15 +4,59 @@ import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Form from "react-bootstrap/Form";
-import {
-    createGameRoomStatusAction,
-    createTeamNameStatusAction, getGameNameAction,
-    getTeamNameAction
-} from "../../action-reducers/createTeam-actionReducer";
+import {createScorebordStatusAction} from '../../action-reducers/createScorebord-actionReducer'
 import Button from "react-bootstrap/Button";
 
 class ScorebordJoinTeamUI extends React.Component {
 
+    constructor(props) {
+        super(props)
+        this.state = {
+            gameRoomName: '',
+        };
+    }
+
+    handleSubmit = e => {
+        e.preventDefault();
+        console.log(this.state.gameRoomName);
+
+        const url = `http://localhost:3001/api/games/${this.state.gameRoomName}/scorebord`;
+
+        const options = {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+            mode: 'cors'
+        };
+
+        fetch(url, options)
+            .then(response => response.json())
+            .then(data => {
+                    if (data.success) {
+                        // openWebSocket();
+                        console.log("De game bestaat");
+                        this.props.doChangeStatus("succes");
+                    } else {
+                        console.log("De game bestaat niet");
+                        this.props.doChangeStatus("error");
+                    }
+                }
+            );
+    };
+
+    errorMessage() {
+        if (this.props.status === "error") {
+            return "is-invalid"
+        }
+    }
+
+    onChangeGameRoomName = (e) => {
+        this.setState({
+            gameRoomName: e.target.value,
+        })
+    };
 
     render() {
         return (
@@ -21,13 +65,14 @@ class ScorebordJoinTeamUI extends React.Component {
                     <Col md={{span: 8, offset: 2}}>
                         <h1 className="text-center display-1">Quizzer Night</h1>
                     </Col>
-
                     <Col md={{span: 8, offset: 2}} className="h-100">
                         <Form onSubmit={this.handleSubmit}>
                             <Form.Group controlId="exampleForm.ControlInput1">
                                 <Form.Label>Vul hier de game room naam in van de game die je wilt zien!</Form.Label>
                                 <Form.Control type="text"
+                                              onChange={this.onChangeGameRoomName}
                                               placeholder="Game room naam"
+                                              className={this.errorMessage()}
                                               autoComplete="off"/>
                                 <div className="invalid-feedback">Deze gameroom bestaat niet!</div>
                             </Form.Group>
@@ -44,19 +89,13 @@ class ScorebordJoinTeamUI extends React.Component {
 
 function mapStateToProps(state) {
     return {
-        gameRoomAccepted: state.createTeam.gameRoomAccepted,
-        teamNameStatus: state.createTeam.teamNameStatus,
-        teamRoomName: state.createTeam.teamRoomName,
-        gameRoomName: state.createTeam.gameRoomName,
+        status: state.createScorebord.status,
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        doChangeGameRoomStatus: (gameRoomAccepted) => dispatch(createGameRoomStatusAction(gameRoomAccepted)),
-        doChangeTeamNameStatus: (teamNameStatus) => dispatch(createTeamNameStatusAction(teamNameStatus)),
-        doChangeTeamName: (teamName) => dispatch(getTeamNameAction(teamName)),
-        doChangeGameRoom: (gameRoomName) => dispatch(getGameNameAction(gameRoomName))
+        doChangeStatus: (status) => dispatch(createScorebordStatusAction(status))
     }
 }
 
