@@ -37,7 +37,6 @@ const websocketServer = new WebSocket.Server({noServer: true});
 /*====================================
 | JOIN GAME WITH SCOREBORD
 */
-
 app.get('/api/games/:gameRoom/scorebord', async (req, res) => {
     const gameRoomName = req.params.gameRoom;
 
@@ -243,34 +242,76 @@ app.post('/api/team', async (req, res) => {
 });
 
 /*====================================
-| CHOOSE QUESTIONS CATEGORIES FOR A NEW ROUND
+| START A NEW GAME (FROM LOBBY TOO CHOOSE_CATEGORY)
 */
 app.put('/api/games/:gameRoom', async (req, res) => {
     const gameRoomName = req.params.gameRoom;
 
-    //Get current game
-    let currentGame = await Games.findOne({_id: gameRoomName});
+    //Check of isset session gameRoomName & is quizMaster
+    if (req.session.gameRoomName === gameRoomName && req.session.quizMaster) {
 
-    console.log(currentGame)
+        //Get current game
+        let currentGame = await Games.findOne({_id: gameRoomName});
 
-    //Check if game exits
-    if (currentGame) {
+        //Check if game exits
+        if (currentGame) {
 
-        //Change current game status to choose_category
-        currentGame.game_status = 'choose_category';
+            //Change current game status to choose_category
+            currentGame.game_status = 'choose_category';
 
-        //Save to mongoDB
-        currentGame.save(function (err) {
-            if (err) return console.error(err);
-            res.json({
-                success: true,
+            //Save to mongoDB
+            currentGame.save(function (err) {
+                if (err) return console.error(err);
+                res.json({
+                    success: true,
+                });
             });
-        });
 
-    } else {
-        await res.json({
-            success: false,
-        });
+        } else {
+            await res.json({
+                success: false,
+            });
+        }
+    }
+});
+
+/*====================================
+| CREATE A NEW ROUND WITH QUESTIONS CATEGORIES
+*/
+app.post('/api/games/:gameRoom/ronde', async (req, res) => {
+    const gameRoomName = req.params.gameRoom;
+
+    //Check of isset session gameRoomName & is quizMaster
+    if (req.session.gameRoomName === gameRoomName && req.session.quizMaster) {
+        const roundCategories = req.body.roundCategories;
+
+        //Get current game
+        let currentGame = await Games.findOne({_id: gameRoomName});
+
+        //Check if game exits
+        if (currentGame) {
+
+            currentGame.rondes.push({
+                ronde_status: 'open',
+                categories: roundCategories
+            });
+
+            //Change current game status to choose_question
+            currentGame.game_status = 'choose_question';
+
+            //Save to mongoDB
+            currentGame.save(function (err) {
+                if (err) return console.error(err);
+                res.json({
+                    success: true,
+                });
+            });
+
+        } else {
+            await res.json({
+                success: false,
+            });
+        }
     }
 });
 
