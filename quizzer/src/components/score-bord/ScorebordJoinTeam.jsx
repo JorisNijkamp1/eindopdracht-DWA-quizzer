@@ -48,7 +48,7 @@ class ScorebordJoinTeamUI extends React.Component {
     };
 
     errorMessage() {
-        if (this.props.status === "error") {
+        if (this.props.formValidation === "error") {
             return "is-invalid"
         }
     }
@@ -60,7 +60,7 @@ class ScorebordJoinTeamUI extends React.Component {
     };
 
     createScoreBord() {
-        if (this.props.status === "succes") {
+        if (this.props.formValidation === "succes") {
             return <ScorebordOverzichtScore/>
         } else {
             return (
@@ -100,13 +100,13 @@ class ScorebordJoinTeamUI extends React.Component {
 
 function mapStateToProps(state) {
     return {
-        status: state.createScorebord.status,
+        formValidation: state.createScorebord.formValidation,
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        doChangeStatus: (status) => dispatch(createScorebordStatusAction(status))
+        doChangeStatus: (formValidation) => dispatch(createScorebordStatusAction(formValidation))
     }
 }
 

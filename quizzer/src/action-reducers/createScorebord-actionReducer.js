@@ -3,17 +3,17 @@
 //---------------------------------------------------------------------
 
 // Action Creators:
-export function createScorebordStatusAction(status) {
+export function createScorebordStatusAction(formValidation) {
     return {
         type: "createScorebordStatusAction",
-        status: status
+        formValidation: formValidation
     };
 }
 
 
 // Reducer:
 const initialCreateScorebordState = {
-    status: false,
+    formValidation: false,
 };
 
 export function createScorebordReducer(state = initialCreateScorebordState, action) {
@@ -21,7 +21,7 @@ export function createScorebordReducer(state = initialCreateScorebordState, acti
     switch (action.type) {
         case 'createScorebordStatusAction':
             changes = {
-                status: action.status,
+                formValidation: action.formValidation,
             };
             return {...state, ...changes};
 
