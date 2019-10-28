@@ -84,7 +84,32 @@ app.delete('/api/games/:gameRoom/team/:teamName', async (req, res) => {
 | ACCEPTING A TEAM
 */
 app.put('/api/games/:gameRoom/team/:teamName', async (req, res) => {
-    console.log('TEAM ACCEPTEREN');
+    const gameRoom = req.params.gameRoom;
+    const teamName = req.params.teamName;
+
+    //Check of isset session gameRoomName & is quizMaster
+    if (req.session.gameRoomName === gameRoom && req.session.quizMaster) {
+
+        //get current game
+        let currentGame = await Games.findOne({_id: gameRoom});
+
+        //find the team in the array and update the team
+        currentGame.teams.forEach(function (arrayItem, key) {
+            if (arrayItem['_id'] === teamName) {
+                currentGame.teams[key].approved = true;
+            }
+        });
+
+        //save gameRoomName document to MongoDB
+        currentGame.save(function (err, game) {
+            if (err) return console.error(err);
+            console.log(teamName + " verwijderd uit gameRoom: " + game._id);
+        });
+
+        return res.json({
+            success: true,
+        })
+    }
 });
 
 /*====================================
@@ -140,17 +165,18 @@ app.post('/api/team', async (req, res) => {
     //Get current game
     let currentGame = await Games.findOne({_id: gameRoomName});
 
-    //check of teamName available is
-    //ToDo: misschien moet dit in een aparte functie?
-    let isTeamNameAvailable = true;
-    currentGame.teams.forEach(function (arrayItem) {
-        console.log(arrayItem['_id']);
-        if (arrayItem['_id'] === teamName) {
-            isTeamNameAvailable = false;
-        }
-    });
-
+    //Check if game exits
     if (currentGame) {
+
+        //check of teamName available is
+        let isTeamNameAvailable = true;
+        currentGame.teams.forEach(function (arrayItem) {
+            console.log(arrayItem['_id']);
+            if (arrayItem['_id'] === teamName) {
+                isTeamNameAvailable = false;
+            }
+        });
+
         //Checks if team isn't already in current game
         if (isTeamNameAvailable) {
 
@@ -254,6 +280,19 @@ websocketServer.on('connection', (socket, req) => {
 
                             players[key].send(JSON.stringify({
                                 messageType: "NEW TEAM",
+                            }));
+                        }
+                    }
+                }
+            }
+
+            if (data.messageType === 'TEAM ACCEPTED') {
+                let data = JSON.parse(message);
+                for (var key in players) {
+                    if (players.hasOwnProperty(key)) {
+                        if (!players[key].quizMaster && players[key].gameRoomName === gameRoom && players[key].teamName === data.teamName) {
+                            players[key].send(JSON.stringify({
+                                messageType: "TEAM ACCEPTED",
                             }));
                         }
                     }

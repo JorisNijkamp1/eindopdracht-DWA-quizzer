@@ -7,7 +7,7 @@ import Button from "react-bootstrap/Button";
 import {Link} from "react-router-dom";
 import {Card} from "react-bootstrap";
 import {getGameRoomTeamsAction} from "../../action-reducers/createGame-actionReducer";
-import {deleteTeam} from "../../websocket";
+import {acceptTeam, deleteTeam} from "../../websocket";
 
 class TeamsBeherenUI extends React.Component {
 
@@ -20,7 +20,7 @@ class TeamsBeherenUI extends React.Component {
                                 <Card.Body>
                                     <Card.Title className="text-center">{teamName['_id']}</Card.Title>
                                     <Card.Text className="text-center">Team accepteren?</Card.Text>
-                                    <Button variant="success" className={"float-left"} type="submit">
+                                    <Button variant="success" className={"float-left"} onClick={() => { acceptTeam(this.props.gameRoom, teamName['_id']) }}>
                                         Ja
                                     </Button>
                                     <Button variant="danger" className={"float-right"} onClick={() => { deleteTeam(this.props.gameRoom, teamName['_id']) }}>

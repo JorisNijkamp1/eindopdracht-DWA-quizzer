@@ -32,6 +32,10 @@ export function openWebSocket() {
                 theStore.dispatch(createTeamNameStatusAction('deleted'))
                 break;
 
+            case "TEAM ACCEPTED":
+                theStore.dispatch(createTeamNameStatusAction('success'))
+                break;
+
             default:
                 console.log("Unknown messageType:", message);
         }
@@ -53,6 +57,9 @@ export function sendNewTeamMSG() {
     };
 }
 
+/*========================================
+| delete Team from a Gameroom (for Quizmaster)
+*/
 export function deleteTeam(gameRoom, teamName) {
     if (gameRoom && teamName) {
         const url = `http://localhost:3001/api/games/${gameRoom}/team/${teamName}`;
@@ -82,14 +89,17 @@ export function deleteTeam(gameRoom, teamName) {
 | Websocket send TEAM DELETED
 */
 function sendTeamDeletedMSG(teamName) {
-        let message = {
-            messageType: "TEAM DELETED",
-            teamName: teamName
-        };
+    let message = {
+        messageType: "TEAM DELETED",
+        teamName: teamName
+    };
 
-        theSocket.sendJSON(message);
+    theSocket.sendJSON(message);
 }
 
+/*========================================
+| Get all current teams from a Gameroom (For quizmaster)
+*/
 function getTeams() {
     let store = theStore.getState();
     let gameRoom = store.createGame.gameRoom;
@@ -117,4 +127,41 @@ function getTeams() {
     })
 }
 
+/*========================================
+| Accept a team in a Gameroom (for Quizmaster)
+*/
+export function acceptTeam(gameRoom, teamName) {
+    if (gameRoom && teamName) {
+        const url = `http://localhost:3001/api/games/${gameRoom}/team/${teamName}`;
 
+        const options = {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+            mode: 'cors'
+        };
+
+        return fetch(url, options).then(response => {
+            if (response.status !== 200) console.log("Er gaat iets fout" + response.status);
+            response.json().then(data => {
+                if (data.success) {
+                    sendTeamAcceptMSG(teamName);
+                }
+            });
+        }).catch(err => console.log(err))
+    }
+}
+
+/*========================================
+| Websocket send TEAM DELETED
+*/
+function sendTeamAcceptMSG(teamName) {
+    let message = {
+        messageType: "TEAM ACCEPTED",
+        teamName: teamName
+    };
+
+    theSocket.sendJSON(message);
+}

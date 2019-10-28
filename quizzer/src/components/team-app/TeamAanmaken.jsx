@@ -195,7 +195,7 @@ class TeamAanmakenUI extends React.Component {
         } else if (this.props.teamNameStatus === 'success') {
             // return this.teamAccepted();
         } else {
-            return this.joinGameForm()
+            return this.joinGameForm();
         }
     }
 
