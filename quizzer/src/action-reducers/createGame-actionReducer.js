@@ -31,12 +31,20 @@ export function createCurrentGameStatusAction(currentGameStatus) {
     }
 }
 
+export function createGameQuestionCategoriesAction(questionCategories) {
+    return {
+        type: "createGameQuestionCategoriesAction",
+        questionCategories: questionCategories
+    };
+}
+
 // Reducer:
 const initialCreateGameState = {
     formValidation: false,
     gameRoom: null,
     gameRoomTeams: [],
-    currentGameStatus: "sjon"
+    currentGameStatus: null,
+    questionCategories: [],
 };
 
 export function createGameReducer(state = initialCreateGameState, action) {
@@ -63,6 +71,12 @@ export function createGameReducer(state = initialCreateGameState, action) {
         case 'createCurrentGameStatusAction':
             changes = {
                 currentGameStatus: action.currentGameStatus,
+            };
+            return {...state, ...changes};
+
+        case 'createGameQuestionCategoriesAction':
+            changes = {
+                questionCategories: action.questionCategories,
             };
             return {...state, ...changes};
 

@@ -9,7 +9,9 @@ const WebSocket = require('ws');
 
 mongoose.set('useCreateIndex', true);
 require('./database/model/games');
+require('./database/model/questions');
 const Games = mongoose.model("Games");
+const Questions = mongoose.model("Questions");
 
 const app = express();
 
@@ -312,6 +314,30 @@ app.post('/api/games/:gameRoom/ronde', async (req, res) => {
                 success: false,
             });
         }
+    }
+});
+
+/*====================================
+| GET ALL QUESTION CATEGORIES
+*/
+app.get('/api/questions/categories', async (req, res) => {
+
+    //Check of isset session quizMaster
+    if (req.session.quizMaster) {
+        let questions = await Questions.find({});
+
+        //get a array with unique categories
+        const categories = [];
+        questions.forEach(function (arrayItem, key) {
+            if (!categories.includes(arrayItem.category)) {
+                categories.push(arrayItem.category)
+            }
+        });
+
+        await res.json({
+            success: true,
+            categories: categories
+        });
     }
 });
 

@@ -8,7 +8,7 @@ import {Card} from "react-bootstrap";
 import {getGameRoomTeamsAction} from "../../action-reducers/createGame-actionReducer";
 import {acceptTeam, deleteTeam, startGame} from "../../websocket";
 import Badge from "react-bootstrap/Badge";
-import Categorieen from "./Categorieen";
+import {Categorieen} from "./Categorieen";
 import TeamCategory from "../team-app/TeamCategory";
 import {getGameNameAction} from "../../action-reducers/createTeam-actionReducer";
 
