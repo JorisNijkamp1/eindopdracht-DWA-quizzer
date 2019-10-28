@@ -12,7 +12,7 @@ require('./database/model/games');
 const Games = mongoose.model("Games");
 
 const app = express();
- 
+
 // needed to make all requests from client work with this server.
 app.use(cors({origin: true, credentials: true}));
 app.options("*", cors({origin: true, credentials: true}));
@@ -102,7 +102,7 @@ app.put('/api/games/:gameRoom/team/:teamName', async (req, res) => {
         //save gameRoomName document to MongoDB
         currentGame.save(function (err, game) {
             if (err) return console.error(err);
-            console.log(teamName + " verwijderd uit gameRoom: " + game._id);
+            console.log(teamName + " geaccepteerd in gameRoom: " + game._id);
         });
 
         return res.json({
@@ -143,13 +143,13 @@ app.post('/api/game', async (req, res) => {
         req.session.quizMaster = true;
 
         //send result
-        res.json({
+        await res.json({
             gameRoomNameAccepted: true,
             QuizMaster: true,
             gameRoomName: gameRoomName
         });
     } else {
-        res.json({
+        await res.json({
             gameRoomNameAccepted: false,
         });
     }
@@ -205,20 +205,51 @@ app.post('/api/team', async (req, res) => {
             req.session.teamName = teamName;
         } else {
             console.log('team bestaat al')
-            res.json({
+            await res.json({
                 gameRoomAccepted: true,
                 teamNameStatus: 'error'
             });
         }
     } else {
         console.log('Gameroom bestaat niet')
-        res.json({
+        await res.json({
             gameRoomAccepted: false,
             teamNameStatus: false
         });
     }
 });
 
+/*====================================
+| CHOOSE QUESTIONS CATEGORIES FOR A NEW ROUND
+*/
+app.put('/api/games/:gameRoom', async (req, res) => {
+    const gameRoomName = req.params.gameRoom;
+
+    //Get current game
+    let currentGame = await Games.findOne({_id: gameRoomName});
+
+    console.log(currentGame)
+
+    //Check if game exits
+    if (currentGame) {
+
+        //Change current game status to choose_category
+        currentGame.game_status = 'choose_category';
+
+        //Save to mongoDB
+        currentGame.save(function (err) {
+            if (err) return console.error(err);
+            res.json({
+                success: true,
+            });
+        });
+
+    } else {
+        await res.json({
+            success: false,
+        });
+    }
+});
 
 httpServer.on('upgrade', (req, networkSocket, head) => {
     sessionParser(req, {}, () => {
@@ -316,6 +347,23 @@ websocketServer.on('connection', (socket, req) => {
                         if (!players[key].quizMaster && players[key].gameRoomName === gameRoom && players[key].teamName === data.teamName) {
                             players[key].send(JSON.stringify({
                                 messageType: "TEAM DELETED",
+                            }));
+                        }
+                    }
+                }
+            }
+
+            /*====================================
+            | TO: All teams in a gameRoom
+            | Send message that the QuizMaster is choosing categories
+            */
+            if (data.messageType === 'CHOOSE CATEGORIES') {
+                let data = JSON.parse(message);
+                for (var key in players) {
+                    if (players.hasOwnProperty(key)) {
+                        if (!players[key].quizMaster && players[key].gameRoomName === gameRoom) {
+                            players[key].send(JSON.stringify({
+                                messageType: "CHOOSE CATEGORIES",
                             }));
                         }
                     }

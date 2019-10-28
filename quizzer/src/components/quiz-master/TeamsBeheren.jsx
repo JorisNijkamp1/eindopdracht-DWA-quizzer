@@ -7,7 +7,7 @@ import Button from "react-bootstrap/Button";
 import {Link} from "react-router-dom";
 import {Card} from "react-bootstrap";
 import {getGameRoomTeamsAction} from "../../action-reducers/createGame-actionReducer";
-import {acceptTeam, deleteTeam} from "../../websocket";
+import {acceptTeam, deleteTeam, startGame} from "../../websocket";
 import Badge from "react-bootstrap/Badge";
 
 class TeamsBeherenUI extends React.Component {
@@ -63,11 +63,11 @@ class TeamsBeherenUI extends React.Component {
             this.props.gameRoomTeams.map((teamName, i) => {
                 if (teamName['approved']) {
                     button = (
-                        <Link to="/categorieen">
-                            <Button variant="outline-success" type="submit">
-                                Start quiz
-                            </Button>
-                        </Link>
+                        <Button variant="outline-success" type="submit" onClick={() => {
+                            startGame(this.props.gameRoom)
+                        }}>
+                            Start quiz
+                        </Button>
                     )
                 }
             })

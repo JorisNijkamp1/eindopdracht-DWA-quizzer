@@ -39,6 +39,11 @@ export function openWebSocket() {
                 console.log('TEAM ACCEPTED');
                 break;
 
+            case "CHOOSE CATEGORIES":
+                //Do something
+                console.log('CHOOSE CATEGORIES');
+                break;
+
             default:
                 console.log("Unknown messageType:", message);
         }
@@ -158,12 +163,51 @@ export function acceptTeam(gameRoom, teamName) {
 }
 
 /*========================================
-| Websocket send TEAM DELETED
+| Websocket send TEAM ACCEPT
 */
 function sendTeamAcceptMSG(teamName) {
     let message = {
         messageType: "TEAM ACCEPTED",
         teamName: teamName
+    };
+
+    theSocket.sendJSON(message);
+}
+
+/*========================================
+| Starting a NEW game (for Quizmaster)
+*/
+export function startGame(gameRoom) {
+    if (gameRoom) {
+        const url = `http://localhost:3001/api/games/${gameRoom}`;
+
+        const options = {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+            mode: 'cors'
+        };
+
+        return fetch(url, options).then(response => {
+            if (response.status !== 200) console.log("Er gaat iets fout" + response.status);
+            response.json().then(data => {
+                if (data.success) {
+                    sendChooseCategoriesMSG(gameRoom)
+                }
+            });
+        }).catch(err => console.log(err))
+    }
+}
+
+/*========================================
+| Websocket send TEAM ACCEPT
+*/
+function sendChooseCategoriesMSG(gameRoom) {
+    let message = {
+        messageType: "CHOOSE CATEGORIES",
+        gameRoom: gameRoom
     };
 
     theSocket.sendJSON(message);
