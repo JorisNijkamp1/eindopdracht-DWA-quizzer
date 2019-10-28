@@ -12,7 +12,7 @@ class VragenBeheren extends React.Component {
             <Container>
                 <Row className="min-vh-100">
                     <Col md={{span: 8, offset: 2}}>
-                        <h1 className="text-center display-1">Quizzer Night</h1>
+                        <h1 className="text-center display-3">Quizzer Night</h1>
                     </Col>
                     <Col md={{span: 6}}>
                         <Card>

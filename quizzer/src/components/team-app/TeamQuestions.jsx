@@ -1,4 +1,5 @@
 import React from "react";
+import * as ReactRedux from "react-redux";
 import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
@@ -10,7 +11,7 @@ export class TeamQuestions extends React.Component {
             <Container>
                 <Row className="min-vh-100">
                     <Col md={{span: 8, offset: 2}}>
-                        <h1 className="text-center display-1">Quizzer Night</h1>
+                        <h1 className="text-center display-3">Quizzer Night</h1>
                     </Col>
                     <Alert className={"h-25 d-inline-block w-100"} variant="success">
                         <Alert.Heading className={"text-center"}>De Quiz Master is een vraag aan het
