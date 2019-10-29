@@ -351,13 +351,18 @@ app.get('/api/game/:gameRoom/ronde/:rondeID/questions', async (req, res) => {
     const gameRoomName = req.params.gameRoom;
     const rondeID = req.params.rondeID;
 
+    //ToDo: veilig maken met session
+
     //Get current game
     let currentGame = await Games.findOne({_id: gameRoomName});
 
+    console.log(currentGame.rondes[rondeID].categories);
+
     //Get all questions
     let allQuestions = await Questions.find(
-        { category: { $in: ["Algemeen", "Sport", "Eten en Drinken"] } });
+        { category: { $in: currentGame.rondes[rondeID].categories } });
 
+    //push 10 random questions in a array
     const questions = [];
     for (let i = 0; i < 10; i++) {
         questions.push(allQuestions[Math.floor(Math.random()*allQuestions.length)])
