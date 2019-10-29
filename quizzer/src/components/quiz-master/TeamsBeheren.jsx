@@ -9,7 +9,7 @@ import Badge from "react-bootstrap/Badge";
 import {Categorieen} from "./Categorieen";
 import {getGameNameAction} from "../../action-reducers/createTeam-actionReducer";
 import TeamQuestions from "../team-app/TeamQuestions";
-import Vragen from "./Vragen";
+import {Vragen} from "./Vragen";
 
 class TeamsBeherenUI extends React.Component {
 

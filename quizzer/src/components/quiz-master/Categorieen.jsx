@@ -33,7 +33,6 @@ class CategorieenUI extends React.Component {
             .then(response => response.json())
             .then(data => {
                     if (data.success === true) {
-                        console.log(data)
                         this.props.doChangeQuestionCategories(data.categories)
                     } else {
                         console.log('Categorieën kunnen niet worden opgehaald.')
