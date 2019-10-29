@@ -11,6 +11,13 @@ import HeaderTitel from "../HeaderTitel";
 
 class CategorieenUI extends React.Component {
 
+    constructor(props) {
+        super(props)
+        this.state = ({
+            selectedCategories: []
+        })
+    }
+
     componentDidMount() {
         const url = 'http://localhost:3001/api/questions/categories';
         const options = {
@@ -35,14 +42,42 @@ class CategorieenUI extends React.Component {
             );
     }
 
+    selectCategory(categoryName) {
+        let categories = this.state.selectedCategories;
+
+        if (categories.length < 3 && !categories.includes(categoryName)) {
+            categories.push(categoryName) //add new category
+            this.setState({
+                selectedCategories: categories
+            })
+        } else if (!categories.includes(categoryName)) {
+            categories.shift(); //delete the oldest category
+            categories.push(categoryName) //add new category
+            this.setState({
+                selectedCategories: categories
+            })
+        }
+    }
+
     getCategories() {
         return (
-            this.props.questionCategories.map((categoryName, i) => {
+            this.props.questionCategories.map((categoryName) => {
+                    let isSelected;
+                    if (this.state.selectedCategories.includes(categoryName)) {
+                        isSelected = "pink";
+                    }
                     return (
-                        <Col md={{span: 4}}>
-                            <Card>
+                        <Col
+                            key={categoryName}
+                            md={{span: 4}}
+                            onClick={() => {
+                                this.selectCategory(categoryName)
+                            }}>
+                            <Card style={{backgroundColor: isSelected}}>
                                 <Card.Body>
-                                    <Card.Title className="text-center">{categoryName}</Card.Title>
+                                    <Card.Title className="text-center">
+                                        {categoryName}
+                                    </Card.Title>
                                 </Card.Body>
                             </Card>
                         </Col>
