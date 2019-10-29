@@ -3,6 +3,7 @@ import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import {Card} from "react-bootstrap";
+import HeaderTitel from "../HeaderTitel";
 
 class ScorebordBeoordeling extends React.Component {
 
@@ -10,9 +11,7 @@ class ScorebordBeoordeling extends React.Component {
         return (
             <Container>
                 <Row className="min-vh-100">
-                    <Col md={{span: 8, offset: 2}}>
-                        <h1 className="text-center display-3">Quizzer Night</h1>
-                    </Col>
+                    <HeaderTitel/>
                     <Col md={{span: 6, offset: 3}}>
                         <Card>
                             <Card.Body>

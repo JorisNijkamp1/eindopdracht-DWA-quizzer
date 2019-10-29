@@ -20,6 +20,8 @@ import {store} from 'react-notifications-component';
 import 'react-notifications-component/dist/theme.css';
 import TeamCategory from "./TeamCategory";
 import Card from "react-bootstrap/Card";
+import Menu from "../Menu";
+import HeaderTitel from "../HeaderTitel";
 
 class TeamAanmakenUI extends React.Component {
 
@@ -135,9 +137,7 @@ class TeamAanmakenUI extends React.Component {
         return (
             <Container>
                 <Row className="min-vh-100">
-                    <Col xs={{span: 12}} md={{span: 12}}>
-                        <h1 className="text-center display-3">Quizzer Night</h1>
-                    </Col>
+                    <HeaderTitel/>
                     <Col md={{span: 8, offset: 2}} className="h-100">
                         <Card bg="dark" border="danger" text="white">
                             <Card.Header>Join een bestaande Quizzer</Card.Header>
@@ -185,9 +185,7 @@ class TeamAanmakenUI extends React.Component {
         return (
             <Container>
                 <Row className="min-vh-100">
-                    <Col xs={{span: 12}} md={{span: 12}}>
-                        <h1 className="text-center display-3">Quizzer Night</h1>
-                    </Col>
+                    <HeaderTitel/>
                     <Alert className={"h-25 d-inline-block w-100"} variant="success">
                         <Alert.Heading className={"text-center"}><strong>{this.props.teamRoomName}</strong> is
                             geaccepteerd!!</Alert.Heading>
@@ -219,7 +217,12 @@ class TeamAanmakenUI extends React.Component {
     }
 
     render() {
-        return this.checkTeamNameStatus();
+        return (
+            <div>
+                <Menu/>
+                {this.checkTeamNameStatus()}
+            </div>
+        )
     }
 }
 

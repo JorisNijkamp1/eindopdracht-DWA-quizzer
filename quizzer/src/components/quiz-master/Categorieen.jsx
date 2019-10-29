@@ -7,6 +7,7 @@ import Button from "react-bootstrap/Button";
 import {Link} from "react-router-dom";
 import {Card} from "react-bootstrap";
 import {createGameQuestionCategoriesAction} from "../../action-reducers/createGame-actionReducer";
+import HeaderTitel from "../HeaderTitel";
 
 class CategorieenUI extends React.Component {
 
@@ -55,9 +56,7 @@ class CategorieenUI extends React.Component {
         return (
             <Container>
                 <Row className="min-vh-100">
-                    <Col md={{span: 8, offset: 2}}>
-                        <h1 className="text-center display-3">Quizzer Night</h1>
-                    </Col>
+                    <HeaderTitel/>
                     <Col className={"text-center"} md={{span: 6, offset: 3}}>
                         <Link to="/vragen">
                             <Button variant="primary" type="submit">

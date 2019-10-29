@@ -59,7 +59,7 @@ class TeamsBeherenUI extends React.Component {
     startGameButton() {
         let button = null;
         if (this.props.gameRoomTeams.length > 0) {
-            this.props.gameRoomTeams.map((teamName, i) => {
+            this.props.gameRoomTeams.map((teamName) => {
                 if (teamName['approved']) {
                     button = (
                         <Button variant="outline-success" type="submit" onClick={() => {
@@ -82,7 +82,7 @@ class TeamsBeherenUI extends React.Component {
                 <div className="container-fluid px-md-5">
                     <div className="row py-5 text-white">
                         <div className="col-lg-9 mx-auto text-center">
-                            <h1 className="display-4">Quizzer Night</h1>
+                            <h1 className="display-3">Quizzer Night</h1>
                             <p className="lead mb-0">Dit is het quiz master paneel</p>
                         </div>
                     </div>

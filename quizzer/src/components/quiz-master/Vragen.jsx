@@ -5,15 +5,14 @@ import Row from "react-bootstrap/Row";
 import Button from "react-bootstrap/Button";
 import {Link} from "react-router-dom";
 import {ListGroup} from "react-bootstrap";
+import HeaderTitel from "../HeaderTitel";
 
 class Vragen extends React.Component {
     render() {
         return (
             <Container>
                 <Row className="min-vh-100">
-                    <Col md={{span: 8, offset: 2}}>
-                        <h1 className="text-center display-3">Quizzer Night</h1>
-                    </Col>
+                    <HeaderTitel/>
                     <Col className={"text-center"} md={{span: 6, offset: 3}}>
                         <Link to="/vragen-beheren">
                             <Button variant="primary" type="submit">

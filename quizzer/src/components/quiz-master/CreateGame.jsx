@@ -13,6 +13,8 @@ import {Link} from "react-router-dom";
 import {TeamsBeheren} from "./TeamsBeheren";
 import {openWebSocket} from "../../websocket";
 import Card from "react-bootstrap/Card";
+import Menu from "../Menu";
+import HeaderTitel from "../HeaderTitel";
 
 class CreateGameUI extends React.Component {
     constructor(props) {
@@ -69,9 +71,7 @@ class CreateGameUI extends React.Component {
         return (
             <Container>
                 <Row className="min-vh-100">
-                    <Col xs={{span: 12}} md={{span: 12}}>
-                        <h1 className="text-center display-3">Quizzer Night</h1>
-                    </Col>
+                    <HeaderTitel/>
                     <Col md={{span: 8, offset: 2}} className="h-100">
                         <Form onSubmit={this.handleSubmit}>
                             <Card bg="dark" border="danger" text="white">
@@ -86,7 +86,8 @@ class CreateGameUI extends React.Component {
                                                       className={this.errorMessage()}
                                                       autoComplete="off"
                                                       required/>
-                                        <div className="invalid-feedback">Deze game room naam is al bezet <span role={"img"} aria-label={""}>😢</span></div>
+                                        <div className="invalid-feedback">Deze game room naam is al bezet <span
+                                            role={"img"} aria-label={""}>😢</span></div>
                                     </Form.Group>
                                     <Button variant="danger" type="submit">
                                         Spel aanmaken
@@ -103,9 +104,19 @@ class CreateGameUI extends React.Component {
 
     render() {
         if (this.props.formValidation === "success") {
-            return <TeamsBeheren/>
+            return (
+                <div>
+                    <Menu/>
+                    <TeamsBeheren/>
+                </div>
+            )
         } else {
-            return this.createGameForm()
+            return (
+                <div>
+                    <Menu/>
+                    {this.createGameForm()}
+                </div>
+            )
         }
     }
 }
