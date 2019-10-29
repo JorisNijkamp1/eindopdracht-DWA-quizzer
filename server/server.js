@@ -344,6 +344,32 @@ app.get('/api/questions/categories', async (req, res) => {
     }
 });
 
+/*====================================
+| GET ALL QUESTION FROM THE SELECTED CATEGORIES
+*/
+app.get('/api/game/:gameRoom/ronde/:rondeID/questions', async (req, res) => {
+    const gameRoomName = req.params.gameRoom;
+    const rondeID = req.params.rondeID;
+
+    //Get current game
+    let currentGame = await Games.findOne({_id: gameRoomName});
+
+    //Get all questions
+    let allQuestions = await Questions.find(
+        { category: { $in: ["Algemeen", "Sport", "Eten en Drinken"] } });
+
+    const questions = [];
+    for (let i = 0; i < 10; i++) {
+        questions.push(allQuestions[Math.floor(Math.random()*allQuestions.length)])
+    }
+
+    await res.json({
+        success: true,
+        questions: questions
+    });
+});
+
+
 httpServer.on('upgrade', (req, networkSocket, head) => {
     sessionParser(req, {}, () => {
         // Everything is fine. We tell the websocket server to

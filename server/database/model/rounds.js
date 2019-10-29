@@ -1,11 +1,8 @@
 const mongoose = require('mongoose');
+const Question = require('./questions');
 
 //Create schema
 var roundScheme = roundSchema = new mongoose.Schema({
-    // _id: {
-    //     type: String,
-    //     required: true,
-    // },
     ronde_status: {
         type: String,
         // required: true,
@@ -13,6 +10,9 @@ var roundScheme = roundSchema = new mongoose.Schema({
     categories: {
         type: Array,
         required: true,
+    },
+    vragen: {
+        type: [{type: Question, ref: "Question"}],
     },
 });
 
