@@ -1,5 +1,5 @@
 import {theStore} from './index'
-import {getGameRoomTeamsAction} from "./action-reducers/createGame-actionReducer";
+import {getGameRoomTeamsAction, increaseGameRoundNumberAction} from "./action-reducers/createGame-actionReducer";
 import {createTeamNameStatusAction} from "./action-reducers/createTeam-actionReducer"
 import {createCurrentGameStatusAction} from "./action-reducers/createGame-actionReducer";
 
@@ -42,6 +42,12 @@ export function openWebSocket() {
 
             case "CHOOSE CATEGORIES":
                 theStore.dispatch(createCurrentGameStatusAction('choose_categories'));
+                let store = theStore.getState(), roundNumber = store.createGame.roundNumber;
+                if (roundNumber) {
+                    theStore.dispatch(increaseGameRoundNumberAction(roundNumber + 1))
+                }else {
+                    theStore.dispatch(increaseGameRoundNumberAction(1))
+                }
                 console.log('CHOOSE CATEGORIES');
                 break;
 

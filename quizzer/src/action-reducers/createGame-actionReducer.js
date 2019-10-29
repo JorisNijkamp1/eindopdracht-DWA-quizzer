@@ -45,6 +45,13 @@ export function createGameQuestionsAction(questions) {
     };
 }
 
+export function increaseGameRoundNumberAction(roundNumber) {
+    return {
+        type: "increaseGameRoundNumberAction",
+        roundNumber: roundNumber
+    };
+}
+
 // Reducer:
 const initialCreateGameState = {
     formValidation: false,
@@ -52,7 +59,8 @@ const initialCreateGameState = {
     gameRoomTeams: [],
     currentGameStatus: null,
     questionCategories: [],
-    questions: []
+    questions: [],
+    roundNumber: undefined
 };
 
 export function createGameReducer(state = initialCreateGameState, action) {
@@ -91,6 +99,13 @@ export function createGameReducer(state = initialCreateGameState, action) {
         case 'createGameQuestionsAction':
             changes = {
                 questions: action.questions,
+            };
+            return {...state, ...changes};
+
+
+        case 'increaseGameRoundNumberAction':
+            changes = {
+                roundNumber: action.roundNumber,
             };
             return {...state, ...changes};
 

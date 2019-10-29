@@ -349,7 +349,7 @@ app.get('/api/questions/categories', async (req, res) => {
 */
 app.get('/api/game/:gameRoom/ronde/:rondeID/questions', async (req, res) => {
     const gameRoomName = req.params.gameRoom;
-    const rondeID = req.params.rondeID;
+    const rondeID = (req.params.rondeID - 1);
 
     //ToDo: veilig maken met session
 
