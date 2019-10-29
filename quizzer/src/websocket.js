@@ -217,3 +217,36 @@ function sendChooseCategoriesMSG() {
 
     theSocket.sendJSON(message);
 }
+
+
+/*========================================
+| Starting a NEW round (for Quizmaster)
+*/
+export function startRound(gameRoom, categories) {
+    if (gameRoom) {
+        const url = `http://localhost:3001/api/games/${gameRoom}/ronde`;
+        let data = {
+            roundCategories: categories
+        };
+        const options = {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+            mode: 'cors'
+        };
+
+        return fetch(url, options).then(response => {
+            if (response.status !== 200) console.log("Er gaat iets fout" + response.status);
+            response.json().then(data => {
+                if (data.success) {
+                    console.log('Succesvol in Mongo opgeslagen')
+                    //do something
+                }
+            });
+        }).catch(err => console.log(err))
+    }
+}
+

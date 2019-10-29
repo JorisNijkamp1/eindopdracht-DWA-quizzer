@@ -287,6 +287,7 @@ app.post('/api/games/:gameRoom/ronde', async (req, res) => {
 
     //Check of isset session gameRoomName & is quizMaster
     if (req.session.gameRoomName === gameRoomName && req.session.quizMaster) {
+
         const roundCategories = req.body.roundCategories;
 
         //Get current game
@@ -296,8 +297,8 @@ app.post('/api/games/:gameRoom/ronde', async (req, res) => {
         if (currentGame) {
 
             currentGame.rondes.push({
-                ronde_status: 'open',
-                categories: roundCategories
+                categories: roundCategories,
+                ronde_status: 'open'
             });
 
             //Change current game status to choose_question

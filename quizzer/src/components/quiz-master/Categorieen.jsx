@@ -4,10 +4,10 @@ import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Button from "react-bootstrap/Button";
-import {Link} from "react-router-dom";
 import {Card} from "react-bootstrap";
 import {createGameQuestionCategoriesAction} from "../../action-reducers/createGame-actionReducer";
 import HeaderTitel from "../HeaderTitel";
+import {startRound} from "../../websocket";
 
 class CategorieenUI extends React.Component {
 
@@ -88,16 +88,22 @@ class CategorieenUI extends React.Component {
     }
 
     render() {
+        let startRoundButton;
+        if (this.state.selectedCategories.length === 3) {
+            startRoundButton = (
+                <Button variant="danger" type="submit" onClick={() => {
+                    startRound(this.props.gameRoom, this.state.selectedCategories)
+                }}>
+                    Start ronde
+                </Button>
+            )
+        }
         return (
             <Container>
                 <Row className="min-vh-100">
                     <HeaderTitel/>
                     <Col className={"text-center"} md={{span: 6, offset: 3}}>
-                        <Link to="/vragen">
-                            <Button variant="primary" type="submit">
-                                Gekozen categorieën kiezen
-                            </Button>
-                        </Link>
+                        {startRoundButton}
                     </Col>
                     {this.getCategories()}
                 </Row>
@@ -108,6 +114,7 @@ class CategorieenUI extends React.Component {
 
 function mapStateToProps(state) {
     return {
+        gameRoom: state.createGame.gameRoom,
         questionCategories: state.createGame.questionCategories,
     }
 }
