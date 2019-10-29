@@ -10,8 +10,15 @@ import {createGameQuestionsAction} from "../../action-reducers/createGame-action
 import * as ReactRedux from "react-redux";
 
 class VragenUI extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = ({
+            selectedQuestion: '',
+        })
+    }
+
     componentDidMount() {
-        const url = `http://localhost:3001/api/game/${this.props.gameRoom}/ronde/0/questions`;
+        const url = `http://localhost:3001/api/game/${this.props.gameRoom}/ronde/${this.props.roundNumber}/questions`;
         const options = {
             method: 'GET',
             headers: {
@@ -34,8 +41,31 @@ class VragenUI extends React.Component {
             );
     }
 
-    selectQuestion(){
+    selectQuestion(questionName) {
+        this.setState({
+            selectedQuestion: questionName,
+        })
+    }
 
+    getQuestions() {
+        return (
+            this.props.questions.map((question, key) => {
+                let isSelected;
+                if (this.state.selectedQuestion === question) {
+                    isSelected = "isSelected";
+                }
+                return (
+                    <ListGroup.Item
+                        key={key}
+                        onClick={() => {
+                            this.selectQuestion(question)
+                        }}
+                        className={isSelected}>
+                        {question.question}
+                    </ListGroup.Item>
+                )
+            })
+        )
     }
 
     render() {
@@ -51,11 +81,7 @@ class VragenUI extends React.Component {
                         </Link>
                     </Col>
                     <ListGroup style={{width: '100%'}}>
-                        <ListGroup.Item onClick={() => {this.selectQuestion()}}>Vraag 1</ListGroup.Item>
-                        <ListGroup.Item>Vraag 2</ListGroup.Item>
-                        <ListGroup.Item>Vraag 3</ListGroup.Item>
-                        <ListGroup.Item>Vraag 4</ListGroup.Item>
-                        <ListGroup.Item>Vraag 5</ListGroup.Item>
+                        {this.getQuestions()}
                     </ListGroup>
                 </Row>
             </Container>
@@ -66,7 +92,8 @@ class VragenUI extends React.Component {
 function mapStateToProps(state) {
     return {
         gameRoom: state.createGame.gameRoom,
-        questions: state.createGame.questions
+        questions: state.createGame.questions,
+        roundNumber: state.createGame.roundNumber
     }
 }
 
