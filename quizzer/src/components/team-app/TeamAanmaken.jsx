@@ -22,6 +22,7 @@ import TeamCategory from "./TeamCategory";
 import Card from "react-bootstrap/Card";
 import Menu from "../Menu";
 import HeaderTitel from "../HeaderTitel";
+import TeamQuestions from "./TeamQuestions";
 
 class TeamAanmakenUI extends React.Component {
 
@@ -203,9 +204,9 @@ class TeamAanmakenUI extends React.Component {
         if (this.props.currentGameStatus === 'choose_categories' && this.props.teamNameStatus === 'success') {
             return <TeamCategory/>
         }
-        // if (this.props.currentGameStatus === 'choose_questions' && this.props.teamNameStatus === 'success') {
-        //     return <TeamQuestions/>
-        // }
+        if (this.props.currentGameStatus === 'choose_question' && this.props.teamNameStatus === 'success') {
+            return <TeamQuestions/>
+        }
 
         if (this.props.teamNameStatus === 'pending') {
             return this.loadingAnimation();

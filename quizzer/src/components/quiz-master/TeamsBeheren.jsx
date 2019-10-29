@@ -8,6 +8,8 @@ import {acceptTeam, deleteTeam, startGame} from "../../websocket";
 import Badge from "react-bootstrap/Badge";
 import {Categorieen} from "./Categorieen";
 import {getGameNameAction} from "../../action-reducers/createTeam-actionReducer";
+import TeamQuestions from "../team-app/TeamQuestions";
+import Vragen from "./Vragen";
 
 class TeamsBeherenUI extends React.Component {
 
@@ -77,7 +79,11 @@ class TeamsBeherenUI extends React.Component {
     checkGameStatus() {
         if (this.props.currentGameStatus === 'choose_categories') {
             return <Categorieen/>
-        } else {
+        }
+        if (this.props.currentGameStatus === 'choose_question') {
+            return <Vragen/>
+        }
+        if (this.props.currentGameStatus === null) {
             return (
                 <div className="container-fluid px-md-5">
                     <div className="row py-5 text-white">
