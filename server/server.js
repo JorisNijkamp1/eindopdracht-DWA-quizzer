@@ -6,6 +6,7 @@ const cors = require('cors');               // needed for using webpack-devserve
 const bodyParser = require('body-parser')
 const http = require('http');
 const WebSocket = require('ws');
+const dbConfig = require('./config');
 
 mongoose.set('useCreateIndex', true);
 require('./database/model/games');
@@ -35,6 +36,7 @@ const httpServer = http.createServer(app);
 
 // Create the Web socket server.
 const websocketServer = new WebSocket.Server({noServer: true});
+
 
 /*====================================
 | JOIN GAME WITH SCOREBORD
@@ -473,7 +475,7 @@ websocketServer.on('connection', (socket, req) => {
 // Start the server.
 const port = process.env.PORT || 3001;
 httpServer.listen(port, () => {
-    mongoose.connect(`mongodb://localhost:27017/quizzer`, {
+    mongoose.connect(`mongodb://${dbConfig.USERNAME}:${dbConfig.PASSWORD}@${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`, {
         useNewUrlParser: true,
         useUnifiedTopology: true
     }, () => {

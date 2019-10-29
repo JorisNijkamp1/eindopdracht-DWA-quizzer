@@ -59,3 +59,13 @@ typings/
 
 # next.js build output
 .next
+
+server/config.js
+
+.idea/.gitignore
+.idea/eindopdracht-DWA.iml
+.idea/jsLibraryMappings.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/vcs.xml
+server/_server.js

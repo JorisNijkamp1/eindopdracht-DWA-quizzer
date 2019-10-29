@@ -42,7 +42,7 @@ class TeamsBeherenUI extends React.Component {
                     }
 
                     return (
-                        <Col>
+                        <Col key={teamName['_id']}>
                             <Card>
                                 <Card.Body>
                                     <Card.Title className="text-center">{teamName['_id']}</Card.Title>

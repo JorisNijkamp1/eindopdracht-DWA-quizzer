@@ -5,8 +5,9 @@ const dbName = 'quizzer';
 const db = mongoose.connection;
 const Games = mongoose.model('Games');
 const Questions = mongoose.model('Questions');
+const dbConfig = require('./config');
 
-mongoose.connect(`mongodb://localhost:27017/${dbName}`, {
+mongoose.connect(`mongodb://${dbConfig.USERNAME}:${dbConfig.PASSWORD}@${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 }).then(() => {
