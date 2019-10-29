@@ -447,7 +447,7 @@ websocketServer.on('connection', (socket, req) => {
             }
 
             /*====================================
-            | TO: All teams in a gameRoom
+            | TO: All teams in a gameRoom AND Quiz<aster
             | Send message that the QuizMaster is choosing categories
             */
             if (data.messageType === 'CHOOSE CATEGORIES') {
@@ -456,6 +456,22 @@ websocketServer.on('connection', (socket, req) => {
                         if (players[key].gameRoomName === gameRoom) {
                             players[key].send(JSON.stringify({
                                 messageType: "CHOOSE CATEGORIES",
+                            }));
+                        }
+                    }
+                }
+            }
+
+            /*====================================
+            | TO: All teams in a gameRoom AND Quiz<aster
+            | Send message that the QuizMaster is choosing a question
+            */
+            if (data.messageType === 'CHOOSE QUESTION') {
+                for (var key in players) {
+                    if (players.hasOwnProperty(key)) {
+                        if (players[key].gameRoomName === gameRoom) {
+                            players[key].send(JSON.stringify({
+                                messageType: "CHOOSE QUESTION",
                             }));
                         }
                     }

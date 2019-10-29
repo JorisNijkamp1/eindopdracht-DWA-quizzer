@@ -45,10 +45,10 @@ export function openWebSocket() {
                 console.log('CHOOSE CATEGORIES');
                 break;
 
-            // case "CHOOSE QUESTIONS":
-            //     theStore.dispatch(createCurrentGameStatusAction('choose_questions'));
-            //     console.log('CHOOSE QUESTIONS');
-            //     break;
+            case "CHOOSE QUESTION":
+                theStore.dispatch(createCurrentGameStatusAction('choose_question'));
+                console.log('CHOOSE QUESTION');
+                break;
 
             default:
                 console.log("Unknown messageType:", message);
@@ -242,11 +242,20 @@ export function startRound(gameRoom, categories) {
             if (response.status !== 200) console.log("Er gaat iets fout" + response.status);
             response.json().then(data => {
                 if (data.success) {
-                    console.log('Succesvol in Mongo opgeslagen')
-                    //do something
+                    sendChooseQuestionsMSG()
                 }
             });
         }).catch(err => console.log(err))
     }
 }
 
+/*========================================
+| Websocket send TEAM ACCEPT
+*/
+function sendChooseQuestionsMSG() {
+    let message = {
+        messageType: "CHOOSE QUESTION",
+    };
+
+    theSocket.sendJSON(message);
+}
