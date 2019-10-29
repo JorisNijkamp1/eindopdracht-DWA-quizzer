@@ -64,7 +64,7 @@ class CategorieenUI extends React.Component {
             this.props.questionCategories.map((categoryName) => {
                     let isSelected;
                     if (this.state.selectedCategories.includes(categoryName)) {
-                        isSelected = "pink";
+                        isSelected = "isSelected";
                     }
                     return (
                         <Col
@@ -73,7 +73,7 @@ class CategorieenUI extends React.Component {
                             onClick={() => {
                                 this.selectCategory(categoryName)
                             }}>
-                            <Card style={{backgroundColor: isSelected}}>
+                            <Card className={isSelected}>
                                 <Card.Body>
                                     <Card.Title className="text-center">
                                         {categoryName}
