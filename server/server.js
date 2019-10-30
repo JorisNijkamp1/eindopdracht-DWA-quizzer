@@ -471,6 +471,7 @@ app.get('/api/game/:gameRoom/ronde/:rondeID/question/:questionID/answers', async
         success: true,
         answers: currentGame.rondes[roundID].vragen[questionID].team_antwoorden,
     })
+
 });
 
 httpServer.on('upgrade', (req, networkSocket, head) => {

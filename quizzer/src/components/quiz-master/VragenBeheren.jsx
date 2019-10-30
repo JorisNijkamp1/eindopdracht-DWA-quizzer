@@ -62,6 +62,7 @@ class VragenBeherenUI extends React.Component {
 function mapStateToProps(state) {
     return {
         gameRoomTeams: state.createGame.gameRoomTeams,
+        allQuestionAnswers: state.createGame.allQuestionAnswers
     }
 }
 
