@@ -56,6 +56,11 @@ export function openWebSocket() {
                 console.log('CHOOSE QUESTION');
                 break;
 
+            case "ASKING QUESTION":
+                theStore.dispatch(createCurrentGameStatusAction('asking_question'));
+                console.log('ASKING QUESTION');
+                break;
+
             default:
                 console.log("Unknown messageType:", message);
         }
@@ -289,9 +294,20 @@ export function startQuestion(gameRoom, rondeID, question) {
             if (response.status !== 200) console.log("Er gaat iets fout" + response.status);
             response.json().then(data => {
                 if (data.success) {
-                    sendChooseQuestionsMSG()
+                    sendAskingQuestionsMSG()
                 }
             });
         }).catch(err => console.log(err))
     }
+}
+
+/*========================================
+| Websocket send CHOOSE QUESTION
+*/
+function sendAskingQuestionsMSG() {
+    let message = {
+        messageType: "ASKING QUESTION",
+    };
+
+    theSocket.sendJSON(message);
 }

@@ -381,27 +381,31 @@ app.post('/api/game/:gameRoom/ronde/:rondeID/question', async (req, res) => {
     const gameRoomName = req.params.gameRoom;
     const rondeID = (req.params.rondeID - 1);
 
-    //Get current game
-    let currentGame = await Games.findOne({_id: gameRoomName});
-    const question = req.body.question;
+    if (req.session.quizMaster) {
 
-    currentGame.rondes[rondeID].vragen.push({
-        vraag: question.question,
-        antwoord: question.answer,
-        categorie_naam: question.category,
-        team_antwoorden: []
-    });
+        //Get current game
+        let currentGame = await Games.findOne({_id: gameRoomName});
 
-    //Change current game status to choose_question
-    currentGame.game_status = 'choose_question';
+        const question = req.body.question;
 
-    //Save to mongoDB
-    currentGame.save(function (err) {
-        if (err) return console.error(err);
-        res.json({
-            success: true,
+        currentGame.rondes[rondeID].vragen.push({
+            vraag: question.question,
+            antwoord: question.answer,
+            categorie_naam: question.category,
+            team_antwoorden: []
         });
-    });
+
+        //Change current game status to choose_question
+        currentGame.game_status = 'asking_question';
+
+        //Save to mongoDB
+        currentGame.save(function (err) {
+            if (err) return console.error(err);
+            res.json({
+                success: true,
+            });
+        });
+    }
 });
 
 
@@ -508,7 +512,7 @@ websocketServer.on('connection', (socket, req) => {
             }
 
             /*====================================
-            | TO: All teams in a gameRoom AND Quiz<aster
+            | TO: All teams in a gameRoom AND QuizMaster
             | Send message that the QuizMaster is choosing categories
             */
             if (data.messageType === 'CHOOSE CATEGORIES') {
@@ -524,7 +528,7 @@ websocketServer.on('connection', (socket, req) => {
             }
 
             /*====================================
-            | TO: All teams in a gameRoom AND Quiz<aster
+            | TO: All teams in a gameRoom AND QuizMaster
             | Send message that the QuizMaster is choosing a question
             */
             if (data.messageType === 'CHOOSE QUESTION') {
@@ -533,6 +537,22 @@ websocketServer.on('connection', (socket, req) => {
                         if (players[key].gameRoomName === gameRoom) {
                             players[key].send(JSON.stringify({
                                 messageType: "CHOOSE QUESTION",
+                            }));
+                        }
+                    }
+                }
+            }
+
+            /*====================================
+            | TO: All teams in a gameRoom AND QuizMaster
+            | Send message that the QuizMaster is asking a question
+            */
+            if (data.messageType === 'ASKING QUESTION') {
+                for (var key in players) {
+                    if (players.hasOwnProperty(key)) {
+                        if (players[key].gameRoomName === gameRoom) {
+                            players[key].send(JSON.stringify({
+                                messageType: "ASKING QUESTION",
                             }));
                         }
                     }
