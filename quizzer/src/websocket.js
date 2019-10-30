@@ -5,7 +5,7 @@ import {
     increaseGameRoundNumberAction, increaseQuestionNumberAction
 } from "./action-reducers/createGame-actionReducer";
 import {createTeamNameStatusAction} from "./action-reducers/createTeam-actionReducer"
-import {createCurrentGameStatusAction} from "./action-reducers/createGame-actionReducer";
+import {createCurrentGameStatusAction, addTeamQuestionAnswerAction} from "./action-reducers/createGame-actionReducer";
 
 const port = 3001;
 const serverHostname = `${window.location.hostname}:${port}`;
@@ -75,6 +75,14 @@ export function openWebSocket() {
                 }
 
                 console.log('ASKING QUESTION');
+                break;
+
+            case "GET QUESTION ANSWERS":
+
+                console.log(message)
+
+                getQuestionAnswers(message.gameRoomName, message.roundNumber, message.questionNumber);
+                console.log("GET QUESTION ANSWERS");
                 break;
 
             default:
@@ -161,7 +169,9 @@ function getTeams() {
             console.log("Er gaat iets fout" + response.status);
         }
         response.json().then(data => {
-            theStore.dispatch(getGameRoomTeamsAction(data.teams))
+            if (data.success) {
+                theStore.dispatch(getGameRoomTeamsAction(data.teams))
+            }
         });
     }).catch(err => {
         console.log(err);
@@ -325,6 +335,48 @@ function sendAskingQuestionsMSG(question, category) {
         messageType: "ASKING QUESTION",
         question: question,
         category: category
+    };
+
+    theSocket.sendJSON(message);
+}
+
+/*========================================
+| Get al answers from a question (for Quizmaster)
+*/
+export function getQuestionAnswers(gameRoom, rondeID, question) {
+    if (gameRoom && rondeID && question) {
+
+        const url = `http://localhost:3001/api/game/${gameRoom}/ronde/${rondeID}/question/${question}/answers`;
+        const options = {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+            mode: 'cors'
+        };
+
+        return fetch(url, options).then(response => {
+            if (response.status !== 200) console.log("Er gaat iets fout" + response.status);
+            response.json().then(data => {
+                if (data.success) {
+                    console.log(data.answers)
+                    theStore.dispatch(addTeamQuestionAnswerAction(data.answers));
+                }
+            });
+        }).catch(err => console.log(err))
+    }
+}
+
+/*========================================
+| Websocket send GET QUESTION ANSWERS
+*/
+export function sendGetQuestionAnswersMSG(gameRoomName, roundNumber, questionNumber) {
+    let message = {
+        messageType: "GET QUESTION ANSWERS",
+        gameRoomName: gameRoomName,
+        roundNumber: roundNumber,
+        questionNumber: questionNumber
     };
 
     theSocket.sendJSON(message);

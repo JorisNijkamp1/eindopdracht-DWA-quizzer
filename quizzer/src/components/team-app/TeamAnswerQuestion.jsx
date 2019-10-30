@@ -7,30 +7,31 @@ import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
+import {getQuestionAnswers, sendGetQuestionAnswersMSG} from "../../websocket";
 
 class TeamAnswerQuestionUI extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            currentAnswer: '',
+            teamAnswer: '',
         };
     }
 
     onChangeCurrentAnswer = (e) => {
         this.setState({
-            currentAnswer: e.target.value
+            teamAnswer: e.target.value
         })
     };
 
     handleSubmit = e => {
         e.preventDefault();
 
-        console.log(this.state.currentAnswer);
+        console.log(this.state.teamAnswer);
 
-        const url = 'http://localhost:3001/api/game';
+        const url = `http://localhost:3001/api/game/${this.props.gameRoomName}/ronde/${this.props.roundNumber}/question/${this.props.questionNumber}/team/${this.props.teamName}/answer`;
         let data = {
-            currentAnswer: this.state.currentAnswer
+            teamAnswer: this.state.teamAnswer
         };
         const options = {
             method: 'PUT',
@@ -46,7 +47,8 @@ class TeamAnswerQuestionUI extends React.Component {
             .then(response => response.json())
             .then(data => {
                     if (data.success === true) {
-                        console.log('SUCCESVOL GELUKT')
+                        console.log('Antwoord verstuurd & ontvangen');
+                        sendGetQuestionAnswersMSG(this.props.gameRoomName, this.props.roundNumber, this.props.questionNumber);
                     }
                 }
             ).catch(err => console.log(err));
@@ -71,7 +73,7 @@ class TeamAnswerQuestionUI extends React.Component {
                                             U kunt uw antwoord wijzigen totdat de Quizz Master de vraag sluit!
                                         </Form.Label>
                                         <Form.Control type="text"
-                                                      value={this.state.currentAnswer}
+                                                      value={this.state.teamAnswer}
                                                       onChange={this.onChangeCurrentAnswer}
                                                       placeholder="Uw antwoord"
                                                       autoComplete="off"
@@ -94,10 +96,9 @@ function mapStateToProps(state) {
         currentCategory: state.createGame.currentCategory,
 
         gameRoomName: state.createTeam.gameRoomName,
-        teamRoomName: state.createTeam.teamRoomName,
+        teamName: state.createTeam.teamRoomName,
         roundNumber: state.createGame.roundNumber,
         questionNumber: state.createGame.questionNumber
-
     }
 }
 

@@ -72,6 +72,12 @@ export function createCurrentCategoryAction(currentCategory) {
         currentCategory: currentCategory
     };
 }
+export function addTeamQuestionAnswerAction(allQuestionAnswers) {
+    return {
+        type: "addTeamQuestionAnswerAction",
+        allQuestionAnswers: allQuestionAnswers
+    };
+}
 
 // Reducer:
 const initialCreateGameState = {
@@ -85,6 +91,7 @@ const initialCreateGameState = {
     questionNumber: undefined,
     currentQuestion: null,
     currentCategory: null,
+    allQuestionAnswers: []
 };
 
 export function createGameReducer(state = initialCreateGameState, action) {
@@ -147,6 +154,12 @@ export function createGameReducer(state = initialCreateGameState, action) {
         case 'createCurrentCategoryAction':
             changes = {
                 currentCategory: action.currentCategory,
+            };
+            return {...state, ...changes};
+
+        case 'addTeamQuestionAnswerAction':
+            changes = {
+                allQuestionAnswers: action.allQuestionAnswers,
             };
             return {...state, ...changes};
 

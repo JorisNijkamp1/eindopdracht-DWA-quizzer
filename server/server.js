@@ -69,6 +69,7 @@ app.get('/api/games/:gameRoom/teams', async (req, res) => {
     let currentGame = await Games.findOne({_id: gameRoom});
 
     return res.json({
+        success: true,
         teams: currentGame.teams,
     })
 });
@@ -411,6 +412,67 @@ app.post('/api/game/:gameRoom/ronde/:rondeID/question', async (req, res) => {
 });
 
 
+/*====================================
+| PUT A ANSWER AS TEAM ON A QUESTION
+*/
+app.put('/api/game/:gameRoom/ronde/:rondeID/question/:questionID/team/:teamName/answer', async (req, res) => {
+    const gameRoomName = req.params.gameRoom;
+    const roundID = (req.params.rondeID - 1);
+    const questionID = (req.params.questionID - 1);
+    const teamName = req.params.teamName;
+
+    const teamAnswer = req.body.teamAnswer
+
+    //Get current game
+    let currentGame = await Games.findOne({_id: gameRoomName});
+
+    let isAlreadyAnswered = false;
+    let teamKey = null;
+
+    //Check if team has already answered
+    currentGame.rondes[roundID].vragen[questionID].team_antwoorden.forEach(function (arrayItem, key) {
+        if (arrayItem.team_naam.includes(teamName) && arrayItem.team_naam === teamName) {
+            isAlreadyAnswered = true;
+            teamKey = key;
+        }
+    });
+
+    if (isAlreadyAnswered) {
+        currentGame.rondes[roundID].vragen[questionID].team_antwoorden[teamKey].gegeven_antwoord = teamAnswer;
+    }else {
+        currentGame.rondes[roundID].vragen[questionID].team_antwoorden.push({
+            team_naam: teamName,
+            gegeven_antwoord: teamAnswer,
+        });
+    }
+
+    //Save to mongoDB
+    currentGame.save(function (err) {
+        if (err) return console.error(err);
+        res.json({
+            success: true,
+            teamName: teamName,
+            teamAnswer: teamAnswer
+        });
+    });
+});
+
+/*====================================
+| GET ALL ANSWERS FROM A QUESTION
+*/
+app.get('/api/game/:gameRoom/ronde/:rondeID/question/:questionID/answers', async (req, res) => {
+    const gameRoom = req.params.gameRoom;
+    const roundID = (req.params.rondeID - 1);
+    const questionID = (req.params.questionID - 1);
+
+    let currentGame = await Games.findOne({_id: gameRoom});
+
+    return res.json({
+        success: true,
+        answers: currentGame.rondes[roundID].vragen[questionID].team_antwoorden,
+    })
+});
+
 httpServer.on('upgrade', (req, networkSocket, head) => {
     sessionParser(req, {}, () => {
         // Everything is fine. We tell the websocket server to
@@ -558,6 +620,26 @@ websocketServer.on('connection', (socket, req) => {
                                 messageType: "ASKING QUESTION",
                                 question: data.question,
                                 category: data.category
+                            }));
+                        }
+                    }
+                }
+            }
+
+            /*====================================
+            | TO: QuizMaster
+            | Send GET QUESTION ANSWERS msg
+            */
+            if (data.messageType === 'GET QUESTION ANSWERS') {
+                let data = JSON.parse(message);
+                for (var key in players) {
+                    if (players.hasOwnProperty(key)) {
+                        if (players[key].quizMaster && players[key].gameRoomName === gameRoom) {
+                            players[key].send(JSON.stringify({
+                                messageType: "GET QUESTION ANSWERS",
+                                gameRoomName: data.gameRoomName,
+                                roundNumber: data.roundNumber,
+                                questionNumber: data.questionNumber
                             }));
                         }
                     }
