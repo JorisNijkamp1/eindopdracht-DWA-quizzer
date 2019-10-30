@@ -1,10 +1,11 @@
 const mongoose = require('mongoose');
 require('./database/model/games');
 require('./database/model/questions');
-const dbName = 'quizzer';
+// require('./database/model/question');
 const db = mongoose.connection;
 const Games = mongoose.model('Games');
 const Questions = mongoose.model('Questions');
+// const Question = mongoose.model('Question');
 const dbConfig = require('./config');
 
 mongoose.connect(`mongodb://${dbConfig.USERNAME}:${dbConfig.PASSWORD}@${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`, {
@@ -23,6 +24,7 @@ mongoose.connect(`mongodb://${dbConfig.USERNAME}:${dbConfig.PASSWORD}@${dbConfig
 
 async function seedGames() {
     await Games.deleteMany();
+    // await Question.deleteMany();
 }
 
 async function seedQuestions() {

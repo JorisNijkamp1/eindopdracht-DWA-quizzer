@@ -381,41 +381,28 @@ app.post('/api/game/:gameRoom/ronde/:rondeID/question', async (req, res) => {
     const gameRoomName = req.params.gameRoom;
     const rondeID = (req.params.rondeID - 1);
 
-    //ToDo: veilig maken met session
-
-    const question = req.body.question;
-
     //Get current game
     let currentGame = await Games.findOne({_id: gameRoomName});
+    const question = req.body.question;
 
-    console.log('test 1');
-
-    const currentQuestion = {
+    currentGame.rondes[rondeID].vragen.push({
         vraag: question.question,
         antwoord: question.answer,
         categorie_naam: question.category,
         team_antwoorden: []
-    };
-
-    currentGame.rondes[rondeID].vragen.push(currentQuestion);
-
-    console.log(currentGame.rondes[rondeID])
-
+    });
 
     //Change current game status to choose_question
-    currentGame.game_status = 'asking_question';
-
-    console.log('test 3')
-
+    currentGame.game_status = 'choose_question';
 
     //Save to mongoDB
     currentGame.save(function (err) {
         if (err) return console.error(err);
-        console.log('test 4')
         res.json({
             success: true,
         });
     });
+
 });
 
 
