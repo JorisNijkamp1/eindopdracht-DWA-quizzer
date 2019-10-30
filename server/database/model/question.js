@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const TeamAnswer = require('./teamAnswer');
 
 //Create schema
-var questionScheme = new mongoose.Schema({
+const questionScheme = new mongoose.Schema({
     vraag: {
         type: String,
         // required: true,

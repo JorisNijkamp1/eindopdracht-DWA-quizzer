@@ -10,6 +10,7 @@ import {Categorieen} from "./Categorieen";
 import {getGameNameAction} from "../../action-reducers/createTeam-actionReducer";
 import TeamQuestions from "../team-app/TeamQuestions";
 import {Vragen} from "./Vragen";
+import VragenBeheren from "./VragenBeheren";
 
 class TeamsBeherenUI extends React.Component {
 
@@ -82,6 +83,9 @@ class TeamsBeherenUI extends React.Component {
         }
         if (this.props.currentGameStatus === 'choose_question') {
             return <Vragen/>
+        }
+        if (this.props.currentGameStatus === 'asking_question') {
+            return <VragenBeheren/>
         }
         if (this.props.currentGameStatus === null) {
             return (

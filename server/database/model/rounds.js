@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Question = require('./question');
 
 //Create schema
-var roundScheme = new mongoose.Schema({
+const roundScheme = new mongoose.Schema({
     ronde_status: {
         type: String,
         // required: true,

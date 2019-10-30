@@ -24,8 +24,6 @@ async function seedGames() {
     await Games.deleteMany();
 }
 
-
-
 async function seedQuestions() {
     await Questions.deleteMany();
 
