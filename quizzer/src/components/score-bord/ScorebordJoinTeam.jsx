@@ -4,7 +4,7 @@ import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Form from "react-bootstrap/Form";
-import ScorebordOverzichtScore from "./ScorebordOverzichtScore";
+import {ScorebordOverzichtScore} from "./ScorebordOverzichtScore";
 import {createScorebordStatusAction} from '../../action-reducers/createScorebord-actionReducer'
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";

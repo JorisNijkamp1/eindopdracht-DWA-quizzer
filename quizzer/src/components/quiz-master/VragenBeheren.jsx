@@ -1,4 +1,5 @@
 import React from "react";
+import * as ReactRedux from "react-redux";
 import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
@@ -7,40 +8,37 @@ import {Link} from "react-router-dom";
 import {Card} from "react-bootstrap";
 import HeaderTitel from "../HeaderTitel";
 
-class VragenBeheren extends React.Component {
+
+class VragenBeherenUI extends React.Component {
+    teamNaamOphalen() {
+        return (
+            this.props.gameRoomTeams.map(teamName => {
+                return (
+                    <Col md={{span: 6}} key={teamName._id}>
+                        <Card>
+                            <Card.Body>
+                                <Card.Title className="text-center">{teamName._id}</Card.Title>
+                                <Card.Text className="text-center">Antwoord</Card.Text>
+                                <Button variant="success" className={"float-left"} type="submit">
+                                    Goed
+                                </Button>
+                                <Button variant="danger" className={"float-right"} type="submit">
+                                    Fout
+                                </Button>
+                            </Card.Body>
+                        </Card>
+                    </Col>
+                )
+            })
+        )
+    }
+
     render() {
         return (
             <Container>
                 <Row className="min-vh-100">
                     <HeaderTitel/>
-                    <Col md={{span: 6}}>
-                        <Card>
-                            <Card.Body>
-                                <Card.Title className="text-center">Teamnaam 1</Card.Title>
-                                <Card.Text className="text-center">Antwoord</Card.Text>
-                                <Button variant="success" className={"float-left"} type="submit">
-                                    Goed
-                                </Button>
-                                <Button variant="danger" className={"float-right"} type="submit">
-                                    Fout
-                                </Button>
-                            </Card.Body>
-                        </Card>
-                    </Col>
-                    <Col md={{span: 6}}>
-                        <Card>
-                            <Card.Body>
-                                <Card.Title className="text-center">Teamnaam 2</Card.Title>
-                                <Card.Text className="text-center">Antwoord</Card.Text>
-                                <Button variant="success" className={"float-left"} type="submit">
-                                    Goed
-                                </Button>
-                                <Button variant="danger" className={"float-right"} type="submit">
-                                    Fout
-                                </Button>
-                            </Card.Body>
-                        </Card>
-                    </Col>
+                    {this.teamNaamOphalen()}
                     <Col className={"text-center"} md={{span: 3, offset: 2}}>
                         <Link to="/vragen-beheren">
                             <Button variant="danger" type="submit">
@@ -61,4 +59,14 @@ class VragenBeheren extends React.Component {
     }
 }
 
-export default VragenBeheren
+function mapStateToProps(state) {
+    return {
+        gameRoomTeams: state.createGame.gameRoomTeams,
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {}
+}
+
+export const VragenBeheren = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(VragenBeherenUI);

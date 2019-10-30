@@ -10,7 +10,7 @@ import {Categorieen} from "./Categorieen";
 import {getGameNameAction} from "../../action-reducers/createTeam-actionReducer";
 import TeamQuestions from "../team-app/TeamQuestions";
 import {Vragen} from "./Vragen";
-import VragenBeheren from "./VragenBeheren";
+import {VragenBeheren} from "./VragenBeheren";
 
 class TeamsBeherenUI extends React.Component {
 

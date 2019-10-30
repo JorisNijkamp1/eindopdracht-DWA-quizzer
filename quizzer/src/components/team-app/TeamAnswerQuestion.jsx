@@ -97,7 +97,6 @@ function mapStateToProps(state) {
         teamRoomName: state.createTeam.teamRoomName,
         roundNumber: state.createGame.roundNumber,
         questionNumber: state.createGame.questionNumber
-
     }
 }
 
