@@ -8,27 +8,28 @@ import {Link} from "react-router-dom";
 import {Card} from "react-bootstrap";
 import HeaderTitel from "../HeaderTitel";
 
-
 class VragenBeherenUI extends React.Component {
-    teamNaamOphalen() {
+    teamOphalen() {
         return (
             this.props.gameRoomTeams.map(teamName => {
-                return (
-                    <Col md={{span: 6}} key={teamName._id}>
-                        <Card>
-                            <Card.Body>
-                                <Card.Title className="text-center">{teamName._id}</Card.Title>
-                                <Card.Text className="text-center">Antwoord</Card.Text>
-                                <Button variant="success" className={"float-left"} type="submit">
-                                    Goed
-                                </Button>
-                                <Button variant="danger" className={"float-right"} type="submit">
-                                    Fout
-                                </Button>
-                            </Card.Body>
-                        </Card>
-                    </Col>
-                )
+                return this.props.allQuestionAnswers.map(teamAnswer => {
+                    return (
+                        <Col md={{span: 6}} key={teamName._id}>
+                            <Card>
+                                <Card.Body>
+                                    <Card.Title className="text-center">{teamName._id}</Card.Title>
+                                    <Card.Text className="text-center">{teamAnswer.gegeven_antwoord}</Card.Text>
+                                    <Button variant="success" className={"float-left"} type="submit">
+                                        Goed
+                                    </Button>
+                                    <Button variant="danger" className={"float-right"} type="submit">
+                                        Fout
+                                    </Button>
+                                </Card.Body>
+                            </Card>
+                        </Col>
+                    )
+                })
             })
         )
     }
@@ -38,7 +39,7 @@ class VragenBeherenUI extends React.Component {
             <Container>
                 <Row className="min-vh-100">
                     <HeaderTitel/>
-                    {this.teamNaamOphalen()}
+                    {this.teamOphalen()}
                     <Col className={"text-center"} md={{span: 3, offset: 2}}>
                         <Link to="/vragen-beheren">
                             <Button variant="danger" type="submit">
