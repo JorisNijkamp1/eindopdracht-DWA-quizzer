@@ -298,7 +298,8 @@ app.post('/api/games/:gameRoom/ronde', async (req, res) => {
 
             currentGame.rondes.push({
                 categories: roundCategories,
-                ronde_status: 'open'
+                ronde_status: 'open',
+                vragen: []
             });
 
             //Change current game status to choose_question
@@ -351,26 +352,69 @@ app.get('/api/game/:gameRoom/ronde/:rondeID/questions', async (req, res) => {
     const gameRoomName = req.params.gameRoom;
     const rondeID = (req.params.rondeID - 1);
 
+    if (req.session.quizMaster) {
+
+        //Get current game
+        let currentGame = await Games.findOne({_id: gameRoomName});
+
+        //Get all questions
+        let allQuestions = await Questions.find(
+            {category: {$in: currentGame.rondes[rondeID].categories}});
+
+        //push 10 random questions in a array
+        const questions = [];
+        for (let i = 0; i < 10; i++) {
+            questions.push(allQuestions[Math.floor(Math.random() * allQuestions.length)])
+        }
+
+        await res.json({
+            success: true,
+            questions: questions
+        });
+    }
+});
+
+/*====================================
+| POST A NEW QUESTION
+*/
+app.post('/api/game/:gameRoom/ronde/:rondeID/question', async (req, res) => {
+    const gameRoomName = req.params.gameRoom;
+    const rondeID = (req.params.rondeID - 1);
+
     //ToDo: veilig maken met session
+
+    const question = req.body.question;
 
     //Get current game
     let currentGame = await Games.findOne({_id: gameRoomName});
 
-    console.log(currentGame.rondes[rondeID].categories);
+    console.log('test 1');
 
-    //Get all questions
-    let allQuestions = await Questions.find(
-        { category: { $in: currentGame.rondes[rondeID].categories } });
+    const currentQuestion = {
+        vraag: question.question,
+        antwoord: question.answer,
+        categorie_naam: question.category,
+        team_antwoorden: []
+    };
 
-    //push 10 random questions in a array
-    const questions = [];
-    for (let i = 0; i < 10; i++) {
-        questions.push(allQuestions[Math.floor(Math.random()*allQuestions.length)])
-    }
+    currentGame.rondes[rondeID].vragen.push(currentQuestion);
 
-    await res.json({
-        success: true,
-        questions: questions
+    console.log(currentGame.rondes[rondeID])
+
+
+    //Change current game status to choose_question
+    currentGame.game_status = 'asking_question';
+
+    console.log('test 3')
+
+
+    //Save to mongoDB
+    currentGame.save(function (err) {
+        if (err) return console.error(err);
+        console.log('test 4')
+        res.json({
+            success: true,
+        });
     });
 });
 

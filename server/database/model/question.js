@@ -2,18 +2,18 @@ const mongoose = require('mongoose');
 const TeamAnswer = require('./teamAnswer');
 
 //Create schema
-var questionScheme = questionSchema = new mongoose.Schema({
+var questionScheme = new mongoose.Schema({
     vraag: {
         type: String,
-        required: true,
+        // required: true,
     },
     antwoord: {
         type: String,
-        required: true,
+        // required: true,
     },
     categorie_naam: {
         type: String,
-        required: true
+        // required: true
     },
     team_antwoorden: {
         type: [{type: TeamAnswer, ref: "TeamAnswer"}],
@@ -21,6 +21,6 @@ var questionScheme = questionSchema = new mongoose.Schema({
 });
 
 //Create model
-mongoose.model("V", questionScheme);
+mongoose.model("Question", questionScheme);
 
 module.exports = questionScheme;

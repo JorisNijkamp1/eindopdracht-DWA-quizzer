@@ -256,7 +256,7 @@ export function startRound(gameRoom, categories) {
 }
 
 /*========================================
-| Websocket send TEAM ACCEPT
+| Websocket send CHOOSE QUESTION
 */
 function sendChooseQuestionsMSG() {
     let message = {
@@ -264,4 +264,34 @@ function sendChooseQuestionsMSG() {
     };
 
     theSocket.sendJSON(message);
+}
+
+/*========================================
+| Starting a NEW question (for Quizmaster)
+*/
+export function startQuestion(gameRoom, rondeID, question) {
+    if (gameRoom) {
+        const url = `http://localhost:3001/api/game/${gameRoom}/ronde/${rondeID}/question`;
+        let data = {
+            question: question
+        };
+        const options = {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+            mode: 'cors'
+        };
+
+        return fetch(url, options).then(response => {
+            if (response.status !== 200) console.log("Er gaat iets fout" + response.status);
+            response.json().then(data => {
+                if (data.success) {
+                    sendChooseQuestionsMSG()
+                }
+            });
+        }).catch(err => console.log(err))
+    }
 }

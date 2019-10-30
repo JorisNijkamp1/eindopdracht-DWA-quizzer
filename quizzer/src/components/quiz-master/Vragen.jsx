@@ -8,12 +8,13 @@ import {ListGroup} from "react-bootstrap";
 import HeaderTitel from "../HeaderTitel";
 import {createGameQuestionsAction} from "../../action-reducers/createGame-actionReducer";
 import * as ReactRedux from "react-redux";
+import {startQuestion} from "../../websocket";
 
 class VragenUI extends React.Component {
     constructor(props) {
         super(props)
         this.state = ({
-            selectedQuestion: '',
+            selectedQuestion: null,
         })
     }
 
@@ -69,16 +70,22 @@ class VragenUI extends React.Component {
     }
 
     render() {
+        let startQuestionButton;
+        if (this.state.selectedQuestion) {
+            startQuestionButton = (
+                <Button variant="danger" type="submit" onClick={() => {
+                    startQuestion(this.props.gameRoom, this.props.roundNumber, this.state.selectedQuestion)
+                }}>
+                    Start vraag
+                </Button>
+            )
+        }
         return (
             <Container>
                 <Row className="min-vh-100">
                     <HeaderTitel/>
                     <Col className={"text-center"} md={{span: 6, offset: 3}}>
-                        <Link to="/vragen-beheren">
-                            <Button variant="danger" type="submit">
-                                Gekozen vraag kiezen
-                            </Button>
-                        </Link>
+                        {startQuestionButton}
                     </Col>
                     <ListGroup style={{width: '100%'}}>
                         {this.getQuestions()}

@@ -1,22 +1,22 @@
 const mongoose = require('mongoose');
 
 //Create schema
-const questionSchema = new mongoose.Schema({
+const questionsSchema = new mongoose.Schema({
     question: {
         type: String,
-        required: true,
+        // required: true,
     },
     answer: {
         type: String,
-        required: true,
+        // required: true,
     },
     category: {
         type: String,
-        required: true,
+        // required: true,
     }
 });
 
 //Create model
-mongoose.model("Questions", questionSchema);
+mongoose.model("Questions", questionsSchema);
 
-module.exports = questionSchema;
+module.exports = questionsSchema;
