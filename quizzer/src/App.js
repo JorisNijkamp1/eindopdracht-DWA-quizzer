@@ -13,7 +13,7 @@ import {Switch, Route} from "react-router-dom";
 import {CreateGame} from "./components/quiz-master/CreateGame";
 import ScorebordBeoordeling from "./components/score-bord/ScorebordBeoordeling";
 import ReactNotification from "react-notifications-component";
-import TeamAnswerQuestion from "./components/team-app/TeamAnswerQuestion";
+import {TeamAnswerQuestion} from "./components/team-app/TeamAnswerQuestion";
 //============================================================================
 //  The React component that renders the UI for the entire App.
 //----------------------------------------------------------------------------

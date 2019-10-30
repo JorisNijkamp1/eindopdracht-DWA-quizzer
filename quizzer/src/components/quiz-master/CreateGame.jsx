@@ -58,7 +58,7 @@ class CreateGameUI extends React.Component {
                         this.props.doChangeGameFormValidation("error")
                     }
                 }
-            );
+            ).catch(err => console.log(err));
     };
 
     errorMessage() {

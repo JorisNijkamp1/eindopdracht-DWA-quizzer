@@ -23,7 +23,7 @@ import Card from "react-bootstrap/Card";
 import Menu from "../Menu";
 import HeaderTitel from "../HeaderTitel";
 import TeamQuestions from "./TeamQuestions";
-import TeamAnswerQuestion from "./TeamAnswerQuestion";
+import {TeamAnswerQuestion} from "./TeamAnswerQuestion";
 
 class TeamAanmakenUI extends React.Component {
 

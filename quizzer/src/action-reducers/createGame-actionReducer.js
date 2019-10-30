@@ -52,6 +52,27 @@ export function increaseGameRoundNumberAction(roundNumber) {
     };
 }
 
+export function increaseQuestionNumberAction(questionNumber) {
+    return {
+        type: "increaseQuestionNumberAction",
+        questionNumber: questionNumber
+    };
+}
+
+export function createCurrentQuestionAction(currentQuestion) {
+    return {
+        type: "createCurrentQuestionAction",
+        currentQuestion: currentQuestion
+    };
+}
+
+export function createCurrentCategoryAction(currentCategory) {
+    return {
+        type: "createCurrentCategoryAction",
+        currentCategory: currentCategory
+    };
+}
+
 // Reducer:
 const initialCreateGameState = {
     formValidation: false,
@@ -60,7 +81,10 @@ const initialCreateGameState = {
     currentGameStatus: null,
     questionCategories: [],
     questions: [],
-    roundNumber: undefined
+    roundNumber: undefined,
+    questionNumber: undefined,
+    currentQuestion: null,
+    currentCategory: null,
 };
 
 export function createGameReducer(state = initialCreateGameState, action) {
@@ -102,10 +126,27 @@ export function createGameReducer(state = initialCreateGameState, action) {
             };
             return {...state, ...changes};
 
-
         case 'increaseGameRoundNumberAction':
             changes = {
                 roundNumber: action.roundNumber,
+            };
+            return {...state, ...changes};
+
+        case 'increaseQuestionNumberAction':
+            changes = {
+                questionNumber: action.questionNumber,
+            };
+            return {...state, ...changes};
+
+        case 'createCurrentQuestionAction':
+            changes = {
+                currentQuestion: action.currentQuestion,
+            };
+            return {...state, ...changes};
+
+        case 'createCurrentCategoryAction':
+            changes = {
+                currentCategory: action.currentCategory,
             };
             return {...state, ...changes};
 

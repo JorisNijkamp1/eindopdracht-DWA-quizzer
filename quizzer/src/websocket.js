@@ -1,5 +1,9 @@
 import {theStore} from './index'
-import {getGameRoomTeamsAction, increaseGameRoundNumberAction} from "./action-reducers/createGame-actionReducer";
+import {
+    createCurrentCategoryAction, createCurrentQuestionAction,
+    getGameRoomTeamsAction,
+    increaseGameRoundNumberAction, increaseQuestionNumberAction
+} from "./action-reducers/createGame-actionReducer";
 import {createTeamNameStatusAction} from "./action-reducers/createTeam-actionReducer"
 import {createCurrentGameStatusAction} from "./action-reducers/createGame-actionReducer";
 
@@ -8,6 +12,9 @@ const serverHostname = `${window.location.hostname}:${port}`;
 let theSocket;
 
 export function openWebSocket() {
+
+    const store = theStore.getState();
+
     if (theSocket) {
         theSocket.onerror = null;
         theSocket.onopen = null;
@@ -42,7 +49,7 @@ export function openWebSocket() {
 
             case "CHOOSE CATEGORIES":
                 theStore.dispatch(createCurrentGameStatusAction('choose_categories'));
-                let store = theStore.getState(), roundNumber = store.createGame.roundNumber;
+                let roundNumber = store.createGame.roundNumber;
                 if (roundNumber) {
                     theStore.dispatch(increaseGameRoundNumberAction(roundNumber + 1))
                 }else {
@@ -53,11 +60,20 @@ export function openWebSocket() {
 
             case "CHOOSE QUESTION":
                 theStore.dispatch(createCurrentGameStatusAction('choose_question'));
+
                 console.log('CHOOSE QUESTION');
                 break;
 
             case "ASKING QUESTION":
                 theStore.dispatch(createCurrentGameStatusAction('asking_question'));
+                theStore.dispatch(createCurrentQuestionAction(message.question));
+                theStore.dispatch(createCurrentCategoryAction(message.category));
+                if (store.createGame.questionNumber) {
+                    theStore.dispatch(increaseQuestionNumberAction(store.createGame.questionNumber + 1))
+                }else {
+                    theStore.dispatch(increaseQuestionNumberAction(1))
+                }
+
                 console.log('ASKING QUESTION');
                 break;
 
@@ -126,7 +142,7 @@ function sendTeamDeletedMSG(teamName) {
 | Get all current teams from a Gameroom (For quizmaster)
 */
 function getTeams() {
-    let store = theStore.getState();
+    const store = theStore.getState();
     let gameRoom = store.createGame.gameRoom;
 
     const url = `http://localhost:3001/api/games/${gameRoom}/teams`;
@@ -294,7 +310,7 @@ export function startQuestion(gameRoom, rondeID, question) {
             if (response.status !== 200) console.log("Er gaat iets fout" + response.status);
             response.json().then(data => {
                 if (data.success) {
-                    sendAskingQuestionsMSG()
+                    sendAskingQuestionsMSG(data.question, data.category)
                 }
             });
         }).catch(err => console.log(err))
@@ -304,9 +320,11 @@ export function startQuestion(gameRoom, rondeID, question) {
 /*========================================
 | Websocket send CHOOSE QUESTION
 */
-function sendAskingQuestionsMSG() {
+function sendAskingQuestionsMSG(question, category) {
     let message = {
         messageType: "ASKING QUESTION",
+        question: question,
+        category: category
     };
 
     theSocket.sendJSON(message);

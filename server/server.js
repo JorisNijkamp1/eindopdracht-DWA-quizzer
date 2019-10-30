@@ -403,6 +403,8 @@ app.post('/api/game/:gameRoom/ronde/:rondeID/question', async (req, res) => {
             if (err) return console.error(err);
             res.json({
                 success: true,
+                question: question.question,
+                category: question.category
             });
         });
     }
@@ -548,11 +550,14 @@ websocketServer.on('connection', (socket, req) => {
             | Send message that the QuizMaster is asking a question
             */
             if (data.messageType === 'ASKING QUESTION') {
+                let data = JSON.parse(message);
                 for (var key in players) {
                     if (players.hasOwnProperty(key)) {
                         if (players[key].gameRoomName === gameRoom) {
                             players[key].send(JSON.stringify({
                                 messageType: "ASKING QUESTION",
+                                question: data.question,
+                                category: data.category
                             }));
                         }
                     }
