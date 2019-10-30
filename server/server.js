@@ -402,7 +402,6 @@ app.post('/api/game/:gameRoom/ronde/:rondeID/question', async (req, res) => {
             success: true,
         });
     });
-
 });
 
 

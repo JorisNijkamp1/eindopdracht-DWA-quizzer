@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 //Create schema
-var teamScheme = locationSchema = new mongoose.Schema({
+var teamScheme = new mongoose.Schema({
     _id: {
         type: String,
         required: true,

@@ -16,6 +16,6 @@ const teamAnswerSchema = new mongoose.Schema({
 });
 
 //Create model
-mongoose.model("Questions", teamAnswerSchema);
+mongoose.model("TeamAnswers", teamAnswerSchema);
 
 module.exports = teamAnswerSchema;

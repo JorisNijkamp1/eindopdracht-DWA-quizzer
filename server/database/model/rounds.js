@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const Question = require('./questions');
+const Question = require('./question');
 
 //Create schema
 var roundScheme = new mongoose.Schema({
