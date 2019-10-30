@@ -1,11 +1,13 @@
 import React from "react";
+import * as ReactRedux from "react-redux";
 import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import {Card} from "react-bootstrap";
 import HeaderTitel from "../HeaderTitel";
 
-class ScorebordAntwoorden extends React.Component {
+
+class ScorebordAntwoordUI extends React.Component {
 
     render() {
         return (
@@ -50,4 +52,22 @@ class ScorebordAntwoorden extends React.Component {
     }
 }
 
-export default ScorebordAntwoorden
+function mapStateToProps(state) {
+    return {
+        currentQuestion: state.createGame.currentQuestion,
+        currentCategory: state.createGame.currentCategory,
+
+        gameRoomName: state.createTeam.gameRoomName,
+        teamRoomName: state.createTeam.teamRoomName,
+        roundNumber: state.createGame.roundNumber,
+        questionNumber: state.createGame.questionNumber
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        // Nog niks nodig? Eventueel later
+    }
+}
+
+export const ScorebordAntwoorden = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(ScorebordAntwoordUI);
