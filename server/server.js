@@ -41,7 +41,7 @@ const websocketServer = new WebSocket.Server({noServer: true});
 /*====================================
 | JOIN GAME WITH SCOREBORD
 */
-app.get('/api/games/:gameRoom/scorebord', async (req, res) => {
+app.get('/api/games/:gameRoom/scoreboard', async (req, res) => {
     const gameRoomName = req.params.gameRoom;
 
     //Get current game
@@ -58,6 +58,7 @@ app.get('/api/games/:gameRoom/scorebord', async (req, res) => {
         await res.json({
             success: true,
             gameRoomName: gameRoomName,
+            currentTeams: currentGame.teams
         });
     } else {
         await res.json({
@@ -478,7 +479,6 @@ app.get('/api/game/:gameRoom/ronde/:rondeID/question/:questionID/answers', async
         success: true,
         answers: currentGame.rondes[roundID].vragen[questionID].team_antwoorden,
     })
-
 });
 
 httpServer.on('upgrade', (req, networkSocket, head) => {

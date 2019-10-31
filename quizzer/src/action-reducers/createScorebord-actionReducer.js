@@ -3,17 +3,25 @@
 //---------------------------------------------------------------------
 
 // Action Creators:
-export function createScorebordStatusAction(formValidation) {
+export function createScorebordStatusAction(formValidationScoreboard) {
     return {
         type: "createScorebordStatusAction",
-        formValidation: formValidation
+        formValidationScoreboard: formValidationScoreboard
+    };
+}
+
+export function createAddCurrentTeamsScoreboardAction(currentTeamsScoreboard) {
+    return {
+        type: "createAddCurrentTeamsScoreboardAction",
+        currentTeamsScoreboard: currentTeamsScoreboard
     };
 }
 
 
 // Reducer:
 const initialCreateScorebordState = {
-    formValidation: false,
+    formValidationScoreboard: false,
+    currentTeamsScoreboard: null
 };
 
 export function createScorebordReducer(state = initialCreateScorebordState, action) {
@@ -21,7 +29,13 @@ export function createScorebordReducer(state = initialCreateScorebordState, acti
     switch (action.type) {
         case 'createScorebordStatusAction':
             changes = {
-                formValidation: action.formValidation,
+                formValidationScoreboard: action.formValidationScoreboard,
+            };
+            return {...state, ...changes};
+
+        case 'createAddCurrentTeamsScoreboardAction':
+            changes = {
+                currentTeamsScoreboard: action.currentTeamsScoreboard,
             };
             return {...state, ...changes};
 

@@ -12,7 +12,7 @@ import {createScorebordReducer} from "../createScorebord-actionReducer";
 const allReducers = combineReducers({
     createGame: createGameReducer,
     createTeam: createTeamReducer,
-    createScorebord: createScorebordReducer
+    createScoreboard: createScorebordReducer
 });
 
 export default allReducers

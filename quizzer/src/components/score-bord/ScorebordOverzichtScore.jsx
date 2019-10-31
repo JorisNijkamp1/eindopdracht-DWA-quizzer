@@ -6,16 +6,10 @@ import Row from "react-bootstrap/Row";
 import {Card} from "react-bootstrap";
 import HeaderTitel from "../HeaderTitel";
 
-
 class ScorebordOverzichtScoreUI extends React.Component {
 
     test() {
-        console.log(this.props.currentQuestionCategory);
-        console.log(this.props.currentQuestion);
-        console.log(this.props.gameRoomName);
-        console.log(this.props.questionNumber);
-        console.log(this.props.roundNumber);
-        console.log(this.props.teamRoomName);
+        console.log(this.props.currentTeamsScoreboard);
     }
 
     render() {
@@ -50,13 +44,16 @@ class ScorebordOverzichtScoreUI extends React.Component {
 
 function mapStateToProps(state) {
     return {
-        currentQuestion: state.createGame.currentQuestion,
-        currentQuestionCategory: state.createGame.currentQuestionCategory,
+        // currentQuestion: state.createGame.currentQuestion,
+        // currentQuestionCategory: state.createGame.currentQuestionCategory,
+        //
+        // gameRoomName: state.createTeam.gameRoomName,
+        // teamRoomName: state.createTeam.teamRoomName,
+        // roundNumber: state.createGame.roundNumber,
+        // questionNumber: state.createGame.questionNumber,
+        gameRoomTeams: state.createGame.gameRoomTeams,
+        currentTeamsScoreboard: state.createScoreboard.currentTeamsScoreboard
 
-        gameRoomName: state.createTeam.gameRoomName,
-        teamRoomName: state.createTeam.teamRoomName,
-        roundNumber: state.createGame.roundNumber,
-        questionNumber: state.createGame.questionNumber
     }
 }
 

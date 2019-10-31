@@ -5,7 +5,10 @@ import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Form from "react-bootstrap/Form";
 import {ScorebordOverzichtScore} from "./ScorebordOverzichtScore";
-import {createScorebordStatusAction} from '../../action-reducers/createScorebord-actionReducer'
+import {
+    createAddCurrentTeamsScoreboardAction,
+    createScorebordStatusAction
+} from '../../action-reducers/createScorebord-actionReducer'
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import {Link} from "react-router-dom";
@@ -22,11 +25,15 @@ class ScorebordJoinTeamUI extends React.Component {
         };
     }
 
+    componentDidMount() {
+        console.log(this.props.gameRoomTeams)
+    }
+
     handleSubmit = e => {
         e.preventDefault();
         console.log(this.state.gameRoomName);
 
-        const url = `http://localhost:3001/api/games/${this.state.gameRoomName}/scorebord`;
+        const url = `http://localhost:3001/api/games/${this.state.gameRoomName}/scoreboard`;
 
         const options = {
             method: 'GET',
@@ -43,6 +50,8 @@ class ScorebordJoinTeamUI extends React.Component {
                     if (data.success) {
                         openWebSocket();
                         console.log("De game bestaat");
+                        console.log(data);
+                        this.props.doAddCurrentTeamsScoreboard(data.currentTeams);
                         this.props.doChangeStatus("succes");
                     } else {
                         console.log("De game bestaat niet");
@@ -53,7 +62,7 @@ class ScorebordJoinTeamUI extends React.Component {
     };
 
     errorMessage() {
-        if (this.props.formValidation === "error") {
+        if (this.props.formValidationScoreboard === "error") {
             return "is-invalid"
         }
     }
@@ -65,7 +74,7 @@ class ScorebordJoinTeamUI extends React.Component {
     };
 
     createScoreBord() {
-        if (this.props.formValidation === "succes") {
+        if (this.props.formValidationScoreboard === "succes") {
             return <ScorebordOverzichtScore/>
         } else {
             return (
@@ -113,13 +122,14 @@ class ScorebordJoinTeamUI extends React.Component {
 
 function mapStateToProps(state) {
     return {
-        formValidation: state.createScorebord.formValidation,
+        formValidationScoreboard: state.createScoreboard.formValidationScoreboard,
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        doChangeStatus: (formValidation) => dispatch(createScorebordStatusAction(formValidation))
+        doChangeStatus: (formValidationScoreboard) => dispatch(createScorebordStatusAction(formValidationScoreboard)),
+        doAddCurrentTeamsScoreboard: (currentTeamsScoreboard) => dispatch(createAddCurrentTeamsScoreboardAction(currentTeamsScoreboard))
     }
 }
 
