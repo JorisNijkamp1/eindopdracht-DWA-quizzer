@@ -4,7 +4,6 @@ import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Form from "react-bootstrap/Form";
-import {ScorebordOverzichtScore} from "./ScorebordOverzichtScore";
 import {
     createAddCurrentTeamsScoreboardAction,
     createScorebordStatusAction, getGameRoomTeamsScoreboardAction
@@ -12,9 +11,9 @@ import {
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import {Link} from "react-router-dom";
-import Menu from "../Menu";
 import HeaderTitel from "../HeaderTitel";
 import {openWebSocket} from "../../websocket";
+import Menu from "../Menu";
 
 class ScorebordJoinTeamUI extends React.Component {
 
@@ -66,49 +65,39 @@ class ScorebordJoinTeamUI extends React.Component {
         })
     };
 
-    createScoreBord() {
-        if (this.props.formValidationScoreboard === "succes") {
-            return <ScorebordOverzichtScore/>
-        } else {
-            return (
-                <Container>
-                    <Row className="min-vh-100">
-                        <HeaderTitel/>
-                        <Col md={{span: 8, offset: 2}} className="h-100">
-                            <Form onSubmit={this.handleSubmit}>
-                                <Card bg="dark" border="danger" text="white">
-                                    <Card.Header>Bekijk een game</Card.Header>
-                                    <Card.Body>
-                                        <Form.Group controlId="exampleForm.ControlInput1">
-                                            <Form.Label>Vul hier de game room naam in van de game die je wilt
-                                                zien!</Form.Label>
-                                            <Form.Control type="text"
-                                                          onChange={this.onChangeGameRoomName}
-                                                          placeholder="Game room naam"
-                                                          className={this.errorMessage()}
-                                                          autoComplete="off"/>
-                                            <div className="invalid-feedback">Deze gameroom bestaat niet!</div>
-                                        </Form.Group>
-                                        <Button variant="danger" type="submit">
-                                            Ga naar scorebord overzicht
-                                        </Button>
-                                        <Link to="/" className="btn btn-link">Annuleren</Link>
-                                    </Card.Body>
-                                </Card>
-                            </Form>
-                        </Col>
-                    </Row>
-                </Container>
-            )
-        }
-    }
-
     render() {
         return (
-            <div>
-                <Menu/>
-                {this.createScoreBord()}
-            </div>
+            <Container>
+                <div>
+                    <Menu/>
+                </div>
+                <Row className="min-vh-100">
+                    <HeaderTitel/>
+                    <Col md={{span: 8, offset: 2}} className="h-100">
+                        <Form onSubmit={this.handleSubmit}>
+                            <Card bg="dark" border="danger" text="white">
+                                <Card.Header>Bekijk een game</Card.Header>
+                                <Card.Body>
+                                    <Form.Group controlId="exampleForm.ControlInput1">
+                                        <Form.Label>Vul hier de game room naam in van de game die je wilt
+                                            zien!</Form.Label>
+                                        <Form.Control type="text"
+                                                      onChange={this.onChangeGameRoomName}
+                                                      placeholder="Game room naam"
+                                                      className={this.errorMessage()}
+                                                      autoComplete="off"/>
+                                        <div className="invalid-feedback">Deze gameroom bestaat niet!</div>
+                                    </Form.Group>
+                                    <Button variant="danger" type="submit">
+                                        Ga naar scorebord overzicht
+                                    </Button>
+                                    <Link to="/" className="btn btn-link">Annuleren</Link>
+                                </Card.Body>
+                            </Card>
+                        </Form>
+                    </Col>
+                </Row>
+            </Container>
         )
     }
 }

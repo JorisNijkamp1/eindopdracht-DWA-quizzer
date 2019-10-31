@@ -12,6 +12,25 @@ class ScorebordOverzichtScoreUI extends React.Component {
         console.log(this.props.currentTeamsScoreboard);
     }
 
+    getTeams() {
+        return (
+            this.props.currentTeamsScoreboard.map(teamName => {
+                return (
+                    <Col md={{span: 6}} key={teamName._id}>
+                        <Card>
+                            <Card.Body>
+                                <Card.Title>{teamName._id}</Card.Title>
+                                <Card.Text>{teamName.team_score}</Card.Text>
+                                <Card.Text>Round 1: 10/12</Card.Text>
+                                <Card.Text>Round2: 8/12</Card.Text>
+                            </Card.Body>
+                        </Card>
+                    </Col>
+                )
+            })
+        )
+    }
+
     render() {
         return (
             <Container>
@@ -26,16 +45,7 @@ class ScorebordOverzichtScoreUI extends React.Component {
                             </Card.Body>
                         </Card>
                     </Col>
-                    <Col md={{span: 6}}>
-                        <Card>
-                            <Card.Body>
-                                <Card.Title>Teamnaam 1</Card.Title>
-                                <Card.Text>RP: 12</Card.Text>
-                                <Card.Text>Round 1: 10/12</Card.Text>
-                                <Card.Text>Round2: 8/12</Card.Text>
-                            </Card.Body>
-                        </Card>
-                    </Col>
+                    {this.getTeams()}
                 </Row>
             </Container>
         )
@@ -46,14 +56,11 @@ function mapStateToProps(state) {
     return {
         // currentQuestion: state.createGame.currentQuestion,
         // currentQuestionCategory: state.createGame.currentQuestionCategory,
-        //
-        // gameRoomName: state.createTeam.gameRoomName,
-        // teamRoomName: state.createTeam.teamRoomName,
+
         // roundNumber: state.createGame.roundNumber,
         // questionNumber: state.createGame.questionNumber,
         gameRoomTeams: state.createGame.gameRoomTeams,
         currentTeamsScoreboard: state.createScoreboard.currentTeamsScoreboard
-
     }
 }
 
