@@ -11,6 +11,7 @@ import Card from "react-bootstrap/Card";
 import {Link} from "react-router-dom";
 import Menu from "../Menu";
 import HeaderTitel from "../HeaderTitel";
+import {openWebSocket} from "../../websocket";
 
 class ScorebordJoinTeamUI extends React.Component {
 
@@ -40,7 +41,7 @@ class ScorebordJoinTeamUI extends React.Component {
             .then(response => response.json())
             .then(data => {
                     if (data.success) {
-                        // openWebSocket();
+                        openWebSocket();
                         console.log("De game bestaat");
                         this.props.doChangeStatus("succes");
                     } else {

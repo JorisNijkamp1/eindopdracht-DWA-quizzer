@@ -47,6 +47,12 @@ app.get('/api/games/:gameRoom/scorebord', async (req, res) => {
     //Get current game
     let currentGame = await Games.findOne({_id: gameRoomName});
 
+    //set session gameRoomName
+    req.session.gameRoomName = gameRoomName;
+
+    //set session quizMaster = true
+    req.session.scoreBoard = true;
+
     //Check if game exits
     if (currentGame) {
         await res.json({
