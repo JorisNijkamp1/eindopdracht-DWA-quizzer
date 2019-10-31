@@ -17,40 +17,47 @@ class VragenBeherenUI extends React.Component {
                 return this.props.allQuestionAnswers.map(teamAnswer => {
                     let answer = (teamName._id === teamAnswer.team_naam) ? teamAnswer.gegeven_antwoord : 'Nog geen antwoord gegeven..';
 
+                    const currentGameStatus = this.props.currentGameStatus;
+                    const currentTeamName = teamName._id;
+                    const correct = teamAnswer.correct;
+
                     let questionStatus;
-                    if (this.props.currentGameStatus === 'question_closed' && teamName._id === teamAnswer.team_naam && teamAnswer.correct === true) {
+                    if (currentGameStatus === 'question_closed' && currentTeamName === teamAnswer.team_naam && correct === true) {
                         questionStatus =
                             <p className={"text-center"} style={{color: '#28a745'}}><i>Antwoord is goedgekeurd</i></p>;
-                    } else if (this.props.currentGameStatus === 'question_closed' && teamName._id === teamAnswer.team_naam && teamAnswer.correct === false) {
+                    } else if (currentGameStatus === 'question_closed' && currentTeamName === teamAnswer.team_naam && correct === false) {
                         questionStatus =
                             <p className={"text-center"} style={{color: '#dc3545'}}><i>Antwoord is afgewezen</i></p>;
-                    } else if (this.props.currentGameStatus === 'question_closed' && teamName._id === teamAnswer.team_naam) {
+                    } else if (currentGameStatus === 'question_closed' && currentTeamName === teamAnswer.team_naam) {
                         questionStatus = (
                             <div>
                                 <Button variant="success" className={"float-left"} type="submit" onClick={() => {
-                                    teamAnswerIsCorrect(this.props.gameRoom, this.props.roundNumber, this.props.questionNumber, teamName._id, true)
+                                    teamAnswerIsCorrect(this.props.gameRoom, this.props.roundNumber, this.props.questionNumber, currentTeamName, true)
                                 }}>
                                     <FontAwesomeIcon icon={faCheck} aria-hidden="true"/>
                                 </Button>
                                 <Button variant="danger" className={"float-right"} type="submit" onClick={() => {
-                                    teamAnswerIsCorrect(this.props.gameRoom, this.props.roundNumber, this.props.questionNumber, teamName._id, false)
+                                    teamAnswerIsCorrect(this.props.gameRoom, this.props.roundNumber, this.props.questionNumber, currentTeamName, false)
                                 }}>
                                     <FontAwesomeIcon icon={faTimes} aria-hidden="true"/>
                                 </Button>
                             </div>
                         )
                     }
-                    return (
-                        <Col key={teamName._id} className={"pb-4"}>
-                            <Card>
-                                <Card.Body>
-                                    <Card.Title className="text-center">{teamName._id}</Card.Title>
-                                    <Card.Text className="text-center"><i>{answer}</i></Card.Text>
-                                    {questionStatus}
-                                </Card.Body>
-                            </Card>
-                        </Col>
-                    )
+
+                    if (currentTeamName === teamAnswer.team_naam) {
+                        return (
+                            <Col key={teamName._id} className={"pb-4"}>
+                                <Card>
+                                    <Card.Body>
+                                        <Card.Title className="text-center">{teamName._id}</Card.Title>
+                                        <Card.Text className="text-center"><i>{answer}</i></Card.Text>
+                                        {questionStatus}
+                                    </Card.Body>
+                                </Card>
+                            </Col>
+                        )
+                    }
                 })
             })
         )

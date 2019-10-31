@@ -120,6 +120,8 @@ app.put('/api/games/:gameRoom/team/:teamName', async (req, res) => {
     const gameRoom = req.params.gameRoom;
     const teamName = req.params.teamName;
 
+    console.log(gameRoom)
+
     //Check of isset session gameRoomName & is quizMaster
     if (req.session.gameRoomName === gameRoom && req.session.quizMaster) {
 
@@ -745,6 +747,25 @@ websocketServer.on('connection', (socket, req) => {
                                 gameRoomName: data.gameRoomName,
                                 roundNumber: data.roundNumber,
                                 questionNumber: data.questionNumber
+                            }));
+                        }
+                    }
+                }
+            }
+
+            /*====================================
+            | TO: ScoreBoard
+            | Send SCOREBOARD TEAM ANSWERED msg
+            */
+            if (data.messageType === 'SCOREBOARD TEAM ANSWERED') {
+                for (var key in players) {
+                    let data = JSON.parse(message);
+                    if (players.hasOwnProperty(key)) {
+                        if (players[key].scoreBoard && players[key].gameRoomName === gameRoom) {
+                            players[key].send(JSON.stringify({
+                                messageType: "SCOREBOARD TEAM ANSWERED",
+                                teamName: data.teamName,
+                                isAnswered: data.isAnswered
                             }));
                         }
                     }

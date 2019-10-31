@@ -7,7 +7,7 @@ import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
-import {sendGetQuestionAnswersMSG} from "../../websocket";
+import {sendGetQuestionAnswersMSG, sendGetTeamIsAnsweredMSG} from "../../websocket";
 
 class TeamAnswerQuestionUI extends React.Component {
 
@@ -49,6 +49,7 @@ class TeamAnswerQuestionUI extends React.Component {
                     if (data.success === true) {
                         console.log('Antwoord verstuurd & ontvangen');
                         sendGetQuestionAnswersMSG(this.props.gameRoomName, this.props.roundNumber, this.props.questionNumber);
+                        sendGetTeamIsAnsweredMSG(this.props.teamName,true);
                     }
                 }
             ).catch(err => console.log(err));

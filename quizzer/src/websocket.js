@@ -89,6 +89,11 @@ export function openWebSocket() {
                 console.log("GET QUESTION ANSWERS");
                 break;
 
+            case "SCOREBOARD TEAM ANSWERED":
+                console.log("SCOREBOARD TEAM ANSWERED");
+                console.log(message);
+                break;
+
             case "QUESTION CLOSED":
                 theStore.dispatch(createCurrentGameStatusAction('question_closed'));
                 console.log("QUESTION CLOSED");
@@ -397,6 +402,19 @@ export function sendGetQuestionAnswersMSG(gameRoomName, roundNumber, questionNum
         gameRoomName: gameRoomName,
         roundNumber: roundNumber,
         questionNumber: questionNumber
+    };
+
+    theSocket.sendJSON(message);
+}
+
+/*========================================
+| Websocket send GET QUESTION ANSWERS
+*/
+export function sendGetTeamIsAnsweredMSG(teamName, isAnswered) {
+    let message = {
+        messageType: "SCOREBOARD TEAM ANSWERED",
+        teamName: teamName,
+        isAnswered: isAnswered,
     };
 
     theSocket.sendJSON(message);
