@@ -465,9 +465,47 @@ app.post('/api/game/:gameRoom/ronde/:rondeID/question/:questionID/team/:teamName
     });
 });
 
+/*====================================
+| GET ALL ANSWERS FROM A QUESTION
+*/
+app.get('/api/game/:gameRoom/ronde/:rondeID/question/:questionID/answers', async (req, res) => {
+    const gameRoom = req.params.gameRoom;
+    const roundID = (req.params.rondeID - 1);
+    const questionID = (req.params.questionID - 1);
+
+    let currentGame = await Games.findOne({_id: gameRoom});
+
+    return res.json({
+        success: true,
+        answers: currentGame.rondes[roundID].vragen[questionID].team_antwoorden,
+    })
+});
 
 /*====================================
-| CHANGE A ANSWER TO CORRECT OR INCORRECT (AS QUIZMASTER)
+| CHANGE THE STATUS OF THE GAME TO CURRENT QUESTION CLOSED (AS QUIZMASTER)
+*/
+app.put('/api/game/:gameRoom/ronde/:rondeID/question', async (req, res) => {
+    const gameRoomName = req.params.gameRoom;
+    const roundID = (req.params.rondeID - 1);
+
+    //Get current game
+    let currentGame = await Games.findOne({_id: gameRoomName});
+
+    //Change current round status
+    currentGame.rondes[roundID].ronde_status = 'question_closed';
+
+    //Save to mongoDB
+    currentGame.save(function (err) {
+        if (err) return console.error(err);
+        res.json({
+            success: true,
+            gameStatus: 'question_closed'
+        });
+    });
+});
+
+/*====================================
+| CHANGE A TEAM ANSWER TO CORRECT OR INCORRECT (AS QUIZMASTER)
 */
 app.put('/api/game/:gameRoom/ronde/:rondeID/question/:questionID/team/:teamName/answer', async (req, res) => {
     const gameRoomName = req.params.gameRoom;
@@ -506,22 +544,6 @@ app.put('/api/game/:gameRoom/ronde/:rondeID/question/:questionID/team/:teamName/
     });
 });
 
-
-/*====================================
-| GET ALL ANSWERS FROM A QUESTION
-*/
-app.get('/api/game/:gameRoom/ronde/:rondeID/question/:questionID/answers', async (req, res) => {
-    const gameRoom = req.params.gameRoom;
-    const roundID = (req.params.rondeID - 1);
-    const questionID = (req.params.questionID - 1);
-
-    let currentGame = await Games.findOne({_id: gameRoom});
-
-    return res.json({
-        success: true,
-        answers: currentGame.rondes[roundID].vragen[questionID].team_antwoorden,
-    })
-});
 
 httpServer.on('upgrade', (req, networkSocket, head) => {
     sessionParser(req, {}, () => {
@@ -670,8 +692,6 @@ websocketServer.on('connection', (socket, req) => {
             */
             if (data.messageType === 'ASKING QUESTION') {
                 let data = JSON.parse(message);
-
-                //For QuizMaster & Teams (Sends the Question and Question Category to all the teams)
                 for (var key in players) {
                     if (players.hasOwnProperty(key)) {
                         if (players[key].gameRoomName === gameRoom || players[key].scoreBoard && players[key].gameRoomName === gameRoom) {
@@ -711,6 +731,22 @@ websocketServer.on('connection', (socket, req) => {
                                 gameRoomName: data.gameRoomName,
                                 roundNumber: data.roundNumber,
                                 questionNumber: data.questionNumber
+                            }));
+                        }
+                    }
+                }
+            }
+
+            /*====================================
+            | TO: All teams in a gameRoom AND QuizMaster
+            | Send message that the QuizMaster is choosing a question
+            */
+            if (data.messageType === 'QUESTION CLOSED') {
+                for (var key in players) {
+                    if (players.hasOwnProperty(key)) {
+                        if (players[key].gameRoomName === gameRoom || players[key].scoreBoard && players[key].gameRoomName === gameRoom) {
+                            players[key].send(JSON.stringify({
+                                messageType: "QUESTION CLOSED",
                             }));
                         }
                     }

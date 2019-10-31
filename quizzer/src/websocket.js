@@ -89,6 +89,11 @@ export function openWebSocket() {
                 console.log("GET QUESTION ANSWERS");
                 break;
 
+            case "QUESTION CLOSED":
+                theStore.dispatch(createCurrentGameStatusAction('question_closed'));
+                console.log("QUESTION CLOSED");
+                break;
+
             default:
                 console.log("Unknown messageType:", message);
         }
@@ -397,11 +402,11 @@ export function sendGetQuestionAnswersMSG(gameRoomName, roundNumber, questionNum
     theSocket.sendJSON(message);
 }
 
-
+/*========================================
+| Change a team answer to correct or incorrect (for Quizmaster)
+*/
 export function teamAnswerIsCorrect(gameRoomName, roundNumber, questionNumber, teamName, isCorrect) {
     const url = `http://localhost:3001/api/game/${gameRoomName}/ronde/${roundNumber}/question/${questionNumber}/team/${teamName}/answer`;
-
-    console.log(url)
 
     let data = {
         isCorrect: isCorrect
@@ -420,10 +425,44 @@ export function teamAnswerIsCorrect(gameRoomName, roundNumber, questionNumber, t
         .then(response => response.json())
         .then(data => {
                 if (data.success === true) {
-                    console.log('Antwoord is goed nifauw');
-                    console.log(data)
                     theStore.dispatch(addTeamQuestionAnswerAction(data.answers));
                 }
             }
         ).catch(err => console.log(err));
+}
+
+/*========================================
+| Change game status to QUESTION CLOSED (for Quizmaster)
+*/
+export function closeCurrentQuestion(gameRoomName, roundNumber) {
+    const url = `http://localhost:3001/api/game/${gameRoomName}/ronde/${roundNumber}/question`;
+
+    const options = {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        credentials: 'include',
+        mode: 'cors'
+    };
+
+    fetch(url, options)
+        .then(response => response.json())
+        .then(data => {
+                if (data.success === true) {
+                    sendQuestionClosedMSG();
+                }
+            }
+        ).catch(err => console.log(err));
+}
+
+/*========================================
+| Websocket send QUESTION CLOSED
+*/
+function sendQuestionClosedMSG() {
+    let message = {
+        messageType: "QUESTION CLOSED",
+    };
+
+    theSocket.sendJSON(message);
 }

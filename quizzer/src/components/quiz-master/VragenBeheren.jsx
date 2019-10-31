@@ -7,7 +7,7 @@ import {Link} from "react-router-dom";
 import {Card} from "react-bootstrap";
 import {faCheck, faTimes} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {teamAnswerIsCorrect} from "../../websocket";
+import {closeCurrentQuestion, teamAnswerIsCorrect} from "../../websocket";
 
 class VragenBeherenUI extends React.Component {
 
@@ -17,13 +17,15 @@ class VragenBeherenUI extends React.Component {
                 return this.props.allQuestionAnswers.map(teamAnswer => {
                     let answer = (teamName._id === teamAnswer.team_naam) ? teamAnswer.gegeven_antwoord : 'Nog geen antwoord gegeven..';
 
-                    let isCorrect;
-                    if (teamName.correct === true) {
-                        isCorrect = 'Antwoord is goedgekeurd';
-                    }else if (teamName.correct === false) {
-                        isCorrect = 'Antwoord is afgewezen';
-                    }else {
-                        isCorrect = (
+                    let questionStatus;
+                    if (teamName._id === teamAnswer.team_naam && teamAnswer.correct === true) {
+                        questionStatus =
+                            <p className={"text-center"} style={{color: '#28a745'}}><i>Antwoord is goedgekeurd</i></p>;
+                    } else if (teamName._id === teamAnswer.team_naam && teamAnswer.correct === false) {
+                        questionStatus =
+                            <p className={"text-center"} style={{color: '#dc3545'}}><i>Antwoord is afgewezen</i></p>;
+                    } else if (teamName._id === teamAnswer.team_naam) {
+                        questionStatus = (
                             <div>
                                 <Button variant="success" className={"float-left"} type="submit" onClick={() => {
                                     teamAnswerIsCorrect(this.props.gameRoom, this.props.roundNumber, this.props.questionNumber, teamName._id, true)
@@ -44,7 +46,7 @@ class VragenBeherenUI extends React.Component {
                                 <Card.Body>
                                     <Card.Title className="text-center">{teamName._id}</Card.Title>
                                     <Card.Text className="text-center"><i>{answer}</i></Card.Text>
-                                    {isCorrect}
+                                    {questionStatus}
                                 </Card.Body>
                             </Card>
                         </Col>
@@ -74,11 +76,11 @@ class VragenBeherenUI extends React.Component {
                                 <p><b>Ronde:</b><br/>{this.props.roundNumber}</p>
                                 <p><b>Vraag nr.:</b><br/>{this.props.questionNumber} / 10</p>
 
-                                <Link to="/vragen-beheren">
-                                    <Button variant="danger" type="submit">
-                                        Vraag sluiten
-                                    </Button>
-                                </Link>
+                                <Button variant="danger" type="submit" onClick={() => {
+                                    closeCurrentQuestion(this.props.gameRoom, this.props.roundNumber)
+                                }}>
+                                    Vraag sluiten
+                                </Button>
                             </div>
                         </Col>
 
@@ -86,7 +88,8 @@ class VragenBeherenUI extends React.Component {
                             <div className="p-5 bg-white d-flex align-items-center shadow-sm rounded h-100">
                                 <div className="demo-content">
                                     <h5>{this.props.currentQuestion}</h5>
-                                    <p className="lead font-italic"><b>- Correcte antwoord:</b> {this.props.currentQuestionAnswer}</p>
+                                    <p className="lead font-italic"><b>- Correcte
+                                        antwoord:</b> {this.props.currentQuestionAnswer}</p>
                                     <Row>
                                         {this.teamOphalen()}
                                     </Row>
