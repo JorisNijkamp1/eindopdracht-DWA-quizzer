@@ -675,7 +675,7 @@ websocketServer.on('connection', (socket, req) => {
             if (data.messageType === 'CHOOSE CATEGORIES') {
                 for (var key in players) {
                     if (players.hasOwnProperty(key)) {
-                        if (players[key].gameRoomName === gameRoom && players[key].scoreBoard) {
+                        if (players[key].gameRoomName === gameRoom) {
                             players[key].send(JSON.stringify({
                                 messageType: "CHOOSE CATEGORIES",
                             }));
