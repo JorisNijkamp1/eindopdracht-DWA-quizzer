@@ -9,17 +9,21 @@ import {ScorebordBeoordeling} from "./ScorebordBeoordeling";
 class ScoreboardAppUI extends React.Component {
 
     render() {
-        if (this.props.formValidationScoreboard === 'succes' && this.props.currentGameStatus !== 'asking_question') {
-            console.log(this.props.currentGameStatus);
+        const showScoreboard = this.props.currentGameStatus === 'show_scoreboard';
+        const chooseCategories = this.props.currentGameStatus === 'choose_categories';
+        const chooseQuestion = this.props.currentGameStatus === 'choose_question';
+        const askingQuestion = this.props.currentGameStatus === 'asking_question';
+        const questionClosed = this.props.currentGameStatus === 'question_closed';
+
+        if (showScoreboard || chooseCategories || chooseQuestion) {
             return <ScorebordOverzichtScore/>
         }
-        if (this.props.currentGameStatus === 'asking_question') {
+        if (askingQuestion) {
             return <ScorebordAntwoorden/>
         }
-        if (this.props.currentGameStatus === 'question_closed') {
+        if (questionClosed) {
             return <ScorebordBeoordeling/>
         }
-
         //If no match, return ScorebordJoinTeam Component
         return <ScorebordJoinTeam/>
     }

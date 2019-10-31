@@ -7,7 +7,7 @@ import {
 import {createTeamNameStatusAction} from "./action-reducers/createTeam-actionReducer"
 import {createCurrentGameStatusAction, addTeamQuestionAnswerAction} from "./action-reducers/createGame-actionReducer";
 import {
-    createAddCurrentTeamsScoreboardAction,
+    createAddCurrentTeamsScoreboardAction, createIsAnsweredScoreboardAction,
 } from "./action-reducers/createScorebord-actionReducer";
 
 const port = 3001;
@@ -91,6 +91,7 @@ export function openWebSocket() {
 
             case "SCOREBOARD TEAM ANSWERED":
                 console.log("SCOREBOARD TEAM ANSWERED");
+                theStore.dispatch(createIsAnsweredScoreboardAction(message));
                 console.log(message);
                 break;
 

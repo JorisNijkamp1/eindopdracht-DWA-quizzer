@@ -14,6 +14,7 @@ import {Link} from "react-router-dom";
 import HeaderTitel from "../HeaderTitel";
 import {openWebSocket} from "../../websocket";
 import Menu from "../Menu";
+import {createCurrentGameStatusAction} from "../../action-reducers/createGame-actionReducer";
 
 class ScorebordJoinTeamUI extends React.Component {
 
@@ -46,6 +47,7 @@ class ScorebordJoinTeamUI extends React.Component {
                         this.props.doAddGameRoomName(data.gameRoomName); // wordh ier opgeslagen als t goed is
                         this.props.doAddCurrentTeamsScoreboard(data.currentTeams);
                         this.props.doChangeStatus("succes");
+                        this.props.doChangeGameStatus("show_scoreboard");
                     } else {
                         this.props.doChangeStatus("error");
                     }
@@ -114,6 +116,7 @@ function mapDispatchToProps(dispatch) {
         doChangeStatus: (formValidationScoreboard) => dispatch(createScorebordStatusAction(formValidationScoreboard)),
         doAddCurrentTeamsScoreboard: (currentTeamsScoreboard) => dispatch(createAddCurrentTeamsScoreboardAction(currentTeamsScoreboard)),
         doAddGameRoomName: (gameRoomScoreboard) => dispatch(getGameRoomTeamsScoreboardAction(gameRoomScoreboard)),
+        doChangeGameStatus: (currentGameStatus) => dispatch(createCurrentGameStatusAction(currentGameStatus))
     }
 }
 

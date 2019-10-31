@@ -16,6 +16,7 @@ class ScorebordOverzichtScoreUI extends React.Component {
                             <Card.Body>
                                 <Card.Title>{teamName._id}</Card.Title>
                                 <Card.Text>{teamName.team_score}</Card.Text>
+                                <Card.Text>Score / punten</Card.Text>
                                 <Card.Text>Round 1: 10/12</Card.Text>
                                 <Card.Text>Round2: 8/12</Card.Text>
                             </Card.Body>
@@ -34,8 +35,8 @@ class ScorebordOverzichtScoreUI extends React.Component {
                     <Col md={{span: 6, offset: 3}}>
                         <Card>
                             <Card.Body>
-                                <Card.Title>Ronde: 2</Card.Title>
-                                <Card.Title>Vraag: 2/12</Card.Title>
+                                <Card.Title>Ronde: {this.props.roundNumber}</Card.Title>
+                                <Card.Title>Vraag: {this.props.questionNumber}/12</Card.Title>
                             </Card.Body>
                         </Card>
                     </Col>
@@ -48,9 +49,6 @@ class ScorebordOverzichtScoreUI extends React.Component {
 
 function mapStateToProps(state) {
     return {
-        // currentQuestion: state.createGame.currentQuestion,
-        // currentQuestionCategory: state.createGame.currentQuestionCategory,
-
         roundNumber: state.createGame.roundNumber,
         questionNumber: state.createGame.questionNumber,
         gameRoomTeams: state.createGame.gameRoomTeams,

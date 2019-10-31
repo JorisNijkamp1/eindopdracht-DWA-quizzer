@@ -24,11 +24,19 @@ export function getGameRoomTeamsScoreboardAction(gameRoomScoreboard) {
     };
 }
 
+export function createIsAnsweredScoreboardAction(isAnswered) {
+    return {
+        type: "createIsAnsweredScoreboardAction",
+        isAnswered: isAnswered
+    };
+}
+
 // Reducer:
 const initialCreateScorebordState = {
     formValidationScoreboard: false,
     currentTeamsScoreboard: null,
     gameRoomScoreboard: null,
+    isAnswered: []
 };
 
 export function createScorebordReducer(state = initialCreateScorebordState, action) {
@@ -49,6 +57,12 @@ export function createScorebordReducer(state = initialCreateScorebordState, acti
         case 'getGameRoomTeamsScoreboardAction':
             changes = {
                 gameRoomScoreboard: action.gameRoomScoreboard,
+            };
+            return {...state, ...changes};
+
+        case 'createIsAnsweredScoreboardAction':
+            changes = {
+                isAnswered: action.isAnswered,
             };
             return {...state, ...changes};
 

@@ -6,29 +6,41 @@ import Row from "react-bootstrap/Row";
 import {Card} from "react-bootstrap";
 import HeaderTitel from "../HeaderTitel";
 
-
 class ScorebordAntwoordUI extends React.Component {
 
-    // geantwoordChecker(){
-    //     if(geantwoord === true )
-    //         Geantwoord
-    //     else{
-    //         nog niet geantwoord
-    //     }
-    // }
+    geantwoordChecker() {
+        if (this.props.isAnswered === true) {
+            return (
+                <Card.Text className={"text-center"}>
+                    Beantwoord
+                </Card.Text>
+            )
+        } else {
+            return (
+                <Card.Text className={"text-center danger"}>
+                    Nog niet beantwoord
+                </Card.Text>
+            )
+        }
+    }
 
     getTeams() {
         return (
             this.props.currentTeamsScoreboard.map(teamName => {
+                let isAnswered;
+                if (teamName._id === this.props.isAnswered.teamName && this.props.isAnswered.isAnswered === true) {
+                    isAnswered = (
+                        <Card.Text className={"text-center"}>
+                            Beantwoord
+                        </Card.Text>
+                    )
+                }
                 return (
                     <Col md={{span: 4}} key={teamName._id}>
                         <Card>
                             <Card.Body>
                                 <Card.Title className={"text-center display-4"}>{teamName._id}</Card.Title>
-                                <Card.Text className={"text-center"}>
-                                    {/*{this.geantwoordChecker()}*/}
-                                    Nog niet geantwoord
-                                </Card.Text>
+                                {isAnswered}
                             </Card.Body>
                         </Card>
                     </Col>
@@ -62,7 +74,9 @@ function mapStateToProps(state) {
     return {
         currentQuestion: state.createGame.currentQuestion,
         currentQuestionCategory: state.createGame.currentQuestionCategory,
-        currentTeamsScoreboard: state.createScoreboard.currentTeamsScoreboard
+        currentTeamsScoreboard: state.createScoreboard.currentTeamsScoreboard,
+        isAnswered: state.createScoreboard.isAnswered,
+        gameRoomTeams: state.createGame.gameRoomTeams,
     }
 }
 
