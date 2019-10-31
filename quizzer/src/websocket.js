@@ -40,6 +40,7 @@ export function openWebSocket() {
                 break;
 
             case "TEAM DELETED":
+                getTeams();
                 theStore.dispatch(createTeamNameStatusAction('deleted'));
                 console.log('TEAM DELETED');
                 break;
