@@ -6,6 +6,10 @@ import {
 } from "./action-reducers/createGame-actionReducer";
 import {createTeamNameStatusAction} from "./action-reducers/createTeam-actionReducer"
 import {createCurrentGameStatusAction, addTeamQuestionAnswerAction} from "./action-reducers/createGame-actionReducer";
+import {
+    createAddCurrentTeamsScoreboardAction,
+    getGameRoomTeamsScoreboardAction
+} from "./action-reducers/createScorebord-actionReducer";
 
 const port = 3001;
 const serverHostname = `${window.location.hostname}:${port}`;
@@ -157,7 +161,7 @@ function getTeams() {
 
     if (store.createGame.gameRoom) {
         gameRoom = store.createGame.gameRoom;
-    }else if (store.createScoreboard.gameRoomScoreboard) {
+    } else if (store.createScoreboard.gameRoomScoreboard) {
         gameRoom = store.createScoreboard.gameRoomScoreboard
     }
 
@@ -171,6 +175,8 @@ function getTeams() {
         credentials: 'include',
         mode: 'cors'
     };
+    console.log("============================")
+    console.log(store.createScoreboard.gameRoomScoreboard);
 
     return fetch(url, options).then(response => {
         if (response.status !== 200) {
@@ -180,8 +186,8 @@ function getTeams() {
             if (data.success) {
                 if (store.createGame.gameRoom) {
                     theStore.dispatch(getGameRoomTeamsAction(data.teams))
-                }else if (store.createScoreboard.gameRoomScoreboard) {
-                    theStore.dispatch(getGameRoomTeamsScoreboardAction(data.teams))
+                } else if (store.createScoreboard.gameRoomScoreboard) {
+                    theStore.dispatch(createAddCurrentTeamsScoreboardAction(data.teams))
                 }
             }
         });

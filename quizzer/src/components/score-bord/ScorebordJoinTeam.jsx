@@ -7,7 +7,7 @@ import Form from "react-bootstrap/Form";
 import {ScorebordOverzichtScore} from "./ScorebordOverzichtScore";
 import {
     createAddCurrentTeamsScoreboardAction,
-    createScorebordStatusAction
+    createScorebordStatusAction, getGameRoomTeamsScoreboardAction
 } from '../../action-reducers/createScorebord-actionReducer'
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
@@ -44,7 +44,7 @@ class ScorebordJoinTeamUI extends React.Component {
             .then(data => {
                     if (data.success) {
                         openWebSocket();
-                        console.log(data.gameRoomName) //Deze moet opgeslagen worden in Store
+                        this.props.doAddGameRoomName(data.gameRoomName); // wordh ier opgeslagen als t goed is
                         this.props.doAddCurrentTeamsScoreboard(data.currentTeams);
                         this.props.doChangeStatus("succes");
                     } else {
@@ -116,13 +116,15 @@ class ScorebordJoinTeamUI extends React.Component {
 function mapStateToProps(state) {
     return {
         formValidationScoreboard: state.createScoreboard.formValidationScoreboard,
+        gameRoomScoreboard: state.createScoreboard.gameRoomScoreboard
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
         doChangeStatus: (formValidationScoreboard) => dispatch(createScorebordStatusAction(formValidationScoreboard)),
-        doAddCurrentTeamsScoreboard: (currentTeamsScoreboard) => dispatch(createAddCurrentTeamsScoreboardAction(currentTeamsScoreboard))
+        doAddCurrentTeamsScoreboard: (currentTeamsScoreboard) => dispatch(createAddCurrentTeamsScoreboardAction(currentTeamsScoreboard)),
+        doAddGameRoomName: (gameRoomScoreboard) => dispatch(getGameRoomTeamsScoreboardAction(gameRoomScoreboard)),
     }
 }
 

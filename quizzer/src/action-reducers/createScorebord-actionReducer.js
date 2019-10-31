@@ -17,11 +17,18 @@ export function createAddCurrentTeamsScoreboardAction(currentTeamsScoreboard) {
     };
 }
 
+export function getGameRoomTeamsScoreboardAction(gameRoomScoreboard) {
+    return {
+        type: "getGameRoomTeamsScoreboardAction",
+        gameRoomScoreboard: gameRoomScoreboard
+    };
+}
 
 // Reducer:
 const initialCreateScorebordState = {
     formValidationScoreboard: false,
-    currentTeamsScoreboard: null
+    currentTeamsScoreboard: null,
+    gameRoomScoreboard: null,
 };
 
 export function createScorebordReducer(state = initialCreateScorebordState, action) {
@@ -36,6 +43,12 @@ export function createScorebordReducer(state = initialCreateScorebordState, acti
         case 'createAddCurrentTeamsScoreboardAction':
             changes = {
                 currentTeamsScoreboard: action.currentTeamsScoreboard,
+            };
+            return {...state, ...changes};
+
+        case 'getGameRoomTeamsScoreboardAction':
+            changes = {
+                gameRoomScoreboard: action.gameRoomScoreboard,
             };
             return {...state, ...changes};
 
