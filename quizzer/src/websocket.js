@@ -37,6 +37,11 @@ export function openWebSocket() {
                 console.log('NEW TEAM');
                 break;
 
+            case "JOIN SCOREBOARD":
+                joinScoreboard();
+                console.log('JOIN SCOREBOARD');
+                break;
+
             case "TEAM DELETED":
                 theStore.dispatch(createTeamNameStatusAction('deleted'));
                 console.log('TEAM DELETED');
@@ -171,6 +176,7 @@ function getTeams() {
         }
         response.json().then(data => {
             if (data.success) {
+                console.log(123)
                 theStore.dispatch(getGameRoomTeamsAction(data.teams))
             }
         });
@@ -381,4 +387,33 @@ export function sendGetQuestionAnswersMSG(gameRoomName, roundNumber, questionNum
     };
 
     theSocket.sendJSON(message);
+}
+
+/*========================================
+| Get all teams for ScoreBord
+*/
+function joinScoreboard(gameRoom) {
+    const url = `http://localhost:3001/api/game/${gameRoom}/scoreboard`;
+
+    const options = {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        credentials: 'include',
+        mode: 'cors'
+    };
+
+    return fetch(url, options).then(response => {
+        if (response.status !== 200) {
+            console.log("Er gaat iets fout" + response.status);
+        }
+        response.json().then(data => {
+            if (data.success) {
+                theStore.dispatch(getGameRoomTeamsAction(data.teams))
+            }
+        });
+    }).catch(err => {
+        console.log(err);
+    })
 }
