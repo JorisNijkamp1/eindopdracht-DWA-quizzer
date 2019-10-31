@@ -9,6 +9,34 @@ import HeaderTitel from "../HeaderTitel";
 
 class ScorebordAntwoordUI extends React.Component {
 
+    // geantwoordChecker(){
+    //     if(geantwoord === true )
+    //         Geantwoord
+    //     else{
+    //         nog niet geantwoord
+    //     }
+    // }
+
+    getTeams() {
+        return (
+            this.props.currentTeamsScoreboard.map(teamName => {
+                return (
+                    <Col md={{span: 4}} key={teamName._id}>
+                        <Card>
+                            <Card.Body>
+                                <Card.Title className={"text-center display-4"}>{teamName._id}</Card.Title>
+                                <Card.Text className={"text-center"}>
+                                    {/*{this.geantwoordChecker()}*/}
+                                    Nog niet geantwoord
+                                </Card.Text>
+                            </Card.Body>
+                        </Card>
+                    </Col>
+                )
+            })
+        )
+    }
+
     render() {
         return (
             <Container>
@@ -17,35 +45,13 @@ class ScorebordAntwoordUI extends React.Component {
                     <Col md={{span: 6, offset: 3}}>
                         <Card>
                             <Card.Body>
-                                <Card.Title className={"text-center display-4"}>Wetenschappelijk</Card.Title>
-                                <Card.Title className={"text-center"}>Wat betekentd h2o?</Card.Title>
+                                <Card.Title
+                                    className={"text-center display-4"}>{this.props.currentQuestionCategory}</Card.Title>
+                                <Card.Title className={"text-center"}>{this.props.currentQuestion}</Card.Title>
                             </Card.Body>
                         </Card>
                     </Col>
-                    <Col md={{span: 4}}>
-                        <Card>
-                            <Card.Body>
-                                <Card.Title className={"text-center display-4"}>Teamnaam 1</Card.Title>
-                                <Card.Text className={"text-center"}>Nog niet geantwoord</Card.Text>
-                            </Card.Body>
-                        </Card>
-                    </Col>
-                    <Col md={{span: 4}}>
-                        <Card>
-                            <Card.Body>
-                                <Card.Title className={"text-center display-4"}>Teamnaam 2</Card.Title>
-                                <Card.Text className={"text-center"}>Nog niet geantwoord</Card.Text>
-                            </Card.Body>
-                        </Card>
-                    </Col>
-                    <Col md={{span: 4}}>
-                        <Card>
-                            <Card.Body>
-                                <Card.Title className={"text-center display-4"}>Teamnaam 3</Card.Title>
-                                <Card.Text className={"text-center"}>Geantwoord!</Card.Text>
-                            </Card.Body>
-                        </Card>
-                    </Col>
+                    {this.getTeams()}
                 </Row>
             </Container>
         )
@@ -56,11 +62,7 @@ function mapStateToProps(state) {
     return {
         currentQuestion: state.createGame.currentQuestion,
         currentQuestionCategory: state.createGame.currentQuestionCategory,
-
-        gameRoomName: state.createTeam.gameRoomName,
-        teamRoomName: state.createTeam.teamRoomName,
-        roundNumber: state.createGame.roundNumber,
-        questionNumber: state.createGame.questionNumber
+        currentTeamsScoreboard: state.createScoreboard.currentTeamsScoreboard
     }
 }
 

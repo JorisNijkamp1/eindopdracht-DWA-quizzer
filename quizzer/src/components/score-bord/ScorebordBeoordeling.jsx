@@ -1,11 +1,12 @@
 import React from "react";
+import * as ReactRedux from "react-redux";
 import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import {Card} from "react-bootstrap";
 import HeaderTitel from "../HeaderTitel";
 
-class ScorebordBeoordeling extends React.Component {
+class ScorebordBeoordelingUI extends React.Component {
 
     render() {
         return (
@@ -50,4 +51,12 @@ class ScorebordBeoordeling extends React.Component {
     }
 }
 
-export default ScorebordBeoordeling
+function mapStateToProps(state) {
+    return {}
+}
+
+function mapDispatchToProps(dispatch) {
+    return {}
+}
+
+export const ScorebordBeoordeling = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(ScorebordBeoordelingUI);

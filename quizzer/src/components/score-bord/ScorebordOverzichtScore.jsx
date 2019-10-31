@@ -7,11 +7,6 @@ import {Card} from "react-bootstrap";
 import HeaderTitel from "../HeaderTitel";
 
 class ScorebordOverzichtScoreUI extends React.Component {
-
-    test() {
-        console.log(this.props.currentTeamsScoreboard);
-    }
-
     getTeams() {
         return (
             this.props.currentTeamsScoreboard.map(teamName => {
@@ -36,7 +31,6 @@ class ScorebordOverzichtScoreUI extends React.Component {
             <Container>
                 <Row className="min-vh-100">
                     <HeaderTitel/>
-                    {this.test()}
                     <Col md={{span: 6, offset: 3}}>
                         <Card>
                             <Card.Body>
@@ -57,8 +51,8 @@ function mapStateToProps(state) {
         // currentQuestion: state.createGame.currentQuestion,
         // currentQuestionCategory: state.createGame.currentQuestionCategory,
 
-        // roundNumber: state.createGame.roundNumber,
-        // questionNumber: state.createGame.questionNumber,
+        roundNumber: state.createGame.roundNumber,
+        questionNumber: state.createGame.questionNumber,
         gameRoomTeams: state.createGame.gameRoomTeams,
         currentTeamsScoreboard: state.createScoreboard.currentTeamsScoreboard
     }
