@@ -55,7 +55,7 @@ class ScorebordAntwoordUI extends React.Component {
 function mapStateToProps(state) {
     return {
         currentQuestion: state.createGame.currentQuestion,
-        currentCategory: state.createGame.currentCategory,
+        currentQuestionCategory: state.createGame.currentQuestionCategory,
 
         gameRoomName: state.createTeam.gameRoomName,
         teamRoomName: state.createTeam.teamRoomName,

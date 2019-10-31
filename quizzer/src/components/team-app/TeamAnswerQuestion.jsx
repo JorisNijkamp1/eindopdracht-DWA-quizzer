@@ -7,7 +7,7 @@ import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
-import {getQuestionAnswers, sendGetQuestionAnswersMSG} from "../../websocket";
+import {sendGetQuestionAnswersMSG} from "../../websocket";
 
 class TeamAnswerQuestionUI extends React.Component {
 
@@ -93,7 +93,7 @@ class TeamAnswerQuestionUI extends React.Component {
 function mapStateToProps(state) {
     return {
         currentQuestion: state.createGame.currentQuestion,
-        currentCategory: state.createGame.currentCategory,
+        currentQuestionCategory: state.createGame.currentQuestionCategory,
 
         gameRoomName: state.createTeam.gameRoomName,
         teamName: state.createTeam.teamRoomName,

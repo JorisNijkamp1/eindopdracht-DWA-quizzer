@@ -18,15 +18,11 @@ import {Link} from "react-router-dom";
 import 'react-notifications-component/dist/theme.css'
 import {store} from 'react-notifications-component';
 import 'react-notifications-component/dist/theme.css';
-import TeamCategory from "./TeamCategory";
 import Card from "react-bootstrap/Card";
 import Menu from "../Menu";
 import HeaderTitel from "../HeaderTitel";
-import TeamQuestions from "./TeamQuestions";
-import {TeamAnswerQuestion} from "./TeamAnswerQuestion";
 
 class TeamAanmakenUI extends React.Component {
-
     constructor(props) {
         super(props);
         this.state = {
@@ -202,16 +198,6 @@ class TeamAanmakenUI extends React.Component {
     }
 
     checkTeamNameStatus() {
-        if (this.props.currentGameStatus === 'choose_categories' && this.props.teamNameStatus === 'success') {
-            return <TeamCategory/>
-        }
-        if (this.props.currentGameStatus === 'choose_question' && this.props.teamNameStatus === 'success') {
-            return <TeamQuestions/>
-        }
-        if (this.props.currentGameStatus === 'asking_question' && this.props.teamNameStatus === 'success') {
-            return <TeamAnswerQuestion/>
-        }
-
         if (this.props.teamNameStatus === 'pending') {
             return this.loadingAnimation();
         } else if (this.props.teamNameStatus === 'success') {

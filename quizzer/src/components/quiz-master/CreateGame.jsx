@@ -2,7 +2,7 @@ import React from "react";
 import * as ReactRedux from 'react-redux';
 import {
     createGameRoomAction,
-    createGameFormValidationAction
+    createGameFormValidationAction, createCurrentGameStatusAction
 } from '../../action-reducers/createGame-actionReducer';
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
@@ -41,7 +41,7 @@ class CreateGameUI extends React.Component {
             method: 'POST',
             body: JSON.stringify(data),
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
             credentials: 'include',
             mode: 'cors'
@@ -51,11 +51,12 @@ class CreateGameUI extends React.Component {
             .then(response => response.json())
             .then(data => {
                     if (data.gameRoomNameAccepted === true) {
-                        this.props.doChangeGameFormValidation("success")
+                        this.props.doChangeGameFormValidation("success");
                         this.props.doChangeGameRoom(data.gameRoomName);
+                        this.props.doChangeGameStatus('in_lobby');
                         openWebSocket();
                     } else if (data.gameRoomNameAccepted === false) {
-                        this.props.doChangeGameFormValidation("error")
+                        this.props.doChangeGameFormValidation("error");
                     }
                 }
             ).catch(err => console.log(err));
@@ -132,6 +133,7 @@ function mapDispatchToProps(dispatch) {
     return {
         doChangeGameFormValidation: (formValidation) => dispatch(createGameFormValidationAction(formValidation)),
         doChangeGameRoom: (gameRoom) => dispatch(createGameRoomAction(gameRoom)),
+        doChangeGameStatus: (currentGameStatus) => dispatch(createCurrentGameStatusAction(currentGameStatus))
     }
 }
 

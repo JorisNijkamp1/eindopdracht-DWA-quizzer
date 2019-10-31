@@ -10,7 +10,7 @@ import HeaderTitel from "../HeaderTitel";
 class ScorebordOverzichtScoreUI extends React.Component {
 
     test() {
-        console.log(this.props.currentCategory);
+        console.log(this.props.currentQuestionCategory);
         console.log(this.props.currentQuestion);
         console.log(this.props.gameRoomName);
         console.log(this.props.questionNumber);
@@ -51,7 +51,7 @@ class ScorebordOverzichtScoreUI extends React.Component {
 function mapStateToProps(state) {
     return {
         currentQuestion: state.createGame.currentQuestion,
-        currentCategory: state.createGame.currentCategory,
+        currentQuestionCategory: state.createGame.currentQuestionCategory,
 
         gameRoomName: state.createTeam.gameRoomName,
         teamRoomName: state.createTeam.teamRoomName,

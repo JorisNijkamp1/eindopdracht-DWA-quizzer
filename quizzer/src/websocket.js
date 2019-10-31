@@ -1,6 +1,6 @@
 import {theStore} from './index'
 import {
-    createCurrentCategoryAction, createCurrentQuestionAction,
+    createCurrentCategoryAction, createCurrentQuestionAction, createCurrentQuestionAnswerAction,
     getGameRoomTeamsAction,
     increaseGameRoundNumberAction, increaseQuestionNumberAction
 } from "./action-reducers/createGame-actionReducer";
@@ -52,7 +52,7 @@ export function openWebSocket() {
                 let roundNumber = store.createGame.roundNumber;
                 if (roundNumber) {
                     theStore.dispatch(increaseGameRoundNumberAction(roundNumber + 1))
-                }else {
+                } else {
                     theStore.dispatch(increaseGameRoundNumberAction(1))
                 }
                 console.log('CHOOSE CATEGORIES');
@@ -60,7 +60,6 @@ export function openWebSocket() {
 
             case "CHOOSE QUESTION":
                 theStore.dispatch(createCurrentGameStatusAction('choose_question'));
-
                 console.log('CHOOSE QUESTION');
                 break;
 
@@ -70,17 +69,19 @@ export function openWebSocket() {
                 theStore.dispatch(createCurrentCategoryAction(message.category));
                 if (store.createGame.questionNumber) {
                     theStore.dispatch(increaseQuestionNumberAction(store.createGame.questionNumber + 1))
-                }else {
+                } else {
                     theStore.dispatch(increaseQuestionNumberAction(1))
                 }
 
                 console.log('ASKING QUESTION');
                 break;
 
+            case "CORRECT QUESTION ANSWER":
+                theStore.dispatch(createCurrentQuestionAnswerAction(message.answer));
+                console.log('CORRECT QUESTION ANSWER');
+                break;
+
             case "GET QUESTION ANSWERS":
-
-                console.log(message)
-
                 getQuestionAnswers(message.gameRoomName, message.roundNumber, message.questionNumber);
                 console.log("GET QUESTION ANSWERS");
                 break;
@@ -255,7 +256,6 @@ function sendChooseCategoriesMSG() {
     theSocket.sendJSON(message);
 }
 
-
 /*========================================
 | Starting a NEW round (for Quizmaster)
 */
@@ -320,7 +320,8 @@ export function startQuestion(gameRoom, rondeID, question) {
             if (response.status !== 200) console.log("Er gaat iets fout" + response.status);
             response.json().then(data => {
                 if (data.success) {
-                    sendAskingQuestionsMSG(data.question, data.category)
+                    console.log(data)
+                    sendAskingQuestionsMSG(data.question, data.category, data.answer)
                 }
             });
         }).catch(err => console.log(err))
@@ -328,13 +329,14 @@ export function startQuestion(gameRoom, rondeID, question) {
 }
 
 /*========================================
-| Websocket send CHOOSE QUESTION
+| Websocket send ASKING QUESTION
 */
-function sendAskingQuestionsMSG(question, category) {
+function sendAskingQuestionsMSG(question, category, answer) {
     let message = {
         messageType: "ASKING QUESTION",
         question: question,
-        category: category
+        category: category,
+        answer: answer
     };
 
     theSocket.sendJSON(message);
@@ -360,7 +362,6 @@ export function getQuestionAnswers(gameRoom, rondeID, question) {
             if (response.status !== 200) console.log("Er gaat iets fout" + response.status);
             response.json().then(data => {
                 if (data.success) {
-                    console.log(data.answers)
                     theStore.dispatch(addTeamQuestionAnswerAction(data.answers));
                 }
             });

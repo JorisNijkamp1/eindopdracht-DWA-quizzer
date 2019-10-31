@@ -32,7 +32,6 @@ class VragenUI extends React.Component {
             .then(response => response.json())
             .then(data => {
                     if (data.success === true) {
-                        console.log(data);
                         this.props.doChangeQuestions(data.questions);
                     } else {
                         console.log('Vragen kunnen niet worden opgehaald.')
@@ -105,7 +104,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        doChangeQuestions: (categories) => dispatch(createGameQuestionsAction(categories))
+        doChangeQuestions: (categories) => dispatch(createGameQuestionsAction(categories)),
     }
 }
 
