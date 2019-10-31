@@ -175,8 +175,6 @@ function getTeams() {
         credentials: 'include',
         mode: 'cors'
     };
-    console.log("============================")
-    console.log(store.createScoreboard.gameRoomScoreboard);
 
     return fetch(url, options).then(response => {
         if (response.status !== 200) {
