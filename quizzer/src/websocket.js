@@ -37,11 +37,6 @@ export function openWebSocket() {
                 console.log('NEW TEAM');
                 break;
 
-            case "JOIN SCOREBOARD":
-                joinScoreboard();
-                console.log('JOIN SCOREBOARD');
-                break;
-
             case "TEAM DELETED":
                 theStore.dispatch(createTeamNameStatusAction('deleted'));
                 console.log('TEAM DELETED');
@@ -157,7 +152,14 @@ function sendTeamDeletedMSG(teamName) {
 */
 function getTeams() {
     const store = theStore.getState();
-    let gameRoom = store.createGame.gameRoom;
+
+    let gameRoom; //if storeGameRoom is empty check store gameRoom from scoreboard
+
+    if (store.createGame.gameRoom) {
+        gameRoom = store.createGame.gameRoom;
+    }else if (store.createScoreboard.gameRoomScoreboard) {
+        gameRoom = store.createScoreboard.gameRoomScoreboard
+    }
 
     const url = `http://localhost:3001/api/games/${gameRoom}/teams`;
 
@@ -176,8 +178,11 @@ function getTeams() {
         }
         response.json().then(data => {
             if (data.success) {
-                console.log(123)
-                theStore.dispatch(getGameRoomTeamsAction(data.teams))
+                if (store.createGame.gameRoom) {
+                    theStore.dispatch(getGameRoomTeamsAction(data.teams))
+                }else if (store.createScoreboard.gameRoomScoreboard) {
+                    theStore.dispatch(getGameRoomTeamsScoreboardAction(data.teams))
+                }
             }
         });
     }).catch(err => {
@@ -387,33 +392,4 @@ export function sendGetQuestionAnswersMSG(gameRoomName, roundNumber, questionNum
     };
 
     theSocket.sendJSON(message);
-}
-
-/*========================================
-| Get all teams for ScoreBord
-*/
-function joinScoreboard(gameRoom) {
-    const url = `http://localhost:3001/api/game/${gameRoom}/scoreboard`;
-
-    const options = {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        credentials: 'include',
-        mode: 'cors'
-    };
-
-    return fetch(url, options).then(response => {
-        if (response.status !== 200) {
-            console.log("Er gaat iets fout" + response.status);
-        }
-        response.json().then(data => {
-            if (data.success) {
-                theStore.dispatch(getGameRoomTeamsAction(data.teams))
-            }
-        });
-    }).catch(err => {
-        console.log(err);
-    })
 }

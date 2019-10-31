@@ -25,13 +25,8 @@ class ScorebordJoinTeamUI extends React.Component {
         };
     }
 
-    componentDidMount() {
-        console.log(this.props.gameRoomTeams)
-    }
-
     handleSubmit = e => {
         e.preventDefault();
-        console.log(this.state.gameRoomName);
 
         const url = `http://localhost:3001/api/games/${this.state.gameRoomName}/scoreboard`;
 
@@ -49,12 +44,10 @@ class ScorebordJoinTeamUI extends React.Component {
             .then(data => {
                     if (data.success) {
                         openWebSocket();
-                        console.log("De game bestaat");
-                        console.log(data);
+                        console.log(data.gameRoomName) //Deze moet opgeslagen worden in Store
                         this.props.doAddCurrentTeamsScoreboard(data.currentTeams);
                         this.props.doChangeStatus("succes");
                     } else {
-                        console.log("De game bestaat niet");
                         this.props.doChangeStatus("error");
                     }
                 }

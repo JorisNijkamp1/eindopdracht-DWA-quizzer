@@ -39,7 +39,7 @@ const websocketServer = new WebSocket.Server({noServer: true});
 
 
 /*====================================
-| JOIN GAME WITH SCOREBORD
+| JOIN GAME WITH SCOREBOARD
 */
 app.get('/api/games/:gameRoom/scoreboard', async (req, res) => {
     const gameRoomName = req.params.gameRoom;
