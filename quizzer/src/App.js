@@ -9,6 +9,7 @@ import {TeamAnswerQuestion} from "./components/team-app/TeamAnswerQuestion";
 import {TeamsApp} from "./components/team-app/App";
 import {ScoreboardApp} from "./components/score-bord/App";
 import {VragenBeheren} from "./components/quiz-master/VragenBeheren";
+import {ScorebordAntwoorden} from "./components/score-bord/ScorebordAntwoorden";
 //============================================================================
 //  The React component that renders the UI for the entire App.
 //----------------------------------------------------------------------------
@@ -31,8 +32,8 @@ class App extends React.Component {
                     <Route path="/eind-ronde">
                         <EindRonde/>
                     </Route>
-                    <Route path={"/answer-question"}>
-                        <TeamAnswerQuestion/>
+                    <Route path={"/score"}>
+                        <ScorebordAntwoorden/>
                     </Route>
 
                     <Route path={"/vragen-beheren"}>
