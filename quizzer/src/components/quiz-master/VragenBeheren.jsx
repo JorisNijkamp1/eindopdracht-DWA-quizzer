@@ -11,7 +11,7 @@ import {closeCurrentQuestion, teamAnswerIsCorrect} from "../../websocket";
 
 class VragenBeherenUI extends React.Component {
 
-    teamOphalen() {
+    teamAnswers() {
         return (
             this.props.gameRoomTeams.map(teamName => {
                 return this.props.allQuestionAnswers.map(teamAnswer => {
@@ -63,6 +63,40 @@ class VragenBeherenUI extends React.Component {
         )
     }
 
+    closeQuestion() {
+        let currentButton;
+        if (this.props.currentGameStatus === 'asking_question') {
+            currentButton = (
+                <Button variant="danger" type="submit" onClick={() => {
+                    closeCurrentQuestion(this.props.gameRoom, this.props.roundNumber)
+                }}>
+                    Vraag sluiten
+                </Button>
+            );
+        } else if (this.props.currentGameStatus === 'question_closed') {
+            let allQuestionsReviewed = true;
+            if (this.props.gameRoomTeams.length === this.props.allQuestionAnswers.length) {
+                this.props.allQuestionAnswers.map(teamAnswer => {
+                    if (teamAnswer.correct === null) {
+                        allQuestionsReviewed = false;
+                    }
+                })
+            }
+
+            if (allQuestionsReviewed === true) {
+                currentButton = (
+                    <Button variant="danger" type="submit" onClick={() => {
+                        //next question
+                    }}>
+                        Volgende vraag
+                    </Button>
+                )
+            }
+        }
+
+        return currentButton
+    }
+
     render() {
         return (
             <div className="container-fluid px-md-5">
@@ -83,11 +117,7 @@ class VragenBeherenUI extends React.Component {
                                 <p><b>Ronde:</b><br/>{this.props.roundNumber}</p>
                                 <p><b>Vraag nr.:</b><br/>{this.props.questionNumber} / 10</p>
 
-                                <Button variant="danger" type="submit" onClick={() => {
-                                    closeCurrentQuestion(this.props.gameRoom, this.props.roundNumber)
-                                }}>
-                                    Vraag sluiten
-                                </Button>
+                                {this.closeQuestion()}
                             </div>
                         </Col>
 
@@ -98,7 +128,7 @@ class VragenBeherenUI extends React.Component {
                                     <p className="lead font-italic"><b>- Correcte
                                         antwoord:</b> {this.props.currentQuestionAnswer}</p>
                                     <Row>
-                                        {this.teamOphalen()}
+                                        {this.teamAnswers()}
                                     </Row>
                                 </div>
                             </div>
@@ -110,7 +140,9 @@ class VragenBeherenUI extends React.Component {
     }
 }
 
-function mapStateToProps(state) {
+function
+
+mapStateToProps(state) {
     return {
         gameRoomTeams: state.createGame.gameRoomTeams,
         allQuestionAnswers: state.createGame.allQuestionAnswers,
@@ -123,8 +155,11 @@ function mapStateToProps(state) {
     }
 }
 
-function mapDispatchToProps(dispatch) {
+function
+
+mapDispatchToProps(dispatch) {
     return {}
 }
 
-export const VragenBeheren = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(VragenBeherenUI);
+export const
+    VragenBeheren = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(VragenBeherenUI);
