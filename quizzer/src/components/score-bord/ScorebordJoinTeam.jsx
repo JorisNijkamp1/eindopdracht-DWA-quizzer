@@ -75,7 +75,7 @@ class ScorebordJoinTeamUI extends React.Component {
                         <Col md={{span: 8, offset: 2}} className="h-100">
                             <Form onSubmit={this.handleSubmit}>
                                 <Card bg="dark" border="danger" text="white">
-                                    <Card.Header>Maak een nieuwe Quizzer aan</Card.Header>
+                                    <Card.Header>Bekijk een game</Card.Header>
                                     <Card.Body>
                                         <Form.Group controlId="exampleForm.ControlInput1">
                                             <Form.Label>Vul hier de game room naam in van de game die je wilt

@@ -503,6 +503,7 @@ websocketServer.on('connection', (socket, req) => {
 
     const gameRoom = req.session.gameRoomName;
     const quizMaster = req.session.quizMaster;
+    const scoreBoard = req.session.scoreBoard;
     const teamName = req.session.teamName;
 
     totalPlayers = totalPlayers + 1;
@@ -520,6 +521,12 @@ websocketServer.on('connection', (socket, req) => {
         if (quizMaster) {
             players[socket.id].quizMaster = true;
             //console.log(players[socket.id].quizMaster);
+        }
+
+        //als diegene de scoreboard is, krijgt hij dat ook in zijn socket
+        if (scoreBoard) {
+            players[socket.id].scoreBoard = true;
+            console.log(players[socket.id].scoreBoard);
         }
     }
 
@@ -540,7 +547,7 @@ websocketServer.on('connection', (socket, req) => {
             if (data.messageType === 'NEW TEAM') {
                 for (var key in players) {
                     if (players.hasOwnProperty(key)) {
-                        if (players[key].quizMaster && players[key].gameRoomName === gameRoom) {
+                        if (players[key].quizMaster && players[key].gameRoomName === gameRoom || players[key].scoreBoard && players[key].gameRoomName === gameRoom) {
                             players[key].send(JSON.stringify({
                                 messageType: "NEW TEAM",
                             }));

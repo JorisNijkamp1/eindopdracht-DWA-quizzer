@@ -46,7 +46,7 @@ export class Menu extends React.Component {
                     </div>
                 </div>
                 <Link to="/quiz-master" className="section-static top"/>
-                <Link to="/scorebord" className="section-static bottom"/>
+                <Link to="/scoreboard" className="section-static bottom"/>
             </div>
         )
     }
