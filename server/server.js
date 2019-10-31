@@ -421,9 +421,9 @@ app.post('/api/game/:gameRoom/ronde/:rondeID/question', async (req, res) => {
 
 
 /*====================================
-| PUT A ANSWER AS TEAM ON A QUESTION
+| POST A ANSWER AS TEAM ON A QUESTION
 */
-app.put('/api/game/:gameRoom/ronde/:rondeID/question/:questionID/team/:teamName/answer', async (req, res) => {
+app.post('/api/game/:gameRoom/ronde/:rondeID/question/:questionID/team/:teamName/answer', async (req, res) => {
     const gameRoomName = req.params.gameRoom;
     const roundID = (req.params.rondeID - 1);
     const questionID = (req.params.questionID - 1);
@@ -464,6 +464,48 @@ app.put('/api/game/:gameRoom/ronde/:rondeID/question/:questionID/team/:teamName/
         });
     });
 });
+
+
+/*====================================
+| CHANGE A ANSWER TO CORRECT OR INCORRECT (AS QUIZMASTER)
+*/
+app.put('/api/game/:gameRoom/ronde/:rondeID/question/:questionID/team/:teamName/answer', async (req, res) => {
+    const gameRoomName = req.params.gameRoom;
+    const roundID = (req.params.rondeID - 1);
+    const questionID = (req.params.questionID - 1);
+    const teamName = req.params.teamName;
+
+    const isCorrect = req.body.isCorrect;
+
+    //Get current game
+    let currentGame = await Games.findOne({_id: gameRoomName});
+
+    let isAnswered = false;
+    let teamKey = null;
+
+    //Check if team has already answered
+    currentGame.rondes[roundID].vragen[questionID].team_antwoorden.forEach(function (arrayItem, key) {
+        if (arrayItem.team_naam.includes(teamName) && arrayItem.team_naam === teamName) {
+            isAnswered = true;
+            teamKey = key;
+        }
+    });
+
+    if (isAnswered) {
+        currentGame.rondes[roundID].vragen[questionID].team_antwoorden[teamKey].correct = isCorrect;
+    }
+
+
+    //Save to mongoDB
+    currentGame.save(function (err) {
+        if (err) return console.error(err);
+        res.json({
+            success: true,
+            answers: currentGame.rondes[roundID].vragen[questionID].team_antwoorden,
+        });
+    });
+});
+
 
 /*====================================
 | GET ALL ANSWERS FROM A QUESTION
@@ -541,7 +583,7 @@ websocketServer.on('connection', (socket, req) => {
             }
 
             /*====================================
-            | TO: QuizMaster
+            | TO: QuizMaster & ScoreBoard
             | Send NEW TEAM msg
             */
             if (data.messageType === 'NEW TEAM') {
@@ -574,14 +616,14 @@ websocketServer.on('connection', (socket, req) => {
             }
 
             /*====================================
-            | TO: Specific Team
+            | TO: Specific Team & ScoreBoard
             | Send TEAM DELETED msg
             */
             if (data.messageType === 'TEAM DELETED') {
                 let data = JSON.parse(message);
                 for (var key in players) {
                     if (players.hasOwnProperty(key)) {
-                        if (!players[key].quizMaster && players[key].gameRoomName === gameRoom && players[key].teamName === data.teamName) {
+                        if (!players[key].quizMaster && players[key].gameRoomName === gameRoom && players[key].teamName === data.teamName || players[key].scoreBoard && players[key].gameRoomName === gameRoom) {
                             players[key].send(JSON.stringify({
                                 messageType: "TEAM DELETED",
                             }));
@@ -623,7 +665,7 @@ websocketServer.on('connection', (socket, req) => {
             }
 
             /*====================================
-            | TO: All teams in a gameRoom AND QuizMaster
+            | TO: All teams in a gameRoom, QuizMaster AND ScoreBoard
             | Send message that the QuizMaster is asking a question
             */
             if (data.messageType === 'ASKING QUESTION') {
@@ -632,7 +674,7 @@ websocketServer.on('connection', (socket, req) => {
                 //For QuizMaster & Teams (Sends the Question and Question Category to all the teams)
                 for (var key in players) {
                     if (players.hasOwnProperty(key)) {
-                        if (players[key].gameRoomName === gameRoom) {
+                        if (players[key].gameRoomName === gameRoom || players[key].scoreBoard && players[key].gameRoomName === gameRoom) {
                             players[key].send(JSON.stringify({
                                 messageType: "ASKING QUESTION",
                                 question: data.question,

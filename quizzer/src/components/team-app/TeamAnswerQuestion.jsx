@@ -34,7 +34,7 @@ class TeamAnswerQuestionUI extends React.Component {
             teamAnswer: this.state.teamAnswer
         };
         const options = {
-            method: 'PUT',
+            method: 'POST',
             body: JSON.stringify(data),
             headers: {
                 'Content-Type': 'application/json'

@@ -7,6 +7,7 @@ import {Link} from "react-router-dom";
 import {Card} from "react-bootstrap";
 import {faCheck, faTimes} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {teamAnswerIsCorrect} from "../../websocket";
 
 class VragenBeherenUI extends React.Component {
 
@@ -14,19 +15,36 @@ class VragenBeherenUI extends React.Component {
         return (
             this.props.gameRoomTeams.map(teamName => {
                 return this.props.allQuestionAnswers.map(teamAnswer => {
-                    let antwoord = (teamName._id === teamAnswer.team_naam) ? teamAnswer.gegeven_antwoord : 'Nog geen antwoord gegeven..';
+                    let answer = (teamName._id === teamAnswer.team_naam) ? teamAnswer.gegeven_antwoord : 'Nog geen antwoord gegeven..';
+
+                    let isCorrect;
+                    if (teamName.correct === true) {
+                        isCorrect = 'Antwoord is goedgekeurd';
+                    }else if (teamName.correct === false) {
+                        isCorrect = 'Antwoord is afgewezen';
+                    }else {
+                        isCorrect = (
+                            <div>
+                                <Button variant="success" className={"float-left"} type="submit" onClick={() => {
+                                    teamAnswerIsCorrect(this.props.gameRoom, this.props.roundNumber, this.props.questionNumber, teamName._id, true)
+                                }}>
+                                    <FontAwesomeIcon icon={faCheck} aria-hidden="true"/>
+                                </Button>
+                                <Button variant="danger" className={"float-right"} type="submit" onClick={() => {
+                                    teamAnswerIsCorrect(this.props.gameRoom, this.props.roundNumber, this.props.questionNumber, teamName._id, false)
+                                }}>
+                                    <FontAwesomeIcon icon={faTimes} aria-hidden="true"/>
+                                </Button>
+                            </div>
+                        )
+                    }
                     return (
                         <Col key={teamName._id} className={"pb-4"}>
                             <Card>
                                 <Card.Body>
                                     <Card.Title className="text-center">{teamName._id}</Card.Title>
-                                    <Card.Text className="text-center"><i>{antwoord}</i></Card.Text>
-                                    <Button variant="success" className={"float-left"} type="submit">
-                                        <FontAwesomeIcon icon={faCheck} aria-hidden="true"/>
-                                    </Button>
-                                    <Button variant="danger" className={"float-right"} type="submit">
-                                        <FontAwesomeIcon icon={faTimes} aria-hidden="true"/>
-                                    </Button>
+                                    <Card.Text className="text-center"><i>{answer}</i></Card.Text>
+                                    {isCorrect}
                                 </Card.Body>
                             </Card>
                         </Col>

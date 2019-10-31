@@ -8,7 +8,6 @@ import {createTeamNameStatusAction} from "./action-reducers/createTeam-actionRed
 import {createCurrentGameStatusAction, addTeamQuestionAnswerAction} from "./action-reducers/createGame-actionReducer";
 import {
     createAddCurrentTeamsScoreboardAction,
-    getGameRoomTeamsScoreboardAction
 } from "./action-reducers/createScorebord-actionReducer";
 
 const port = 3001;
@@ -16,7 +15,6 @@ const serverHostname = `${window.location.hostname}:${port}`;
 let theSocket;
 
 export function openWebSocket() {
-
     const store = theStore.getState();
 
     if (theSocket) {
@@ -398,4 +396,35 @@ export function sendGetQuestionAnswersMSG(gameRoomName, roundNumber, questionNum
     };
 
     theSocket.sendJSON(message);
+}
+
+
+export function teamAnswerIsCorrect(gameRoomName, roundNumber, questionNumber, teamName, isCorrect) {
+    const url = `http://localhost:3001/api/game/${gameRoomName}/ronde/${roundNumber}/question/${questionNumber}/team/${teamName}/answer`;
+
+    console.log(url)
+
+    let data = {
+        isCorrect: isCorrect
+    };
+    const options = {
+        method: 'PUT',
+        body: JSON.stringify(data),
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        credentials: 'include',
+        mode: 'cors'
+    };
+
+    fetch(url, options)
+        .then(response => response.json())
+        .then(data => {
+                if (data.success === true) {
+                    console.log('Antwoord is goed nifauw');
+                    console.log(data)
+                    theStore.dispatch(addTeamQuestionAnswerAction(data.answers));
+                }
+            }
+        ).catch(err => console.log(err));
 }
