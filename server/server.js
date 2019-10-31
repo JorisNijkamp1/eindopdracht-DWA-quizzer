@@ -765,7 +765,10 @@ websocketServer.on('connection', (socket, req) => {
                             players[key].send(JSON.stringify({
                                 messageType: "SCOREBOARD TEAM ANSWERED",
                                 teamName: data.teamName,
-                                isAnswered: data.isAnswered
+                                scoreBoardData: [{
+                                    teamName: data.teamName,
+                                    isAnswered: data.isAnswered
+                                }]
                             }));
                         }
                     }

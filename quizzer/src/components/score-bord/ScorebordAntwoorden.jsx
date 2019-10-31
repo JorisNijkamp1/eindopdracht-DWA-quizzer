@@ -27,20 +27,20 @@ class ScorebordAntwoordUI extends React.Component {
     getTeams() {
         return (
             this.props.currentTeamsScoreboard.map(teamName => {
+                console.log(this.props.isAnswered);
                 let isAnswered;
-                if (teamName._id === this.props.isAnswered.teamName && this.props.isAnswered.isAnswered === true) {
-                    isAnswered = (
-                        <Card.Text className={"text-center"}>
-                            Beantwoord
-                        </Card.Text>
-                    )
-                }
+                // if (teamName._id === this.props.isAnswered.teamName && this.props.isAnswered.isAnswered === true) {
+                //     isAnswered = (
+                //         <Card.Text className={"text-center"}>
+                //             Beantwoord
+                //         </Card.Text>
+                //     )
+                // }
                 return (
                     <Col md={{span: 4}} key={teamName._id}>
                         <Card>
                             <Card.Body>
                                 <Card.Title className={"text-center display-4"}>{teamName._id}</Card.Title>
-                                {isAnswered}
                             </Card.Body>
                         </Card>
                     </Col>

@@ -91,8 +91,7 @@ export function openWebSocket() {
 
             case "SCOREBOARD TEAM ANSWERED":
                 console.log("SCOREBOARD TEAM ANSWERED");
-                theStore.dispatch(createIsAnsweredScoreboardAction(message));
-                console.log(message);
+                theStore.dispatch(createIsAnsweredScoreboardAction(message.scoreBoardData));
                 break;
 
             case "QUESTION CLOSED":
@@ -345,7 +344,6 @@ export function startQuestion(gameRoom, rondeID, question) {
             if (response.status !== 200) console.log("Er gaat iets fout" + response.status);
             response.json().then(data => {
                 if (data.success) {
-                    console.log(data)
                     sendAskingQuestionsMSG(data.question, data.category, data.answer)
                 }
             });
