@@ -295,7 +295,6 @@ app.post('/api/games/:gameRoom/ronde', async (req, res) => {
 
     //Check of isset session gameRoomName & is quizMaster
     if (req.session.gameRoomName === gameRoomName && req.session.quizMaster) {
-
         const roundCategories = req.body.roundCategories;
 
         //Get current game
@@ -360,7 +359,8 @@ app.get('/api/game/:gameRoom/ronde/:rondeID/questions', async (req, res) => {
     const gameRoomName = req.params.gameRoom;
     const rondeID = (req.params.rondeID - 1);
 
-    if (req.session.quizMaster) {
+    //Check of isset session gameRoomName & is quizMaster
+    if (req.session.gameRoomName === gameRoomName && req.session.quizMaster) {
 
         //Get current game
         let currentGame = await Games.findOne({_id: gameRoomName});
@@ -389,7 +389,8 @@ app.post('/api/game/:gameRoom/ronde/:rondeID/question', async (req, res) => {
     const gameRoomName = req.params.gameRoom;
     const rondeID = (req.params.rondeID - 1);
 
-    if (req.session.quizMaster) {
+    //Check of isset session gameRoomName & is quizMaster
+    if (req.session.gameRoomName === gameRoomName && req.session.quizMaster) {
 
         //Get current game
         let currentGame = await Games.findOne({_id: gameRoomName});
@@ -429,40 +430,44 @@ app.post('/api/game/:gameRoom/ronde/:rondeID/question/:questionID/team/:teamName
     const questionID = (req.params.questionID - 1);
     const teamName = req.params.teamName;
 
-    const teamAnswer = req.body.teamAnswer
+    //Check of isset session gameRoomName & is quizMaster
+    if (req.session.gameRoomName === gameRoomName) {
 
-    //Get current game
-    let currentGame = await Games.findOne({_id: gameRoomName});
+        const teamAnswer = req.body.teamAnswer
 
-    let isAlreadyAnswered = false;
-    let teamKey = null;
+        //Get current game
+        let currentGame = await Games.findOne({_id: gameRoomName});
 
-    //Check if team has already answered
-    currentGame.rondes[roundID].vragen[questionID].team_antwoorden.forEach(function (arrayItem, key) {
-        if (arrayItem.team_naam.includes(teamName) && arrayItem.team_naam === teamName) {
-            isAlreadyAnswered = true;
-            teamKey = key;
+        let isAlreadyAnswered = false;
+        let teamKey = null;
+
+        //Check if team has already answered
+        currentGame.rondes[roundID].vragen[questionID].team_antwoorden.forEach(function (arrayItem, key) {
+            if (arrayItem.team_naam.includes(teamName) && arrayItem.team_naam === teamName) {
+                isAlreadyAnswered = true;
+                teamKey = key;
+            }
+        });
+
+        if (isAlreadyAnswered) {
+            currentGame.rondes[roundID].vragen[questionID].team_antwoorden[teamKey].gegeven_antwoord = teamAnswer;
+        } else {
+            currentGame.rondes[roundID].vragen[questionID].team_antwoorden.push({
+                team_naam: teamName,
+                gegeven_antwoord: teamAnswer,
+            });
         }
-    });
 
-    if (isAlreadyAnswered) {
-        currentGame.rondes[roundID].vragen[questionID].team_antwoorden[teamKey].gegeven_antwoord = teamAnswer;
-    } else {
-        currentGame.rondes[roundID].vragen[questionID].team_antwoorden.push({
-            team_naam: teamName,
-            gegeven_antwoord: teamAnswer,
+        //Save to mongoDB
+        currentGame.save(function (err) {
+            if (err) return console.error(err);
+            res.json({
+                success: true,
+                teamName: teamName,
+                teamAnswer: teamAnswer
+            });
         });
     }
-
-    //Save to mongoDB
-    currentGame.save(function (err) {
-        if (err) return console.error(err);
-        res.json({
-            success: true,
-            teamName: teamName,
-            teamAnswer: teamAnswer
-        });
-    });
 });
 
 /*====================================
@@ -473,12 +478,15 @@ app.get('/api/game/:gameRoom/ronde/:rondeID/question/:questionID/answers', async
     const roundID = (req.params.rondeID - 1);
     const questionID = (req.params.questionID - 1);
 
-    let currentGame = await Games.findOne({_id: gameRoom});
+    //Check of isset session gameRoomName & is quizMaster
+    if (req.session.gameRoomName === gameRoom && req.session.quizMaster) {
+        let currentGame = await Games.findOne({_id: gameRoom});
 
-    return res.json({
-        success: true,
-        answers: currentGame.rondes[roundID].vragen[questionID].team_antwoorden,
-    })
+        return res.json({
+            success: true,
+            answers: currentGame.rondes[roundID].vragen[questionID].team_antwoorden,
+        })
+    }
 });
 
 /*====================================
@@ -488,20 +496,24 @@ app.put('/api/game/:gameRoom/ronde/:rondeID/question', async (req, res) => {
     const gameRoomName = req.params.gameRoom;
     const roundID = (req.params.rondeID - 1);
 
-    //Get current game
-    let currentGame = await Games.findOne({_id: gameRoomName});
+    //Check of isset session gameRoomName & is quizMaster
+    if (req.session.gameRoomName === gameRoomName && req.session.quizMaster) {
 
-    //Change current round status
-    currentGame.rondes[roundID].ronde_status = 'question_closed';
+        //Get current game
+        let currentGame = await Games.findOne({_id: gameRoomName});
 
-    //Save to mongoDB
-    currentGame.save(function (err) {
-        if (err) return console.error(err);
-        res.json({
-            success: true,
-            gameStatus: 'question_closed'
+        //Change current round status
+        currentGame.rondes[roundID].ronde_status = 'question_closed';
+
+        //Save to mongoDB
+        currentGame.save(function (err) {
+            if (err) return console.error(err);
+            res.json({
+                success: true,
+                gameStatus: 'question_closed'
+            });
         });
-    });
+    }
 });
 
 /*====================================
@@ -513,35 +525,39 @@ app.put('/api/game/:gameRoom/ronde/:rondeID/question/:questionID/team/:teamName/
     const questionID = (req.params.questionID - 1);
     const teamName = req.params.teamName;
 
-    const isCorrect = req.body.isCorrect;
+    //Check of isset session gameRoomName & is quizMaster
+    if (req.session.gameRoomName === gameRoomName && req.session.quizMaster) {
 
-    //Get current game
-    let currentGame = await Games.findOne({_id: gameRoomName});
+        const isCorrect = req.body.isCorrect;
 
-    let isAnswered = false;
-    let teamKey = null;
+        //Get current game
+        let currentGame = await Games.findOne({_id: gameRoomName});
 
-    //Check if team has already answered
-    currentGame.rondes[roundID].vragen[questionID].team_antwoorden.forEach(function (arrayItem, key) {
-        if (arrayItem.team_naam.includes(teamName) && arrayItem.team_naam === teamName) {
-            isAnswered = true;
-            teamKey = key;
-        }
-    });
+        let isAnswered = false;
+        let teamKey = null;
 
-    if (isAnswered) {
-        currentGame.rondes[roundID].vragen[questionID].team_antwoorden[teamKey].correct = isCorrect;
-    }
-
-
-    //Save to mongoDB
-    currentGame.save(function (err) {
-        if (err) return console.error(err);
-        res.json({
-            success: true,
-            answers: currentGame.rondes[roundID].vragen[questionID].team_antwoorden,
+        //Check if team has already answered
+        currentGame.rondes[roundID].vragen[questionID].team_antwoorden.forEach(function (arrayItem, key) {
+            if (arrayItem.team_naam.includes(teamName) && arrayItem.team_naam === teamName) {
+                isAnswered = true;
+                teamKey = key;
+            }
         });
-    });
+
+        if (isAnswered) {
+            currentGame.rondes[roundID].vragen[questionID].team_antwoorden[teamKey].correct = isCorrect;
+        }
+
+
+        //Save to mongoDB
+        currentGame.save(function (err) {
+            if (err) return console.error(err);
+            res.json({
+                success: true,
+                answers: currentGame.rondes[roundID].vragen[questionID].team_antwoorden,
+            });
+        });
+    }
 });
 
 
@@ -600,9 +616,7 @@ websocketServer.on('connection', (socket, req) => {
             //convert json message to a javascript object
             const data = JSON.parse(message);
 
-            if (err) {
-                throw err
-            }
+            if (err) throw err;
 
             /*====================================
             | TO: QuizMaster & ScoreBoard
@@ -671,13 +685,13 @@ websocketServer.on('connection', (socket, req) => {
             }
 
             /*====================================
-            | TO: All teams in a gameRoom AND QuizMaster
+            | TO: All teams in a gameRoom, QuizMaster AND scoreboard
             | Send message that the QuizMaster is choosing a question
             */
             if (data.messageType === 'CHOOSE QUESTION') {
                 for (var key in players) {
                     if (players.hasOwnProperty(key)) {
-                        if (players[key].gameRoomName === gameRoom && !players[key].scoreBoard) {
+                        if (players[key].gameRoomName === gameRoom) {
                             players[key].send(JSON.stringify({
                                 messageType: "CHOOSE QUESTION",
                             }));
@@ -738,8 +752,8 @@ websocketServer.on('connection', (socket, req) => {
             }
 
             /*====================================
-            | TO: All teams in a gameRoom AND QuizMaster
-            | Send message that the QuizMaster is choosing a question
+            | TO: All teams in a gameRoom, QuizMaster AND ScoreBoard
+            | Send message that the QuizMaster has closed the current question
             */
             if (data.messageType === 'QUESTION CLOSED') {
                 for (var key in players) {

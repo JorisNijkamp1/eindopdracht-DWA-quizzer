@@ -18,13 +18,13 @@ class VragenBeherenUI extends React.Component {
                     let answer = (teamName._id === teamAnswer.team_naam) ? teamAnswer.gegeven_antwoord : 'Nog geen antwoord gegeven..';
 
                     let questionStatus;
-                    if (teamName._id === teamAnswer.team_naam && teamAnswer.correct === true) {
+                    if (this.props.currentGameStatus === 'question_closed' && teamName._id === teamAnswer.team_naam && teamAnswer.correct === true) {
                         questionStatus =
                             <p className={"text-center"} style={{color: '#28a745'}}><i>Antwoord is goedgekeurd</i></p>;
-                    } else if (teamName._id === teamAnswer.team_naam && teamAnswer.correct === false) {
+                    } else if (this.props.currentGameStatus === 'question_closed' && teamName._id === teamAnswer.team_naam && teamAnswer.correct === false) {
                         questionStatus =
                             <p className={"text-center"} style={{color: '#dc3545'}}><i>Antwoord is afgewezen</i></p>;
-                    } else if (teamName._id === teamAnswer.team_naam) {
+                    } else if (this.props.currentGameStatus === 'question_closed' && teamName._id === teamAnswer.team_naam) {
                         questionStatus = (
                             <div>
                                 <Button variant="success" className={"float-left"} type="submit" onClick={() => {
@@ -111,7 +111,8 @@ function mapStateToProps(state) {
         roundNumber: state.createGame.roundNumber,
         questionNumber: state.createGame.questionNumber,
         currentQuestion: state.createGame.currentQuestion,
-        currentQuestionAnswer: state.createGame.currentQuestionAnswer
+        currentQuestionAnswer: state.createGame.currentQuestionAnswer,
+        currentGameStatus: state.createGame.currentGameStatus
     }
 }
 

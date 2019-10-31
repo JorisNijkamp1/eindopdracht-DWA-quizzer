@@ -4,6 +4,7 @@ import TeamCategory from "./TeamCategory";
 import TeamQuestions from "./TeamQuestions";
 import {TeamAnswerQuestion} from "./TeamAnswerQuestion";
 import {TeamAanmaken} from "./TeamAanmaken";
+import TeamQuestionClosed from "./TeamQuestionClosed";
 
 class TeamsAppUI extends React.Component {
 
@@ -16,6 +17,9 @@ class TeamsAppUI extends React.Component {
         }
         if (this.props.currentGameStatus === 'asking_question' && this.props.teamNameStatus === 'success') {
             return <TeamAnswerQuestion/>
+        }
+        if (this.props.currentGameStatus === 'question_closed' && this.props.teamNameStatus === 'success') {
+            return <TeamQuestionClosed/>
         }
 
         //If no match, return CreateGame Component

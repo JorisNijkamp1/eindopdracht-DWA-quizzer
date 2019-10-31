@@ -16,7 +16,7 @@ class QuizMasterAppUI extends React.Component {
         if (this.props.currentGameStatus === 'choose_question') {
             return <Vragen/>
         }
-        if (this.props.currentGameStatus === 'asking_question') {
+        if (this.props.currentGameStatus === 'asking_question' || this.props.currentGameStatus === 'question_closed') {
             return <VragenBeheren/>
         }
         if (this.props.currentGameStatus === 'in_lobby') {
