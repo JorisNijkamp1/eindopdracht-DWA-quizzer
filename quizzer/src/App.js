@@ -8,6 +8,7 @@ import ReactNotification from "react-notifications-component";
 import {TeamAnswerQuestion} from "./components/team-app/TeamAnswerQuestion";
 import {TeamsApp} from "./components/team-app/App";
 import {ScoreboardApp} from "./components/score-bord/App";
+import {VragenBeheren} from "./components/quiz-master/VragenBeheren";
 //============================================================================
 //  The React component that renders the UI for the entire App.
 //----------------------------------------------------------------------------
@@ -33,6 +34,11 @@ class App extends React.Component {
                     <Route path={"/answer-question"}>
                         <TeamAnswerQuestion/>
                     </Route>
+
+                    <Route path={"/vragen-beheren"}>
+                        <VragenBeheren/>
+                    </Route>
+
                     /* SCORE BORD PATHS DIT MOET DENK IK NOG ANDERS SAMEN EMT AARON NAAR KIJKEN */
                     <Route path="/scoreboard">
                         <ScoreboardApp/>

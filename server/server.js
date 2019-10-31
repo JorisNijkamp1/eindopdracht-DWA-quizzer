@@ -457,6 +457,7 @@ app.post('/api/game/:gameRoom/ronde/:rondeID/question/:questionID/team/:teamName
             currentGame.rondes[roundID].vragen[questionID].team_antwoorden.push({
                 team_naam: teamName,
                 gegeven_antwoord: teamAnswer,
+                correct: null,
             });
         }
 
@@ -549,7 +550,6 @@ app.put('/api/game/:gameRoom/ronde/:rondeID/question/:questionID/team/:teamName/
         if (isAnswered) {
             currentGame.rondes[roundID].vragen[questionID].team_antwoorden[teamKey].correct = isCorrect;
         }
-
 
         //Save to mongoDB
         currentGame.save(function (err) {

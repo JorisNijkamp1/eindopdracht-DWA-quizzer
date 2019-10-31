@@ -13,7 +13,7 @@ export class TeamQuestions extends React.Component {
                     <Alert className={"h-25 d-inline-block w-100"} variant="dark">
                         <Alert.Heading className={"text-center"}>De Quiz Master heeft de vraag gesloten.</Alert.Heading>
                         <p className={"text-center"}>
-                            Bekijk op het scorebord het gegeven antwoord corred was.
+                            Bekijk op het scorebord het gegeven antwoord correct is.
                         </p>
                     </Alert>
                 </Row>
