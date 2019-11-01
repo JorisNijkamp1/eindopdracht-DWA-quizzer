@@ -34,9 +34,9 @@ export function createIsAnsweredScoreboardAction(isAnswered) {
 // Reducer:
 const initialCreateScorebordState = {
     formValidationScoreboard: false,
-    currentTeamsScoreboard: [],
+    currentTeamsScoreboard: [{_id: "team 1", approved: true, team_score: 0}],
     gameRoomScoreboard: null,
-    isAnswered: []
+    isAnswered: [{isAnswered: true, teamName: "team 1"}]
 };
 
 export function createScorebordReducer(state = initialCreateScorebordState, action) {
@@ -62,7 +62,7 @@ export function createScorebordReducer(state = initialCreateScorebordState, acti
 
         case 'createIsAnsweredScoreboardAction':
             changes = {
-                isAnswered: action.isAnswered,
+                isAnswered: [...state.isAnswered, ...action.isAnswered],
             };
             return {...state, ...changes};
 

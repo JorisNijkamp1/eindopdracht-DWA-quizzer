@@ -120,8 +120,6 @@ app.put('/api/games/:gameRoom/team/:teamName', async (req, res) => {
     const gameRoom = req.params.gameRoom;
     const teamName = req.params.teamName;
 
-    console.log(gameRoom)
-
     //Check of isset session gameRoomName & is quizMaster
     if (req.session.gameRoomName === gameRoom && req.session.quizMaster) {
 
@@ -207,7 +205,6 @@ app.post('/api/team', async (req, res) => {
         //check of teamName available is
         let isTeamNameAvailable = true;
         currentGame.teams.forEach(function (arrayItem) {
-            console.log(arrayItem['_id']);
             if (arrayItem['_id'] === teamName) {
                 isTeamNameAvailable = false;
             }
@@ -225,7 +222,6 @@ app.post('/api/team', async (req, res) => {
             //Save to mongoDB
             currentGame.save(function (err) {
                 if (err) return console.error(err);
-                console.log('Team toegevoegd');
                 res.json({
                     gameRoomAccepted: true,
                     teamNameStatus: 'pending',
@@ -240,14 +236,12 @@ app.post('/api/team', async (req, res) => {
             //set session teamName
             req.session.teamName = teamName;
         } else {
-            console.log('team bestaat al')
             await res.json({
                 gameRoomAccepted: true,
                 teamNameStatus: 'error'
             });
         }
     } else {
-        console.log('Gameroom bestaat niet')
         await res.json({
             gameRoomAccepted: false,
             teamNameStatus: false
@@ -580,7 +574,6 @@ var players = {};
 websocketServer.on('connection', (socket, req) => {
 
     console.log('A new player is connected');
-    console.log(req.session);
     req.session.save();
 
     const gameRoom = req.session.gameRoomName;
@@ -597,18 +590,14 @@ websocketServer.on('connection', (socket, req) => {
         players[socket.id].gameRoomName = gameRoom;
         players[socket.id].teamName = teamName;
 
-        //console.log(players[socket.id].gameRoomName);
-
         //als diegene de quizmaster is, krijgt hij dat ook in zijn socket
         if (quizMaster) {
             players[socket.id].quizMaster = true;
-            //console.log(players[socket.id].quizMaster);
         }
 
         //als diegene de scoreboard is, krijgt hij dat ook in zijn socket
         if (scoreBoard) {
             players[socket.id].scoreBoard = true;
-            console.log(players[socket.id].scoreBoard);
         }
     }
 
@@ -760,6 +749,7 @@ websocketServer.on('connection', (socket, req) => {
             if (data.messageType === 'SCOREBOARD TEAM ANSWERED') {
                 for (var key in players) {
                     let data = JSON.parse(message);
+
                     if (players.hasOwnProperty(key)) {
                         if (players[key].scoreBoard && players[key].gameRoomName === gameRoom) {
                             players[key].send(JSON.stringify({
