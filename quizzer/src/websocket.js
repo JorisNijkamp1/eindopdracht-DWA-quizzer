@@ -73,7 +73,10 @@ export function openWebSocket() {
 
                 //Leeg alle eventuel gegeven antwoorden van vorige vragen
                 theStore.dispatch(addTeamQuestionAnswerAction([]));
-                theStore.dispatch(createIsAnsweredScoreboardAction([]));
+                theStore.dispatch(createIsAnsweredScoreboardAction(null));
+
+                //Get current teams
+                getTeams();
 
                 if (theStore.getState().createGame.questionNumber) {
                     theStore.dispatch(increaseQuestionNumberAction((theStore.getState().createGame.questionNumber + 1)));

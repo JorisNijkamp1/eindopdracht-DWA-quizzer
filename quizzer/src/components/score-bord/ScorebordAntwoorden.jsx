@@ -11,7 +11,7 @@ class ScorebordAntwoordUI extends React.Component {
     getTeams() {
         let currentTeamsScoreboard = this.props.currentTeamsScoreboard;
 
-        this.props.currentTeamsScoreboard.map((teamName, key) => {
+        currentTeamsScoreboard.map((teamName, key) => {
             this.props.isAnswered.map(teamAnswer => {
                 if (teamName._id === teamAnswer.teamName) {
                     currentTeamsScoreboard[key].isAnswered = true

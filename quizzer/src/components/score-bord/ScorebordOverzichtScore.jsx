@@ -35,8 +35,8 @@ class ScorebordOverzichtScoreUI extends React.Component {
                     <Col md={{span: 6, offset: 3}}>
                         <Card>
                             <Card.Body>
-                                <Card.Title>Ronde: {this.props.roundNumber}</Card.Title>
-                                <Card.Title>Vraag: {this.props.questionNumber}/12</Card.Title>
+                                <Card.Title>Ronde: {this.props.roundNumber ? this.props.roundNumber : 1}</Card.Title>
+                                <Card.Title>Vraag: {this.props.questionNumber ? this.props.questionNumber : 1}/12</Card.Title>
                             </Card.Body>
                         </Card>
                     </Col>

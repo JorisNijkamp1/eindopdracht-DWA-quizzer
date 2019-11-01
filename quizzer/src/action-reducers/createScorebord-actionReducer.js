@@ -61,9 +61,15 @@ export function createScorebordReducer(state = initialCreateScorebordState, acti
             return {...state, ...changes};
 
         case 'createIsAnsweredScoreboardAction':
-            changes = {
-                isAnswered: [...state.isAnswered, ...action.isAnswered],
-            };
+            if (action.isAnswered !== null) {
+                changes = {
+                    isAnswered: [...state.isAnswered, ...action.isAnswered],
+                };
+            }else {
+                changes = {
+                    isAnswered: [],
+                };
+            }
             return {...state, ...changes};
 
         default:
