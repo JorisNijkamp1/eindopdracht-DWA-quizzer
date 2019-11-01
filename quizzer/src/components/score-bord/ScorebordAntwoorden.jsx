@@ -29,14 +29,12 @@ class ScorebordAntwoordUI extends React.Component {
             this.props.currentTeamsScoreboard.map(teamName => {
                 return this.props.isAnswered.map(teamAnswer => {
                     if (teamName._id === teamAnswer.teamName) {
-                        let answer = (teamAnswer.isAnswered) ? 'Beantwoord' : 'Nog geen antwoord gegeven..';
-
                         return (
                             <Col md={{span: 4}} key={teamName._id}>
                                 <Card>
                                     <Card.Body>
                                         <Card.Title className={"text-center display-4"}>{teamName._id}</Card.Title>
-                                        <Card.Text className={"text-center"}>{answer}</Card.Text>
+                                        <Card.Text className={"text-center"}>Heeft geantwoord</Card.Text>
                                     </Card.Body>
                                 </Card>
                             </Col>

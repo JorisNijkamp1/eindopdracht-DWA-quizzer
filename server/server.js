@@ -757,7 +757,6 @@ websocketServer.on('connection', (socket, req) => {
                                 teamName: data.teamName,
                                 scoreBoardData: [{
                                     teamName: data.teamName,
-                                    isAnswered: data.isAnswered
                                 }]
                             }));
                         }
