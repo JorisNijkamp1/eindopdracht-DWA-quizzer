@@ -34,9 +34,9 @@ export function createIsAnsweredScoreboardAction(isAnswered) {
 // Reducer:
 const initialCreateScorebordState = {
     formValidationScoreboard: false,
-    currentTeamsScoreboard: [{_id: "team 1", approved: true, team_score: 0}, {_id: "team 2", approved: true, team_score: 0}],
+    currentTeamsScoreboard: [],
     gameRoomScoreboard: null,
-    isAnswered: [{teamName: "team 1"},{teamName: "team 2"}]
+    isAnswered: []
 };
 
 export function createScorebordReducer(state = initialCreateScorebordState, action) {

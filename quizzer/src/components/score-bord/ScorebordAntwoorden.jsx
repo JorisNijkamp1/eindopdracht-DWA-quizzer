@@ -8,41 +8,30 @@ import HeaderTitel from "../HeaderTitel";
 
 class ScorebordAntwoordUI extends React.Component {
 
-    geantwoordChecker() {
-        if (this.props.isAnswered === true) {
-            return (
-                <Card.Text className={"text-center"}>
-                    Beantwoord
-                </Card.Text>
-            )
-        } else {
-            return (
-                <Card.Text className={"text-center danger"}>
-                    Nog niet beantwoord
-                </Card.Text>
-            )
-        }
-    }
-
     getTeams() {
-        return (
-            this.props.currentTeamsScoreboard.map(teamName => {
-                return this.props.isAnswered.map(teamAnswer => {
-                    if (teamName._id === teamAnswer.teamName) {
-                        return (
-                            <Col md={{span: 4}} key={teamName._id}>
-                                <Card>
-                                    <Card.Body>
-                                        <Card.Title className={"text-center display-4"}>{teamName._id}</Card.Title>
-                                        <Card.Text className={"text-center"}>Heeft geantwoord</Card.Text>
-                                    </Card.Body>
-                                </Card>
-                            </Col>
-                        )
-                    }
-                })
+        let currentTeamsScoreboard = this.props.currentTeamsScoreboard;
+
+        this.props.currentTeamsScoreboard.map((teamName, key) => {
+            this.props.isAnswered.map(teamAnswer => {
+                if (teamName._id === teamAnswer.teamName) {
+                    currentTeamsScoreboard[key].isAnswered = true
+                }
             })
-        )
+        });
+
+        return currentTeamsScoreboard.map((teamName) => {
+            let isAnswered = teamName.isAnswered ? 'Vraag beantwoord' : 'Nog niet beantwoord';
+            return (
+                <Col md={{span: 4}} key={teamName._id}>
+                    <Card>
+                        <Card.Body>
+                            <Card.Title className={"text-center display-4"}>{teamName._id}</Card.Title>
+                            <Card.Text className={"text-center success"}>{isAnswered}</Card.Text>
+                        </Card.Body>
+                    </Card>
+                </Col>
+            )
+        });
     }
 
     render() {
