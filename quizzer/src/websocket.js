@@ -107,6 +107,10 @@ export function openWebSocket() {
                 console.log("QUESTION CLOSED");
                 break;
 
+            case "SEND ANSWERS TO SCOREBOARD":
+                console.log("SEND ANSWERS TO SCOREBOARD");
+                break;
+
             default:
                 console.log("Unknown messageType:", message);
         }
@@ -466,9 +470,21 @@ export function teamAnswerIsCorrect(gameRoomName, roundNumber, questionNumber, t
         .then(data => {
                 if (data.success === true) {
                     theStore.dispatch(addTeamQuestionAnswerAction(data.answers));
+                    sendSendAnswersToScoreboardMSG();
                 }
             }
         ).catch(err => console.log(err));
+}
+
+/*========================================
+| Websocket send SEND ANSWERS TO SCOREBOARD
+*/
+export function sendSendAnswersToScoreboardMSG() {
+    let message = {
+        messageType: "SEND ANSWERS TO SCOREBOARD",
+    };
+
+    theSocket.sendJSON(message);
 }
 
 /*========================================

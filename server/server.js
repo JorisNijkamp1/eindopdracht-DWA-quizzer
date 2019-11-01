@@ -386,7 +386,7 @@ app.post('/api/game/:gameRoom/ronde/:rondeID/question', async (req, res) => {
     const rondeID = (req.params.rondeID - 1);
 
     //Check of isset session gameRoomName & is quizMaster
-    // if (req.session.gameRoomName === gameRoomName && req.session.quizMaster) {
+    if (req.session.gameRoomName === gameRoomName && req.session.quizMaster) {
 
         //Get current game
         let currentGame = await Games.findOne({_id: gameRoomName});
@@ -404,6 +404,9 @@ app.post('/api/game/:gameRoom/ronde/:rondeID/question', async (req, res) => {
             //Change current game status to choose_question
             currentGame.game_status = 'asking_question';
 
+            //Change current round status
+            currentGame.rondes[rondeID].ronde_status = 'asking_question';
+
             //Save to mongoDB
             currentGame.save(function (err) {
                 if (err) return console.error(err);
@@ -416,14 +419,24 @@ app.post('/api/game/:gameRoom/ronde/:rondeID/question', async (req, res) => {
                     answer: question.answer
                 });
             });
-        }else {
-            res.json({
-                success: true,
-                round_ended: false,
-                show_questions: true,
+        } else {
+            //Change current game status to choose_question
+            currentGame.game_status = 'choosing_question';
+
+            //Change current round status
+            currentGame.rondes[rondeID].ronde_status = 'choosing_question';
+
+            //Save to mongoDB
+            currentGame.save(function (err) {
+                if (err) return console.error(err);
+                res.json({
+                    success: true,
+                    round_ended: false,
+                    show_questions: true,
+                });
             });
         }
-    // }
+    }
 });
 
 
@@ -511,6 +524,8 @@ app.put('/api/game/:gameRoom/ronde/:rondeID/question', async (req, res) => {
 
         //Change current round status
         currentGame.rondes[roundID].ronde_status = 'question_closed';
+
+        currentGame.game_status = 'question_closed';
 
         //Save to mongoDB
         currentGame.save(function (err) {
@@ -768,6 +783,22 @@ websocketServer.on('connection', (socket, req) => {
                                 scoreBoardData: [{
                                     teamName: data.teamName,
                                 }]
+                            }));
+                        }
+                    }
+                }
+            }
+
+            /*====================================
+            | TO: ScoreBoard
+            | Send SCOREBOARD TEAM ANSWERED msg
+            */
+            if (data.messageType === 'SEND ANSWERS TO SCOREBOARD') {
+                for (var key in players) {
+                    if (players.hasOwnProperty(key)) {
+                        if (players[key].scoreBoard && players[key].gameRoomName === gameRoom) {
+                            players[key].send(JSON.stringify({
+                                messageType: "SEND ANSWERS TO SCOREBOARD",
                             }));
                         }
                     }
