@@ -386,34 +386,44 @@ app.post('/api/game/:gameRoom/ronde/:rondeID/question', async (req, res) => {
     const rondeID = (req.params.rondeID - 1);
 
     //Check of isset session gameRoomName & is quizMaster
-    if (req.session.gameRoomName === gameRoomName && req.session.quizMaster) {
+    // if (req.session.gameRoomName === gameRoomName && req.session.quizMaster) {
 
         //Get current game
         let currentGame = await Games.findOne({_id: gameRoomName});
 
         const question = req.body.question;
 
-        currentGame.rondes[rondeID].vragen.push({
-            vraag: question.question,
-            antwoord: question.answer,
-            categorie_naam: question.category,
-            team_antwoorden: []
-        });
+        if (question) {
+            currentGame.rondes[rondeID].vragen.push({
+                vraag: question.question,
+                antwoord: question.answer,
+                categorie_naam: question.category,
+                team_antwoorden: []
+            });
 
-        //Change current game status to choose_question
-        currentGame.game_status = 'asking_question';
+            //Change current game status to choose_question
+            currentGame.game_status = 'asking_question';
 
-        //Save to mongoDB
-        currentGame.save(function (err) {
-            if (err) return console.error(err);
+            //Save to mongoDB
+            currentGame.save(function (err) {
+                if (err) return console.error(err);
+                res.json({
+                    success: true,
+                    round_ended: false,
+                    show_questions: false,
+                    question: question.question,
+                    category: question.category,
+                    answer: question.answer
+                });
+            });
+        }else {
             res.json({
                 success: true,
-                question: question.question,
-                category: question.category,
-                answer: question.answer
+                round_ended: false,
+                show_questions: true,
             });
-        });
-    }
+        }
+    // }
 });
 
 

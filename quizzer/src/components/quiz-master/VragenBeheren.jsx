@@ -7,7 +7,7 @@ import {Link} from "react-router-dom";
 import {Card} from "react-bootstrap";
 import {faCheck, faTimes} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {closeCurrentQuestion, teamAnswerIsCorrect} from "../../websocket";
+import {closeCurrentQuestion, startQuestion, teamAnswerIsCorrect} from "../../websocket";
 
 class VragenBeherenUI extends React.Component {
 
@@ -86,7 +86,7 @@ class VragenBeherenUI extends React.Component {
             if (allQuestionsReviewed === true) {
                 currentButton = (
                     <Button variant="danger" type="submit" onClick={() => {
-                        //next question
+                        startQuestion(this.props.gameRoom, this.props.roundNumber)
                     }}>
                         Volgende vraag
                     </Button>

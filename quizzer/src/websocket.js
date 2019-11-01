@@ -70,10 +70,14 @@ export function openWebSocket() {
                 theStore.dispatch(createCurrentGameStatusAction('asking_question'));
                 theStore.dispatch(createCurrentQuestionAction(message.question));
                 theStore.dispatch(createCurrentCategoryAction(message.category));
-                if (store.createGame.questionNumber) {
-                    theStore.dispatch(increaseQuestionNumberAction(store.createGame.questionNumber + 1))
-                } else {
-                    theStore.dispatch(increaseQuestionNumberAction(1))
+
+                //Leeg alle eventuel gegeven antwoorden van vorige vragen
+                theStore.dispatch(addTeamQuestionAnswerAction([]));
+
+                if (theStore.getState().createGame.questionNumber) {
+                    theStore.dispatch(increaseQuestionNumberAction((theStore.getState().createGame.questionNumber + 1)));
+                }else {
+                    theStore.dispatch(increaseQuestionNumberAction(1));
                 }
 
                 console.log('ASKING QUESTION');
@@ -327,24 +331,39 @@ function sendChooseQuestionsMSG() {
 export function startQuestion(gameRoom, rondeID, question) {
     if (gameRoom) {
         const url = `http://localhost:3001/api/game/${gameRoom}/ronde/${rondeID}/question`;
-        let data = {
-            question: question
-        };
-        const options = {
-            method: 'POST',
-            body: JSON.stringify(data),
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            credentials: 'include',
-            mode: 'cors'
-        };
+
+        let options;
+        if (question) {
+            let data = {
+                question: question
+            };
+            options = {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include',
+                mode: 'cors'
+            };
+        }else {
+            options = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include',
+                mode: 'cors'
+            };
+        }
 
         return fetch(url, options).then(response => {
             if (response.status !== 200) console.log("Er gaat iets fout" + response.status);
             response.json().then(data => {
-                if (data.success) {
-                    sendAskingQuestionsMSG(data.question, data.category, data.answer)
+                if (data.success && data.show_questions && data.round_ended === false) {
+                    sendChooseQuestionsMSG();
+                }else if(data.success && data.show_questions === false && data.round_ended === false){
+                    sendAskingQuestionsMSG(data.question, data.category, data.answer);
                 }
             });
         }).catch(err => console.log(err))
@@ -366,7 +385,7 @@ function sendAskingQuestionsMSG(question, category, answer) {
 }
 
 /*========================================
-| Get al answers from a question (for Quizmaster)
+| Get all answers from a question (for Quizmaster)
 */
 export function getQuestionAnswers(gameRoom, rondeID, question) {
     if (gameRoom && rondeID && question) {
@@ -407,7 +426,7 @@ export function sendGetQuestionAnswersMSG(gameRoomName, roundNumber, questionNum
 }
 
 /*========================================
-| Websocket send GET QUESTION ANSWERS
+| Websocket send SCOREBOARD TEAM ANSWERED
 */
 export function sendGetTeamIsAnsweredMSG(teamName, isAnswered) {
     let message = {
