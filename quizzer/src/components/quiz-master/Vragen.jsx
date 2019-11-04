@@ -69,14 +69,6 @@ class VragenUI extends React.Component {
                             </Card.Body>
                         </Card>
                     </Col>
-                    // <ListGroup.Item
-                    //     key={key}
-                    //     onClick={() => {
-                    //         this.selectQuestion(question)
-                    //     }}
-                    //     className={isSelected}>
-                    //     {question.question}
-                    // </ListGroup.Item>
                 )
             })
         )

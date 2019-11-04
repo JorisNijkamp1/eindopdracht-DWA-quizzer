@@ -201,46 +201,53 @@ app.post('/api/team', async (req, res) => {
     //Get current game
     let currentGame = await Games.findOne({_id: gameRoomName});
 
-    //Check if game exits
+    //Check if game exits && dat die nog niet begonnen is
     if (currentGame) {
-
-        //check of teamName available is
-        let isTeamNameAvailable = true;
-        currentGame.teams.forEach(function (arrayItem) {
-            if (arrayItem['_id'] === teamName) {
-                isTeamNameAvailable = false;
-            }
-        });
-
-        //Checks if team isn't already in current game
-        if (isTeamNameAvailable) {
-
-            currentGame.teams.push({
-                _id: teamName,
-                approved: false,
-                team_score: 0
+        let gameAlreadyStarted = await currentGame.game_status;
+        if (gameAlreadyStarted === "lobby") {
+            //check of teamName available is
+            let isTeamNameAvailable = true;
+            currentGame.teams.forEach(function (arrayItem) {
+                if (arrayItem['_id'] === teamName) {
+                    isTeamNameAvailable = false;
+                }
             });
 
-            //Save to mongoDB
-            currentGame.save(function (err) {
-                if (err) return console.error(err);
-                res.json({
-                    gameRoomAccepted: true,
-                    teamNameStatus: 'pending',
-                    gameRoomName: gameRoomName,
-                    teamName: teamName,
+            //Checks if team isn't already in current game
+            if (isTeamNameAvailable) {
+
+                currentGame.teams.push({
+                    _id: teamName,
+                    approved: false,
+                    team_score: 0
                 });
-            });
 
-            //set session gameRoomName
-            req.session.gameRoomName = gameRoomName;
+                //Save to mongoDB
+                currentGame.save(function (err) {
+                    if (err) return console.error(err);
+                    res.json({
+                        gameRoomAccepted: true,
+                        teamNameStatus: 'pending',
+                        gameRoomName: gameRoomName,
+                        teamName: teamName,
+                    });
+                });
 
-            //set session teamName
-            req.session.teamName = teamName;
+                //set session gameRoomName
+                req.session.gameRoomName = gameRoomName;
+
+                //set session teamName
+                req.session.teamName = teamName;
+            } else {
+                await res.json({
+                    gameRoomAccepted: true,
+                    teamNameStatus: 'error'
+                });
+            }
         } else {
             await res.json({
                 gameRoomAccepted: true,
-                teamNameStatus: 'error'
+                teamNameStatus: 'already-started'
             });
         }
     } else {

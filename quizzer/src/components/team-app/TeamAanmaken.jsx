@@ -90,6 +90,8 @@ class TeamAanmakenUI extends React.Component {
                             sendNewTeamMSG();       //send message createTeam
                         } else if (data.teamNameStatus === 'error') {
                             this.props.doChangeTeamNameStatus(data.teamNameStatus)
+                        } else if (data.teamNameStatus === 'already-started') {
+                            this.props.doChangeTeamNameStatus(data.teamNameStatus)
                         }
                     } else if (data.gameRoomAccepted === false) {
                         this.props.doChangeGameRoomStatus(data.gameRoomAccepted)
@@ -97,6 +99,12 @@ class TeamAanmakenUI extends React.Component {
                 }
             );
     };
+
+    gameRoomAlreadyStarted(errorMelding) {
+        if (this.props.teamNameStatus === 'already-started') {
+            return errorMelding
+        }
+    }
 
     gameRoomError() {
         if (this.props.gameRoomAccepted === false) {
@@ -160,6 +168,9 @@ class TeamAanmakenUI extends React.Component {
                                             <span role={"img"} aria-label={""}>😨</span>
                                         </div>
                                     </Form.Group>
+                                    <div className={"text-danger"}>
+                                        {this.gameRoomAlreadyStarted("De game is al begonnen! 😨")}
+                                    </div>
                                     <Form.Group>
                                         <Form.Label>Vul hier uw team naam in.</Form.Label>
                                         <Form.Control type="text"
@@ -229,7 +240,8 @@ function mapStateToProps(state) {
         teamNameStatus: state.createTeam.teamNameStatus,
         teamRoomName: state.createTeam.teamRoomName,
         gameRoomName: state.createTeam.gameRoomName,
-        currentGameStatus: state.createGame.currentGameStatus
+        currentGameStatus: state.createGame.currentGameStatus,
+        roundNumber: state.createGame.roundNumber
     }
 }
 
