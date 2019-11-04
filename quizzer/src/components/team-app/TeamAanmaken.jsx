@@ -114,15 +114,21 @@ class TeamAanmakenUI extends React.Component {
     loadingAnimation() {
         return (
             <Container>
-                <Row className="min-vh-100">
+                <Row className="min-vh-100 h-100">
                     <Col xs={{span: 12}}>
-                        <div className="d-flex align-items-center justify-content-center h-100">
+                        <div className="d-flex align-items-center justify-content-center h-75">
                             <ClimbingBoxLoader
                                 sizeUnit={"px"}
                                 size={35}
                                 color={'#FFF'}
                                 loading="true"
                             />
+                        </div>
+                        <div className="text-white">
+                            <div className="col-lg-10 mx-auto text-center">
+                                <p className="lead">Aan het laden...</p>
+                                <p className="lead">Wacht op de Quizz Master</p>
+                            </div>
                         </div>
                     </Col>
                 </Row>

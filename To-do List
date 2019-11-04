@@ -1,0 +1,16 @@
+1. Vragen die al gekoze zijn toevoegen aan een lisjt met vragen die al geweest zijn. Dus vragen kunnen maar 1  x voor komen.
+2. Teamscores
+3. Vragen zelfde als categorie maken. -- de opmaak
+4. Scorebord punten weergegeven en bijvoorbeeld vraag 3 van de 12.
+5. Als een game al begonnen is mag je niet joinen.
+6. Session reset of destroyen of overschrijven nog even goed naar kijken.
+7. Melding als je een antwoord gesubmit hebt.
+
+
+
+BIJ TIJD OVER:
+1. kijken of we websocket zonder data versturen kunnen done
+2. Foto meesturen.
+
+
+ALLES GOED TESTEN!!!!!!
