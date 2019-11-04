@@ -8,6 +8,7 @@ import Form from "react-bootstrap/Form";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import {sendGetQuestionAnswersMSG, sendGetTeamIsAnsweredMSG} from "../../websocket";
+import {store} from "react-notifications-component";
 
 class TeamAnswerQuestionUI extends React.Component {
 
@@ -47,9 +48,19 @@ class TeamAnswerQuestionUI extends React.Component {
             .then(response => response.json())
             .then(data => {
                     if (data.success === true) {
-                        console.log('Antwoord verstuurd & ontvangen');
                         sendGetQuestionAnswersMSG();
                         sendGetTeamIsAnsweredMSG(this.props.teamName,true);
+                        store.addNotification({
+                            title: 'Quizzer',
+                            message: 'Antwoord verstuurd naar de Quiz Master 😉',
+                            type: 'success',                         // 'default', 'success', 'info', 'warning'
+                            container: 'top-right',                  // where to position the notifications
+                            animationIn: ["animated", "fadeIn"],     // animate.css classes that's applied
+                            animationOut: ["animated", "fadeOut"],   // animate.css classes that's applied
+                            dismiss: {
+                                duration: 2000
+                            }
+                        })
                     }
                 }
             ).catch(err => console.log(err));
