@@ -52,7 +52,8 @@ function mapStateToProps(state) {
         roundNumber: state.createGame.roundNumber,
         questionNumber: state.createGame.questionNumber,
         gameRoomTeams: state.createGame.gameRoomTeams,
-        currentTeamsScoreboard: state.createScoreboard.currentTeamsScoreboard
+        currentTeamsScoreboard: state.createScoreboard.currentTeamsScoreboard,
+
     }
 }
 

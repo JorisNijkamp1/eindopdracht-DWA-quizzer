@@ -3,7 +3,7 @@ import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Button from "react-bootstrap/Button";
-import {ListGroup} from "react-bootstrap";
+import {Card, ListGroup} from "react-bootstrap";
 import HeaderTitel from "../HeaderTitel";
 import {createGameQuestionsAction} from "../../action-reducers/createGame-actionReducer";
 import * as ReactRedux from "react-redux";
@@ -54,14 +54,21 @@ class VragenUI extends React.Component {
                     isSelected = "isSelected";
                 }
                 return (
-                    <ListGroup.Item
-                        key={key}
-                        onClick={() => {
-                            this.selectQuestion(question)
-                        }}
-                        className={isSelected}>
-                        {question.question}
-                    </ListGroup.Item>
+                    <Col key={key}
+                         md={6}
+                         xl={12}
+                         className={"pb-3"}
+                         onClick={() => {
+                             this.selectQuestion(question)
+                         }}>
+                        <Card className={isSelected}>
+                            <Card.Body>
+                                <Card.Title className="text-center m-0">
+                                    {question.question}
+                                </Card.Title>
+                            </Card.Body>
+                        </Card>
+                    </Col>
                 )
             })
         )
@@ -79,17 +86,38 @@ class VragenUI extends React.Component {
             )
         }
         return (
-            <Container>
-                <Row className="min-vh-100">
-                    <HeaderTitel/>
-                    <Col className={"text-center"} md={{span: 6, offset: 3}}>
-                        {startQuestionButton}
+            <div className="container-fluid px-md-5">
+                <Row className="row py-5 text-white">
+                    <Col lg={4} className={"mx-auto text-center"}>
+                        <h1 className="display-3">Quizzer Night</h1>
+                        <p className="lead mb-0">Kies hier de vraag.</p>
                     </Col>
-                    <ListGroup style={{width: '100%'}}>
-                        {this.getQuestions()}
-                    </ListGroup>
                 </Row>
-            </Container>
+                <div className="rounded">
+                    <Row>
+                        <Col lg={4} className={"mb-4 mb-lg-0"}>
+                            <div className="nav flex-column bg-white shadow-sm font-italic rounded p-3 text-center">
+                                <h3 className={"text-center"}>Quiz info</h3>
+                                <hr/>
+                                <p><b>Gameroom naam</b><br/>{this.props.gameRoom}</p>
+                                <p><b>Huidige ronde</b><br/>{this.props.roundNumber}</p>
+                                {startQuestionButton}
+                            </div>
+                        </Col>
+
+                        <Col lg={8} className={"mb-5"}>
+                            <div className="p-5 bg-white d-flex align-items-center shadow-sm rounded h-100">
+                                <div className="demo-content">
+                                    <p className="lead font-italic"><b>- Vragen</b></p>
+                                    <Row>
+                                        {this.getQuestions()}
+                                    </Row>
+                                </div>
+                            </div>
+                        </Col>
+                    </Row>
+                </div>
+            </div>
         )
     }
 }
@@ -98,7 +126,7 @@ function mapStateToProps(state) {
     return {
         gameRoom: state.createGame.gameRoom,
         questions: state.createGame.questions,
-        roundNumber: state.createGame.roundNumber
+        roundNumber: state.createGame.roundNumber,
     }
 }
 

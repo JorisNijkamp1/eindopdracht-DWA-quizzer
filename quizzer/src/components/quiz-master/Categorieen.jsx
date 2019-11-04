@@ -97,7 +97,6 @@ class CategorieenUI extends React.Component {
             )
         }
         return (
-
             <div className="container-fluid px-md-5">
                 <Row className="row py-5 text-white">
                     <Col lg={9} className={"mx-auto text-center"}>
@@ -105,7 +104,6 @@ class CategorieenUI extends React.Component {
                         <p className="lead mb-0">Kies hier drie categorieën waar de ronde over moet gaan.</p>
                     </Col>
                 </Row>
-
                 <div className="rounded">
                     <Row>
                         <Col lg={4} className={"mb-4 mb-lg-0"}>
