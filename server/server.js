@@ -53,6 +53,9 @@ app.get('/api/games/:gameRoom/scoreboard', async (req, res) => {
     //set session quizMaster = true
     req.session.scoreBoard = true;
 
+    //set session quizMaster = false
+    req.session.quizMaster = false;
+
     //Check if game exits
     if (currentGame) {
         await res.json({
@@ -74,8 +77,6 @@ app.get('/api/games/:gameRoom/teams', async (req, res) => {
     const gameRoom = req.params.gameRoom;
 
     let currentGame = await Games.findOne({_id: gameRoom});
-
-    console.log(currentGame.teams)
 
     return res.json({
         success: true,
@@ -178,6 +179,9 @@ app.post('/api/game', async (req, res) => {
         //set session quizMaster = true
         req.session.quizMaster = true;
 
+        //set session quizMaster = false
+        req.session.scoreBoard = false;
+
         //send result
         await res.json({
             gameRoomNameAccepted: true,
@@ -237,6 +241,12 @@ app.post('/api/team', async (req, res) => {
 
             //set session teamName
             req.session.teamName = teamName;
+
+            //set session quizMaster = false
+            req.session.quizMaster = false;
+
+            //set session quizMaster = false
+            req.session.scoreBoard = false;
         } else {
             await res.json({
                 gameRoomAccepted: true,
@@ -276,7 +286,6 @@ app.put('/api/games/:gameRoom', async (req, res) => {
                     success: true,
                 });
             });
-
         } else {
             await res.json({
                 success: false,
@@ -446,7 +455,6 @@ app.post('/api/game/:gameRoom/ronde/:rondeID/question', async (req, res) => {
     }
 });
 
-
 /*====================================
 | POST A ANSWER AS TEAM ON A QUESTION
 */
@@ -506,13 +514,15 @@ app.get('/api/game/:gameRoom/ronde/:rondeID/question/:questionID/answers', async
     const questionID = (req.params.questionID - 1);
 
     //Check of isset session gameRoomName & is quizMaster
-    if (req.session.gameRoomName === gameRoom && req.session.quizMaster) {
+    if (req.session.gameRoomName === gameRoom && (req.session.quizMaster || req.session.scoreBoard)) {
         let currentGame = await Games.findOne({_id: gameRoom});
 
-        return res.json({
-            success: true,
-            answers: currentGame.rondes[roundID].vragen[questionID].team_antwoorden,
-        })
+        if ((currentGame.game_status === 'question_closed' && req.session.scoreBoard) || req.session.quizMaster) {
+            return res.json({
+                success: true,
+                answers: currentGame.rondes[roundID].vragen[questionID].team_antwoorden,
+            })
+        }
     }
 });
 
@@ -759,15 +769,11 @@ websocketServer.on('connection', (socket, req) => {
             | Send GET QUESTION ANSWERS msg
             */
             if (data.messageType === 'GET QUESTION ANSWERS') {
-                let data = JSON.parse(message);
                 for (var key in players) {
                     if (players.hasOwnProperty(key)) {
                         if (players[key].quizMaster && players[key].gameRoomName === gameRoom) {
                             players[key].send(JSON.stringify({
                                 messageType: "GET QUESTION ANSWERS",
-                                gameRoomName: data.gameRoomName,
-                                roundNumber: data.roundNumber,
-                                questionNumber: data.questionNumber
                             }));
                         }
                     }

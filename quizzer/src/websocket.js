@@ -93,7 +93,7 @@ export function openWebSocket() {
                 break;
 
             case "GET QUESTION ANSWERS":
-                getQuestionAnswers(message.gameRoomName, message.roundNumber, message.questionNumber);
+                getQuestionAnswers();
                 console.log("GET QUESTION ANSWERS");
                 break;
 
@@ -103,11 +103,13 @@ export function openWebSocket() {
                 break;
 
             case "QUESTION CLOSED":
+                getQuestionAnswers();
                 theStore.dispatch(createCurrentGameStatusAction('question_closed'));
                 console.log("QUESTION CLOSED");
                 break;
 
             case "SEND ANSWERS TO SCOREBOARD":
+                getQuestionAnswers();
                 console.log("SEND ANSWERS TO SCOREBOARD");
                 break;
 
@@ -191,33 +193,35 @@ function getTeams() {
         gameRoom = store.createScoreboard.gameRoomScoreboard
     }
 
-    const url = `http://localhost:3001/api/games/${gameRoom}/teams`;
+    if (gameRoom) {
+        const url = `http://localhost:3001/api/games/${gameRoom}/teams`;
 
-    const options = {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        credentials: 'include',
-        mode: 'cors'
-    };
+        const options = {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+            mode: 'cors'
+        };
 
-    return fetch(url, options).then(response => {
-        if (response.status !== 200) {
-            console.log("Er gaat iets fout" + response.status);
-        }
-        response.json().then(data => {
-            if (data.success) {
-                if (store.createGame.gameRoom) {
-                    theStore.dispatch(getGameRoomTeamsAction(data.teams))
-                } else if (store.createScoreboard.gameRoomScoreboard) {
-                    theStore.dispatch(createAddCurrentTeamsScoreboardAction(data.teams))
-                }
+        return fetch(url, options).then(response => {
+            if (response.status !== 200) {
+                console.log("Er gaat iets fout" + response.status);
             }
-        });
-    }).catch(err => {
-        console.log(err);
-    })
+            response.json().then(data => {
+                if (data.success) {
+                    if (store.createGame.gameRoom) {
+                        theStore.dispatch(getGameRoomTeamsAction(data.teams))
+                    } else if (store.createScoreboard.gameRoomScoreboard) {
+                        theStore.dispatch(createAddCurrentTeamsScoreboardAction(data.teams))
+                    }
+                }
+            });
+        }).catch(err => {
+            console.log(err);
+        })
+    }
 }
 
 /*========================================
@@ -413,10 +417,21 @@ function sendRoundEndMSG() {
 /*========================================
 | Get all answers from a question (for Quizmaster)
 */
-export function getQuestionAnswers(gameRoom, rondeID, question) {
-    if (gameRoom && rondeID && question) {
+export function getQuestionAnswers() {
+    const store = theStore.getState();
 
-        const url = `http://localhost:3001/api/game/${gameRoom}/ronde/${rondeID}/question/${question}/answers`;
+
+    let gameRoom = store.createGame.gameRoom;
+    const roundNumber = store.createGame.roundNumber;
+    const question = store.createGame.questionNumber;
+
+    if (gameRoom === null) {
+        gameRoom = store.createScoreboard.gameRoomScoreboard;
+    }
+
+    if (gameRoom && roundNumber && question) {
+
+        const url = `http://localhost:3001/api/game/${gameRoom}/ronde/${roundNumber}/question/${question}/answers`;
         const options = {
             method: 'GET',
             headers: {
@@ -430,6 +445,8 @@ export function getQuestionAnswers(gameRoom, rondeID, question) {
             if (response.status !== 200) console.log("Er gaat iets fout" + response.status);
             response.json().then(data => {
                 if (data.success) {
+                    console.log('Vraag gesloten, hieronder de gegeven antwoorden');
+                    console.log(data.answers);
                     theStore.dispatch(addTeamQuestionAnswerAction(data.answers));
                 }
             });
@@ -440,12 +457,9 @@ export function getQuestionAnswers(gameRoom, rondeID, question) {
 /*========================================
 | Websocket send GET QUESTION ANSWERS
 */
-export function sendGetQuestionAnswersMSG(gameRoomName, roundNumber, questionNumber) {
+export function sendGetQuestionAnswersMSG() {
     let message = {
         messageType: "GET QUESTION ANSWERS",
-        gameRoomName: gameRoomName,
-        roundNumber: roundNumber,
-        questionNumber: questionNumber
     };
 
     theSocket.sendJSON(message);
@@ -506,7 +520,7 @@ export function sendSendAnswersToScoreboardMSG() {
 }
 
 /*========================================
-| Change game status to QUESTION CLOSED (for Quizmaster)
+| Change game status to QUESTION CLOSED
 */
 export function closeCurrentQuestion(gameRoomName, roundNumber) {
     const url = `http://localhost:3001/api/game/${gameRoomName}/ronde/${roundNumber}/question`;
@@ -525,6 +539,7 @@ export function closeCurrentQuestion(gameRoomName, roundNumber) {
         .then(data => {
                 if (data.success === true) {
                     sendQuestionClosedMSG();
+                    sendGetQuestionAnswersMSG();
                 }
             }
         ).catch(err => console.log(err));

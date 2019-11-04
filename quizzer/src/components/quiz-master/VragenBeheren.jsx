@@ -3,7 +3,6 @@ import * as ReactRedux from "react-redux";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Button from "react-bootstrap/Button";
-import {Link} from "react-router-dom";
 import {Card} from "react-bootstrap";
 import {faCheck, faTimes} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -15,8 +14,6 @@ class VragenBeherenUI extends React.Component {
         let currentTeamAnswers = this.props.gameRoomTeams;
         currentTeamAnswers.map((teamName, key) => {
             this.props.allQuestionAnswers.map(teamAnswer => {
-                const currentGameStatus = this.props.currentGameStatus;
-
                 if (teamName._id === teamAnswer.team_naam) {
                     currentTeamAnswers[key].teamAnswer = teamAnswer.gegeven_antwoord;
                 }

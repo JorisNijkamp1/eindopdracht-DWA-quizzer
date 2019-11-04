@@ -48,7 +48,7 @@ class TeamAnswerQuestionUI extends React.Component {
             .then(data => {
                     if (data.success === true) {
                         console.log('Antwoord verstuurd & ontvangen');
-                        sendGetQuestionAnswersMSG(this.props.gameRoomName, this.props.roundNumber, this.props.questionNumber);
+                        sendGetQuestionAnswersMSG();
                         sendGetTeamIsAnsweredMSG(this.props.teamName,true);
                     }
                 }
