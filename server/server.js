@@ -75,6 +75,8 @@ app.get('/api/games/:gameRoom/teams', async (req, res) => {
 
     let currentGame = await Games.findOne({_id: gameRoom});
 
+    console.log(currentGame.teams)
+
     return res.json({
         success: true,
         teams: currentGame.teams,
@@ -426,12 +428,18 @@ app.post('/api/game/:gameRoom/ronde/:rondeID/question', async (req, res) => {
             //Change current round status
             currentGame.rondes[rondeID].ronde_status = 'choosing_question';
 
+            //Check if round is ended
+            const maxRounds = 2;
+            let currentRounds = currentGame.rondes[rondeID].vragen.length;
+
+            let round_ended = (currentRounds >= maxRounds);
+
             //Save to mongoDB
             currentGame.save(function (err) {
                 if (err) return console.error(err);
                 res.json({
                     success: true,
-                    round_ended: false,
+                    round_ended: round_ended,
                     show_questions: true,
                 });
             });
@@ -815,6 +823,22 @@ websocketServer.on('connection', (socket, req) => {
                         if (players[key].gameRoomName === gameRoom || players[key].scoreBoard && players[key].gameRoomName === gameRoom) {
                             players[key].send(JSON.stringify({
                                 messageType: "QUESTION CLOSED",
+                            }));
+                        }
+                    }
+                }
+            }
+
+            /*====================================
+            | TO: All teams in a gameRoom, QuizMaster AND ScoreBoard
+            | Send message that the QuizMaster has closed the current question
+            */
+            if (data.messageType === 'END ROUND') {
+                for (var key in players) {
+                    if (players.hasOwnProperty(key)) {
+                        if (players[key].gameRoomName === gameRoom || players[key].scoreBoard && players[key].gameRoomName === gameRoom) {
+                            players[key].send(JSON.stringify({
+                                messageType: "END ROUND",
                             }));
                         }
                     }

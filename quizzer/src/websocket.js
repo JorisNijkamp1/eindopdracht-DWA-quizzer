@@ -111,6 +111,11 @@ export function openWebSocket() {
                 console.log("SEND ANSWERS TO SCOREBOARD");
                 break;
 
+            case "END ROUND":
+                theStore.dispatch(createCurrentGameStatusAction('round_ended'));
+                console.log("END ROUND");
+                break;
+
             default:
                 console.log("Unknown messageType:", message);
         }
@@ -372,6 +377,8 @@ export function startQuestion(gameRoom, rondeID, question) {
                     sendChooseQuestionsMSG();
                 }else if(data.success && data.show_questions === false && data.round_ended === false){
                     sendAskingQuestionsMSG(data.question, data.category, data.answer);
+                }else if (data.success && data.round_ended === true) {
+                    sendRoundEndMSG();
                 }
             });
         }).catch(err => console.log(err))
@@ -387,6 +394,17 @@ function sendAskingQuestionsMSG(question, category, answer) {
         question: question,
         category: category,
         answer: answer
+    };
+
+    theSocket.sendJSON(message);
+}
+
+/*========================================
+| Websocket send END ROUND
+*/
+function sendRoundEndMSG() {
+    let message = {
+        messageType: "END ROUND",
     };
 
     theSocket.sendJSON(message);

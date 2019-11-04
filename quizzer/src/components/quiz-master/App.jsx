@@ -6,10 +6,14 @@ import {Vragen} from "./Vragen";
 import {VragenBeheren} from "./VragenBeheren";
 import {CreateGame} from "./CreateGame";
 import {TeamsBeheren} from "./TeamsBeheren";
+import EindRonde from "./EindRonde";
 
 class QuizMasterAppUI extends React.Component {
 
     render() {
+        if (this.props.currentGameStatus === 'in_lobby') {
+            return <TeamsBeheren/>
+        }
         if (this.props.currentGameStatus === 'choose_categories') {
             return <Categorieen/>
         }
@@ -19,8 +23,8 @@ class QuizMasterAppUI extends React.Component {
         if (this.props.currentGameStatus === 'asking_question' || this.props.currentGameStatus === 'question_closed') {
             return <VragenBeheren/>
         }
-        if (this.props.currentGameStatus === 'in_lobby') {
-            return <TeamsBeheren/>
+        if (this.props.currentGameStatus === 'round_ended') {
+            return <EindRonde/>
         }
 
         //If no match, return CreateGame Component

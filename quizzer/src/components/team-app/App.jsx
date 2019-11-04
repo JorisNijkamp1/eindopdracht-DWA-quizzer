@@ -5,6 +5,7 @@ import TeamQuestions from "./TeamQuestions";
 import {TeamAnswerQuestion} from "./TeamAnswerQuestion";
 import {TeamAanmaken} from "./TeamAanmaken";
 import TeamQuestionClosed from "./TeamQuestionClosed";
+import TeamRoundEnded from "./TeamRoundEnded";
 
 class TeamsAppUI extends React.Component {
 
@@ -20,6 +21,9 @@ class TeamsAppUI extends React.Component {
         }
         if (this.props.currentGameStatus === 'question_closed' && this.props.teamNameStatus === 'success') {
             return <TeamQuestionClosed/>
+        }
+        if (this.props.currentGameStatus === 'round_ended') {
+            return <TeamRoundEnded/>
         }
 
         //If no match, return CreateGame Component
