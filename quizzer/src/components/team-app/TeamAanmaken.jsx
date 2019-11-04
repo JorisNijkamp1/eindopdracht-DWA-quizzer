@@ -13,7 +13,7 @@ import {
 } from "../../action-reducers/createTeam-actionReducer";
 import * as ReactRedux from "react-redux";
 import {openWebSocket, sendNewTeamMSG} from "../../websocket";
-import {PropagateLoader} from 'react-spinners';
+import {ClimbingBoxLoader} from 'react-spinners';
 import {Link} from "react-router-dom";
 import 'react-notifications-component/dist/theme.css'
 import {store} from 'react-notifications-component';
@@ -117,10 +117,10 @@ class TeamAanmakenUI extends React.Component {
                 <Row className="min-vh-100">
                     <Col xs={{span: 12}}>
                         <div className="d-flex align-items-center justify-content-center h-100">
-                            <PropagateLoader
+                            <ClimbingBoxLoader
                                 sizeUnit={"px"}
-                                size={30}
-                                color={'#123abc'}
+                                size={35}
+                                color={'#FFF'}
                                 loading="true"
                             />
                         </div>

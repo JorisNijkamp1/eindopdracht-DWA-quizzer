@@ -300,7 +300,6 @@ app.post('/api/games/:gameRoom/ronde', async (req, res) => {
 
         //Check if game exits
         if (currentGame) {
-
             currentGame.rondes.push({
                 categories: roundCategories,
                 ronde_status: 'open',
