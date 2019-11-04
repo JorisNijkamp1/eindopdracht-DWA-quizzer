@@ -31,12 +31,20 @@ export function createIsAnsweredScoreboardAction(isAnswered) {
     };
 }
 
+export function addTeamQuestionAnswersScoreboardAction(teamAnswers) {
+    return {
+        type: "addTeamQuestionAnswersScoreboardAction",
+        teamAnswers: teamAnswers
+    };
+}
+
 // Reducer:
 const initialCreateScorebordState = {
     formValidationScoreboard: false,
     currentTeamsScoreboard: [],
     gameRoomScoreboard: null,
-    isAnswered: []
+    isAnswered: [],
+    teamAnswers: []
 };
 
 export function createScorebordReducer(state = initialCreateScorebordState, action) {
@@ -65,11 +73,17 @@ export function createScorebordReducer(state = initialCreateScorebordState, acti
                 changes = {
                     isAnswered: [...state.isAnswered, ...action.isAnswered],
                 };
-            }else {
+            } else {
                 changes = {
                     isAnswered: [],
                 };
             }
+            return {...state, ...changes};
+
+        case 'addTeamQuestionAnswersScoreboardAction':
+            changes = {
+                teamAnswers: action.teamAnswers,
+            };
             return {...state, ...changes};
 
         default:
