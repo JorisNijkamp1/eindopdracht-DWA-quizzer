@@ -97,7 +97,6 @@ class CategorieenUI extends React.Component {
             )
         }
         return (
-
             <div className="container-fluid px-md-5">
                 <Row className="row py-5 text-white">
                     <Col lg={9} className={"mx-auto text-center"}>
