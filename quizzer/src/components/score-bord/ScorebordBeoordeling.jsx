@@ -51,9 +51,17 @@ class ScorebordBeoordelingUI extends React.Component {
                     <Col md={{span: 6, offset: 3}}>
                         <Card>
                             <Card.Body>
-                                <Card.Title
-                                    className={"text-center display-4"}>{this.props.currentQuestionCategory}</Card.Title>
-                                <Card.Title className={"text-center"}>{this.props.currentQuestion}</Card.Title>
+                                <Card.Title className={"text-center display-4"}>
+                                    {this.props.currentQuestionCategory}
+                                </Card.Title>
+                                <Card.Title className={"text-center"}>
+                                    {this.props.currentQuestion}
+                                </Card.Title>
+                                <Card.Title className={"text-center"}>
+                                    <b>Correcte antwoord:</b>
+                                    <br/>
+                                    <i>{this.props.currentQuestionAnswer}</i>
+                                </Card.Title>
                             </Card.Body>
                         </Card>
                     </Col>
@@ -69,6 +77,7 @@ function mapStateToProps(state) {
     return {
         currentQuestion: state.createGame.currentQuestion,
         currentQuestionCategory: state.createGame.currentQuestionCategory,
+        currentQuestionAnswer: state.createGame.currentQuestionAnswer,
         currentTeamsScoreboard: state.createScoreboard.currentTeamsScoreboard,
         teamAnswers: state.createScoreboard.teamAnswers
     }

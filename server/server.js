@@ -474,6 +474,8 @@ app.post('/api/game/:gameRoom/ronde/:roundID/question', async (req, res) => {
 function roundEnded(currentGame, roundID) {
     const roundQuestions = currentGame.rondes[roundID].vragen;
 
+    currentGame.game_status = 'round_ended';
+
     let allTeams = [];
     currentGame.teams.forEach(team => {
         allTeams.push({
@@ -837,10 +839,10 @@ websocketServer.on('connection', (socket, req) => {
                     }
                 }
 
-                //For QuizMaster ONLY (Sends the correct answer to the QuizMaster)
+                //For QuizMaster & ScoreBoard
                 for (var key in players) {
                     if (players.hasOwnProperty(key)) {
-                        if (players[key].quizMaster && players[key].gameRoomName === gameRoom) {
+                        if ((players[key].quizMaster || players[key].scoreBoard) && players[key].gameRoomName === gameRoom) {
                             players[key].send(JSON.stringify({
                                 messageType: "CORRECT QUESTION ANSWER",
                                 answer: data.answer

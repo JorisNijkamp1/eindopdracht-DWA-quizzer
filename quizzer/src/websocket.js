@@ -213,9 +213,9 @@ function getTeams() {
             response.json().then(data => {
                 if (data.success) {
                     if (store.createGame.gameRoom) {
-                        theStore.dispatch(getGameRoomTeamsAction(data.teams))
+                        theStore.dispatch(getGameRoomTeamsAction(data.teams));
                     } else if (store.createScoreboard.gameRoomScoreboard) {
-                        theStore.dispatch(createAddCurrentTeamsScoreboardAction(data.teams))
+                        theStore.dispatch(createAddCurrentTeamsScoreboardAction(data.teams));
                     }
                 }
             });
