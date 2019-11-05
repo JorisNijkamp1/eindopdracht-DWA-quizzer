@@ -5,12 +5,10 @@ import {QuizMasterApp} from "./components/quiz-master/App"
 import EindRonde from "./components/quiz-master/EindRonde";
 import {Switch, Route} from "react-router-dom";
 import ReactNotification from "react-notifications-component";
-import {TeamAnswerQuestion} from "./components/team-app/TeamAnswerQuestion";
 import {TeamsApp} from "./components/team-app/App";
 import {ScoreboardApp} from "./components/score-bord/App";
 import {VragenBeheren} from "./components/quiz-master/VragenBeheren";
 import {ScorebordAntwoorden} from "./components/score-bord/ScorebordAntwoorden";
-import {Vragen} from "./components/quiz-master/Vragen";
 //============================================================================
 //  The React component that renders the UI for the entire App.
 //----------------------------------------------------------------------------

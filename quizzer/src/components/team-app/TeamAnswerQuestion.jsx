@@ -28,8 +28,6 @@ class TeamAnswerQuestionUI extends React.Component {
     handleSubmit = e => {
         e.preventDefault();
 
-        console.log(this.state.teamAnswer);
-
         const url = `http://localhost:3001/api/game/${this.props.gameRoomName}/ronde/${this.props.roundNumber}/question/${this.props.questionNumber}/team/${this.props.teamName}/answer`;
         let data = {
             teamAnswer: this.state.teamAnswer

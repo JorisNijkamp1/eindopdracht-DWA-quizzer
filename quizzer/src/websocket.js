@@ -446,8 +446,6 @@ export function getQuestionAnswers() {
             if (response.status !== 200) console.log("Er gaat iets fout" + response.status);
             response.json().then(data => {
                 if (data.success) {
-                    console.log('Vraag gesloten, hieronder de gegeven antwoorden');
-                    console.log(data.answers);
                     theStore.dispatch(addTeamQuestionAnswersScoreboardAction(data.answers));
                     theStore.dispatch(addTeamQuestionAnswerAction(data.answers));
                 }

@@ -14,11 +14,8 @@ class ScorebordOverzichtScoreUI extends React.Component {
                     <Col md={{span: 6}} key={teamName._id}>
                         <Card>
                             <Card.Body>
-                                <Card.Title>{teamName._id}</Card.Title>
-                                <Card.Text>{teamName.team_score}</Card.Text>
-                                <Card.Text>Score / punten</Card.Text>
-                                <Card.Text>Round 1: 10/12</Card.Text>
-                                <Card.Text>Round2: 8/12</Card.Text>
+                                <Card.Title><strong>{teamName._id}</strong></Card.Title>
+                                <Card.Text>Team score: <strong>{teamName.team_score}</strong></Card.Text>
                             </Card.Body>
                         </Card>
                     </Col>

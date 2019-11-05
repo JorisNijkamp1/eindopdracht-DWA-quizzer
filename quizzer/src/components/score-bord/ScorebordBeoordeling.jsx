@@ -14,15 +14,21 @@ class ScorebordBeoordelingUI extends React.Component {
                 let correctOrWrong = "";
                 if (teamName.correct) {
                     correctOrWrong = (
-                        <p className={"text-center"} style={{color: '#28a745'}}><i>U heeft het juiste antwoord
-                            gegeven!</i></p>
+                        <span className={"text-center"} style={{color: '#28a745'}}>
+                            <i>
+                                <strong>U heeft het juiste antwoord gegeven!</strong>
+                            </i>
+                        </span>
                     )
                 } else if (teamName.correct === null) {
                     correctOrWrong = ""
                 } else if (!teamName.correct) {
                     correctOrWrong = (
-                        <p className={"text-center"} style={{color: '#dc3545'}}><i>U heeft het verkeerde antwoord
-                            gegeven!</i></p>
+                        <span className={"text-center"} style={{color: '#dc3545'}}>
+                            <i>
+                                <strong>U heeft het verkeerde antwoord gegeven!</strong>
+                            </i>
+                        </span>
                     )
                 }
                 return (
@@ -33,7 +39,7 @@ class ScorebordBeoordelingUI extends React.Component {
                                 <Card.Text
                                     className={"text-center success"}><strong>{teamName.gegeven_antwoord}</strong></Card.Text>
                                 <Card.Text
-                                    className={"text-center success"}><strong>{correctOrWrong}</strong></Card.Text>
+                                    className={"text-center success"}>{correctOrWrong}</Card.Text>
                             </Card.Body>
                         </Card>
                     </Col>
@@ -43,7 +49,6 @@ class ScorebordBeoordelingUI extends React.Component {
     }
 
     render() {
-        console.log(this.props.teamAnswers);
         return (
             <Container>
                 <Row className="min-vh-100">
@@ -66,7 +71,6 @@ class ScorebordBeoordelingUI extends React.Component {
                         </Card>
                     </Col>
                     {this.getTeams()}
-
                 </Row>
             </Container>
         )

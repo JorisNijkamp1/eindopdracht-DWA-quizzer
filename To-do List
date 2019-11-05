@@ -1,11 +1,16 @@
 1. Vragen die al gekoze zijn toevoegen aan een lisjt met vragen die al geweest zijn. Dus vragen kunnen maar 1  x voor komen.
 2. Teamscores
-3. Vragen zelfde als categorie maken. -- de opmaak                              /Gedaan even laten checken door aaron
 4. Scorebord punten weergegeven en bijvoorbeeld vraag 3 van de 12.
-5. Als een game al begonnen is mag je niet joinen.                              /Gedaan even laten checken door aaron
 6. Session reset of destroyen of overschrijven nog even goed naar kijken.
-7. Melding als je een antwoord gesubmit hebt.
-8. Antwoorden sturen naar het scorebord                                         /Gedaan door aaron moet nog verwerkt worden
+9. Responsive nalopen
+
+prio
+1. Meerdere rondes
+2. Games sluiten
+3. Responsive nalopen
+
+...... Websocket data mee sturen uithalen
+...... Team eruit halen als die niet approved is in verder schermen
 
 
 BIJ TIJD OVER:

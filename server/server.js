@@ -703,7 +703,6 @@ var totalPlayers = 0;
 var players = {};
 websocketServer.on('connection', (socket, req) => {
 
-    console.log('A new player is connected');
     req.session.save();
 
     const gameRoom = req.session.gameRoomName;
