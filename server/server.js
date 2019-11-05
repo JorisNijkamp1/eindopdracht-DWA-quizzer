@@ -240,18 +240,19 @@ app.post('/api/team', async (req, res) => {
                 //set session gameRoomName
                 req.session.gameRoomName = gameRoomName;
 
-            //set session teamName
-            req.session.teamName = teamName;
+                //set session teamName
+                req.session.teamName = teamName;
 
-            //set session quizMaster = false
-            req.session.quizMaster = false;
+                //set session quizMaster = false
+                req.session.quizMaster = false;
 
-            //set session quizMaster = false
-            req.session.scoreBoard = false;
-        } else {
-            await res.json({
-                gameRoomAccepted: true,
-                teamNameStatus: 'error'});
+                //set session quizMaster = false
+                req.session.scoreBoard = false;
+            } else {
+                await res.json({
+                    gameRoomAccepted: true,
+                    teamNameStatus: 'error'
+                });
             }
         } else {
             await res.json({
@@ -397,9 +398,9 @@ app.get('/api/game/:gameRoom/ronde/:rondeID/questions', async (req, res) => {
 /*====================================
 | POST A NEW QUESTION
 */
-app.post('/api/game/:gameRoom/ronde/:rondeID/question', async (req, res) => {
+app.post('/api/game/:gameRoom/ronde/:roundID/question', async (req, res) => {
     const gameRoomName = req.params.gameRoom;
-    const rondeID = (req.params.rondeID - 1);
+    const roundID = (req.params.roundID - 1);
 
     //Check of isset session gameRoomName & is quizMaster
     if (req.session.gameRoomName === gameRoomName && req.session.quizMaster) {
@@ -410,7 +411,7 @@ app.post('/api/game/:gameRoom/ronde/:rondeID/question', async (req, res) => {
         const question = req.body.question;
 
         if (question) {
-            currentGame.rondes[rondeID].vragen.push({
+            currentGame.rondes[roundID].vragen.push({
                 vraag: question.question,
                 antwoord: question.answer,
                 categorie_naam: question.category,
@@ -421,7 +422,7 @@ app.post('/api/game/:gameRoom/ronde/:rondeID/question', async (req, res) => {
             currentGame.game_status = 'asking_question';
 
             //Change current round status
-            currentGame.rondes[rondeID].ronde_status = 'asking_question';
+            currentGame.rondes[roundID].ronde_status = 'asking_question';
 
             //Save to mongoDB
             currentGame.save(function (err) {
@@ -440,13 +441,19 @@ app.post('/api/game/:gameRoom/ronde/:rondeID/question', async (req, res) => {
             currentGame.game_status = 'choosing_question';
 
             //Change current round status
-            currentGame.rondes[rondeID].ronde_status = 'choosing_question';
+            currentGame.rondes[roundID].ronde_status = 'choosing_question';
 
             //Check if round is ended
             const maxRounds = 2;
-            let currentRounds = currentGame.rondes[rondeID].vragen.length;
+            let currentRounds = currentGame.rondes[roundID].vragen.length;
 
+            //Check if round ended
             let round_ended = (currentRounds >= maxRounds);
+
+            //If round ended
+            if (round_ended) {
+                roundEnded(currentGame, roundID);
+            }
 
             //Save to mongoDB
             currentGame.save(function (err) {
@@ -460,6 +467,79 @@ app.post('/api/game/:gameRoom/ronde/:rondeID/question', async (req, res) => {
         }
     }
 });
+
+/*====================================
+| WHEN A ROUND IS ENDED
+*/
+function roundEnded(currentGame, roundID) {
+    const roundQuestions = currentGame.rondes[roundID].vragen;
+
+    let allTeams = [];
+    currentGame.teams.forEach(team => {
+        allTeams.push({
+            teamName: team._id,
+            tmp_score: 0,
+            team_score: team.team_score
+        })
+    });
+
+    roundQuestions.forEach(question => {
+        question.team_antwoorden.forEach(questionAnswers => {
+            allTeams.forEach(currentTeam => {
+                if (questionAnswers.team_naam === currentTeam.teamName && questionAnswers.correct) {
+                    currentTeam.tmp_score += 1;
+                }
+            });
+        });
+    });
+
+    function calculateScores(allTeams) {
+        let position = [];
+        let tmp_score = 0;
+
+        // Calculate team score
+        allTeams.map(team => {
+            if (team.tmp_score > tmp_score) {
+                tmp_score = team.tmp_score;
+                position = [team.teamName]
+            } else if (team.tmp_score === tmp_score) {
+                position.push(team.teamName)
+            }
+        });
+
+        // Calculate position and remove team with highest score
+        allTeams.map((team, key) => {
+            position.map((firstTeam) => {
+                if (team.teamName === firstTeam) {
+                    delete allTeams[key]
+                }
+            })
+        });
+
+        // Remove empty arrays
+        allTeams = allTeams.filter(Boolean);
+
+        //Return the team with the highest score
+        return position
+    }
+
+    function addTeamScore(team, score, teamWon) {
+        calculateScores(team).map((positionTeam) => {
+            currentGame.teams.map(team => {
+                if (team._id === positionTeam && teamWon) {
+                    team.team_score += score;
+                } else if (team._id === positionTeam && !teamWon) {
+                    team.team_score += score;
+                }
+            })
+        });
+    }
+
+    addTeamScore(allTeams, 4, true);
+    addTeamScore(allTeams, 2, true);
+    addTeamScore(allTeams, 1, true);
+    addTeamScore(allTeams, 0.1, false);
+}
 
 /*====================================
 | POST A ANSWER AS TEAM ON A QUESTION
