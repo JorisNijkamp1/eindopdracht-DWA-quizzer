@@ -15,9 +15,10 @@ class ScoreboardAppUI extends React.Component {
         const chooseQuestion = this.props.currentGameStatus === 'choose_question';
         const askingQuestion = this.props.currentGameStatus === 'asking_question';
         const questionClosed = this.props.currentGameStatus === 'question_closed';
+        const roundEnded = this.props.currentGameStatus === 'round_ended';
         const gameClosed = this.props.currentGameStatus === 'end_game';
 
-        if (showScoreboard || chooseCategories || chooseQuestion) {
+        if (showScoreboard || chooseCategories || chooseQuestion || roundEnded) {
             return <ScorebordOverzichtScore/>
         }
         if (askingQuestion) {
