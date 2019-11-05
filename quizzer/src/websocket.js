@@ -7,6 +7,7 @@ import {
 import {createTeamNameStatusAction} from "./action-reducers/createTeam-actionReducer"
 import {createCurrentGameStatusAction, addTeamQuestionAnswerAction} from "./action-reducers/createGame-actionReducer";
 import {
+    addTeamQuestionAnswersScoreboardAction,
     createAddCurrentTeamsScoreboardAction, createIsAnsweredScoreboardAction,
 } from "./action-reducers/createScorebord-actionReducer";
 
@@ -447,6 +448,7 @@ export function getQuestionAnswers() {
                 if (data.success) {
                     console.log('Vraag gesloten, hieronder de gegeven antwoorden');
                     console.log(data.answers);
+                    theStore.dispatch(addTeamQuestionAnswersScoreboardAction(data.answers));
                     theStore.dispatch(addTeamQuestionAnswerAction(data.answers));
                 }
             });
