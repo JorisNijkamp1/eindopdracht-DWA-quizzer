@@ -9,6 +9,7 @@ import {TeamsApp} from "./components/team-app/App";
 import {ScoreboardApp} from "./components/score-bord/App";
 import {VragenBeheren} from "./components/quiz-master/VragenBeheren";
 import {ScorebordAntwoorden} from "./components/score-bord/ScorebordAntwoorden";
+import {ScorebordEndgame} from "./components/score-bord/ScorebordEndgame";
 //============================================================================
 //  The React component that renders the UI for the entire App.
 //----------------------------------------------------------------------------
@@ -37,7 +38,9 @@ class App extends React.Component {
                     <Route path={"/vragen-beheren"}>
                         <VragenBeheren/>
                     </Route>
-
+                    <Route path={"/endgame"}>
+                        <ScorebordEndgame/>
+                    </Route>
                     /* SCORE BORD PATHS DIT MOET DENK IK NOG ANDERS SAMEN EMT AARON NAAR KIJKEN */
                     <Route path="/scoreboard">
                         <ScoreboardApp/>
