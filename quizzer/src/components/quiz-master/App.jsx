@@ -6,7 +6,7 @@ import {Vragen} from "./Vragen";
 import {VragenBeheren} from "./VragenBeheren";
 import {CreateGame} from "./CreateGame";
 import {TeamsBeheren} from "./TeamsBeheren";
-import EindRonde from "./EindRonde";
+import {EindRonde} from "./EindRonde";
 
 class QuizMasterAppUI extends React.Component {
 

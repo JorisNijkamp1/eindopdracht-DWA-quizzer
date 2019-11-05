@@ -302,7 +302,7 @@ app.put('/api/games/:gameRoom', async (req, res) => {
 });
 
 /*====================================
-| CREATE A NEW ROUND WITH QUESTIONS CATEGORIES
+| CREATE A NEW ROUND
 */
 app.post('/api/games/:gameRoom/ronde', async (req, res) => {
     const gameRoomName = req.params.gameRoom;
@@ -316,23 +316,38 @@ app.post('/api/games/:gameRoom/ronde', async (req, res) => {
 
         //Check if game exits
         if (currentGame) {
-            currentGame.rondes.push({
-                categories: roundCategories,
-                ronde_status: 'open',
-                vragen: []
-            });
 
-            //Change current game status to choose_question
-            currentGame.game_status = 'choose_question';
+            if (roundCategories) {
 
-            //Save to mongoDB
-            currentGame.save(function (err) {
-                if (err) return console.error(err);
-                res.json({
-                    success: true,
+                currentGame.rondes.push({
+                    categories: roundCategories,
+                    ronde_status: 'open',
+                    vragen: []
                 });
-            });
 
+                //Change current game status to choose_question
+                currentGame.game_status = 'choose_question';
+
+                //Save to mongoDB
+                currentGame.save(function (err) {
+                    if (err) return console.error(err);
+                    res.json({
+                        success: true,
+                    });
+                });
+            } else {
+                //Change current game status to choose_category
+                currentGame.game_status = 'choose_category';
+
+                //Save to mongoDB
+                currentGame.save(function (err) {
+                    if (err) return console.error(err);
+                    res.json({
+                        success: true,
+                        chooseCategories: true
+                    });
+                });
+            }
         } else {
             await res.json({
                 success: false,
@@ -444,11 +459,11 @@ app.post('/api/game/:gameRoom/ronde/:roundID/question', async (req, res) => {
             currentGame.rondes[roundID].ronde_status = 'choosing_question';
 
             //Check if round is ended
-            const maxRounds = 2;
+            const maxQuestions = 1;
             let currentRounds = currentGame.rondes[roundID].vragen.length;
 
             //Check if round ended
-            let round_ended = (currentRounds >= maxRounds);
+            let round_ended = (currentRounds >= maxQuestions);
 
             //If round ended
             if (round_ended) {
@@ -552,10 +567,17 @@ app.post('/api/game/:gameRoom/ronde/:rondeID/question/:questionID/team/:teamName
     const questionID = (req.params.questionID - 1);
     const teamName = req.params.teamName;
 
+    console.log(gameRoomName)
+    console.log(roundID)
+    console.log(questionID)
+    console.log(teamName)
+
     //Check of isset session gameRoomName & is quizMaster
     if (req.session.gameRoomName === gameRoomName) {
 
         const teamAnswer = req.body.teamAnswer
+
+        console.log(teamAnswer)
 
         //Get current game
         let currentGame = await Games.findOne({_id: gameRoomName});

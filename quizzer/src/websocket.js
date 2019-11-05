@@ -53,11 +53,12 @@ export function openWebSocket() {
 
             case "CHOOSE CATEGORIES":
                 theStore.dispatch(createCurrentGameStatusAction('choose_categories'));
-                let roundNumber = store.createGame.roundNumber;
-                if (roundNumber) {
-                    theStore.dispatch(increaseGameRoundNumberAction(roundNumber + 1))
+                if (theStore.getState().createGame.roundNumber) {
+                    theStore.dispatch(increaseGameRoundNumberAction(theStore.getState().createGame.roundNumber + 1))
+                    theStore.dispatch(increaseQuestionNumberAction(0));
+                    console.log(theStore.getState().createGame.questionNumber)
                 } else {
-                    theStore.dispatch(increaseGameRoundNumberAction(1))
+                    theStore.dispatch(increaseGameRoundNumberAction(1));
                 }
                 console.log('CHOOSE CATEGORIES');
                 break;
@@ -307,25 +308,43 @@ function sendChooseCategoriesMSG() {
 */
 export function startRound(gameRoom, categories) {
     if (gameRoom) {
+
         const url = `http://localhost:3001/api/games/${gameRoom}/ronde`;
-        let data = {
-            roundCategories: categories
-        };
-        const options = {
-            method: 'POST',
-            body: JSON.stringify(data),
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            credentials: 'include',
-            mode: 'cors'
-        };
+
+        let options;
+        if (categories) {
+            let data = {
+                roundCategories: categories
+            };
+            options = {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include',
+                mode: 'cors'
+            };
+        }else {
+            options = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include',
+                mode: 'cors'
+            };
+        }
 
         return fetch(url, options).then(response => {
             if (response.status !== 200) console.log("Er gaat iets fout" + response.status);
             response.json().then(data => {
                 if (data.success) {
-                    sendChooseQuestionsMSG()
+                    if (data.chooseCategories) {
+                        sendChooseCategoriesMSG();
+                    }else {
+                        sendChooseQuestionsMSG();
+                    }
                 }
             });
         }).catch(err => console.log(err))
