@@ -6,7 +6,7 @@ import Row from "react-bootstrap/Row";
 import Button from "react-bootstrap/Button";
 import {Link} from "react-router-dom";
 import HeaderTitel from "../HeaderTitel";
-import {startRound} from "../../websocket";
+import {endGame, startRound} from "../../websocket";
 
 class EindRondeUI extends React.Component {
     render() {
@@ -15,7 +15,9 @@ class EindRondeUI extends React.Component {
                 <Row className="min-vh-100">
                     <HeaderTitel/>
                     <Col className={"text-center"} md={{span: 3, offset: 2}}>
-                        <Button variant="danger" type="submit">
+                        <Button variant="danger" type="submit" onClick={() => {
+                            endGame(this.props.gameRoom)
+                        }}>
                             Quizzer afsluiten
                         </Button>
                     </Col>

@@ -30,8 +30,6 @@ class TeamAnswerQuestionUI extends React.Component {
 
         const url = `http://localhost:3001/api/game/${this.props.gameRoomName}/ronde/${this.props.roundNumber}/question/${this.props.questionNumber}/team/${this.props.teamName}/answer`;
 
-        console.log(url)
-
         let data = {
             teamAnswer: this.state.teamAnswer
         };

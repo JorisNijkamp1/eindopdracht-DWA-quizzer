@@ -37,7 +37,6 @@ const httpServer = http.createServer(app);
 // Create the Web socket server.
 const websocketServer = new WebSocket.Server({noServer: true});
 
-
 /*====================================
 | JOIN GAME WITH SCOREBOARD
 */
@@ -269,7 +268,7 @@ app.post('/api/team', async (req, res) => {
 });
 
 /*====================================
-| START A NEW GAME (FROM LOBBY TOO CHOOSE_CATEGORY)
+| START A NEW GAME (FROM LOBBY TOO CHOOSE_CATEGORY) OR END A GAME
 */
 app.put('/api/games/:gameRoom', async (req, res) => {
     const gameRoomName = req.params.gameRoom;
@@ -284,15 +283,31 @@ app.put('/api/games/:gameRoom', async (req, res) => {
         if (currentGame) {
 
             //Change current game status to choose_category
-            currentGame.game_status = 'choose_category';
+            if (req.body.gameStatus === 'choose_category') {
+                currentGame.game_status = req.body.gameStatus;
 
-            //Save to mongoDB
-            currentGame.save(function (err) {
-                if (err) return console.error(err);
-                res.json({
-                    success: true,
+                //Save to mongoDB
+                currentGame.save(function (err) {
+                    if (err) return console.error(err);
+                    res.json({
+                        success: true,
+                        gameStatus: currentGame.game_status
+                    });
                 });
-            });
+            }
+            //Change current game status to end_game
+            if (req.body.gameStatus === 'end_game') {
+                currentGame.game_status = req.body.gameStatus;
+
+                //Save to mongoDB
+                currentGame.save(function (err) {
+                    if (err) return console.error(err);
+                    res.json({
+                        success: true,
+                        gameStatus: currentGame.game_status
+                    });
+                });
+            }
         } else {
             await res.json({
                 success: false,
@@ -959,6 +974,21 @@ websocketServer.on('connection', (socket, req) => {
                 }
             }
 
+            /*====================================
+            | TO: All teams in a gameRoom, QuizMaster AND ScoreBoard
+            | Send message that the QuizMaster has ended the game
+            */
+            if (data.messageType === 'END GAME') {
+                for (var key in players) {
+                    if (players.hasOwnProperty(key)) {
+                        if ((players[key].gameRoomName === gameRoom || players[key].scoreBoard) && players[key].gameRoomName === gameRoom) {
+                            players[key].send(JSON.stringify({
+                                messageType: "END GAME",
+                            }));
+                        }
+                    }
+                }
+            }
             req.session.save()
         })
     });
@@ -968,7 +998,6 @@ websocketServer.on('connection', (socket, req) => {
     });
 
 });
-
 
 // Start the server.
 const port = process.env.PORT || 3001;

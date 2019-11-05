@@ -120,6 +120,11 @@ export function openWebSocket() {
                 console.log("END ROUND");
                 break;
 
+            case "END GAME":
+                theStore.dispatch(createCurrentGameStatusAction('end_game'));
+                console.log("END GAME");
+                break;
+
             default:
                 console.log("Unknown messageType:", message);
         }
@@ -272,8 +277,12 @@ export function startGame(gameRoom) {
     if (gameRoom) {
         const url = `http://localhost:3001/api/games/${gameRoom}`;
 
+        let data = {
+            gameStatus: 'choose_category'
+        };
         const options = {
             method: 'PUT',
+            body: JSON.stringify(data),
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -284,7 +293,7 @@ export function startGame(gameRoom) {
         return fetch(url, options).then(response => {
             if (response.status !== 200) console.log("Er gaat iets fout" + response.status);
             response.json().then(data => {
-                if (data.success) {
+                if (data.success && data.gameStatus === 'choose_category') {
                     sendChooseCategoriesMSG()
                 }
             });
@@ -570,6 +579,48 @@ export function closeCurrentQuestion(gameRoomName, roundNumber) {
 function sendQuestionClosedMSG() {
     let message = {
         messageType: "QUESTION CLOSED",
+    };
+
+    theSocket.sendJSON(message);
+}
+
+/*========================================
+| Starting a NEW game (for EndGame)
+*/
+export function endGame(gameRoom) {
+    if (gameRoom) {
+        const url = `http://localhost:3001/api/games/${gameRoom}`;
+
+        let data = {
+            gameStatus: 'end_game'
+        };
+        const options = {
+            method: 'PUT',
+            body: JSON.stringify(data),
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+            mode: 'cors'
+        };
+
+        return fetch(url, options).then(response => {
+            if (response.status !== 200) console.log("Er gaat iets fout" + response.status);
+            response.json().then(data => {
+                if (data.success && data.gameStatus === 'end_game') {
+                    sendEndGameMSG()
+                }
+            });
+        }).catch(err => console.log(err))
+    }
+}
+
+/*========================================
+| Websocket send END GAME
+*/
+function sendEndGameMSG() {
+    let message = {
+        messageType: "END GAME",
     };
 
     theSocket.sendJSON(message);
