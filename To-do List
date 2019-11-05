@@ -1,13 +1,9 @@
-1. Vragen die al gekoze zijn toevoegen aan een lisjt met vragen die al geweest zijn. Dus vragen kunnen maar 1  x voor komen.
-2. Teamscores
-4. Scorebord punten weergegeven en bijvoorbeeld vraag 3 van de 12.
-6. Session reset of destroyen of overschrijven nog even goed naar kijken.
-9. Responsive nalopen
-
 prio
 1. Meerdere rondes
 2. Games sluiten
 3. Responsive nalopen
+4. Vragen die al gekoze zijn toevoegen aan een lisjt met vragen die al geweest zijn. Dus vragen kunnen maar 1  x voor komen.
+5. Scorebord rondes hoeveel goed van de aantal vragen laten zien.
 
 ...... Websocket data mee sturen uithalen
 ...... Team eruit halen als die niet approved is in verder schermen
