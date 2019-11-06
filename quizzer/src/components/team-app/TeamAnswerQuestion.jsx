@@ -96,7 +96,8 @@ class TeamAnswerQuestionUI extends React.Component {
                                         <Form.Label>
                                             U kunt uw antwoord wijzigen totdat de Quizz Master de vraag sluit!
                                         </Form.Label>
-                                        <Form.Control type="text"
+                                        <Form.Control maxlength={75}
+                                                      type="text"
                                                       value={this.state.teamAnswer}
                                                       onChange={this.onChangeCurrentAnswer}
                                                       placeholder="Uw antwoord"
