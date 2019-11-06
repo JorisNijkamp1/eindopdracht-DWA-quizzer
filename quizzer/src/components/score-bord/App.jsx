@@ -4,7 +4,7 @@ import {ScorebordJoinTeam} from "./ScorebordJoinTeam";
 import {ScorebordOverzichtScore} from "./ScorebordOverzichtScore";
 import {ScorebordAntwoorden} from "./ScorebordAntwoorden";
 import {ScorebordBeoordeling} from "./ScorebordBeoordeling";
-import {ScorebordEndgame} from "./ScorebordEndgame";
+import {ScorebordEindegame} from "./ScorebordEindegame";
 
 class ScoreboardAppUI extends React.Component {
 
@@ -27,7 +27,7 @@ class ScoreboardAppUI extends React.Component {
             return <ScorebordBeoordeling/>
         }
         if (gameClosed) {
-            return <ScorebordEndgame/>
+            return <ScorebordEindegame/>
         }
         //If no match, return ScorebordJoinTeam Component
         return <ScorebordJoinTeam/>

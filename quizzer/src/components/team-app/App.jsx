@@ -1,40 +1,40 @@
 import React from "react";
 import * as ReactRedux from "react-redux";
-import TeamCategory from "./TeamCategory";
-import TeamQuestions from "./TeamQuestions";
-import {TeamAnswerQuestion} from "./TeamAnswerQuestion";
+import TeamCategorieMelding from "./TeamCategorieMelding";
+import TeamVragen from "./TeamVragen";
+import {TeamBeantwoordVraag} from "./TeamBeantwoordVraag";
 import {TeamAanmaken} from "./TeamAanmaken";
-import TeamQuestionClosed from "./TeamQuestionClosed";
-import TeamRoundEnded from "./TeamRoundEnded";
-import TeamGameEnded from "./TeamGameEnded";
-import TeamGameQuizmasterLeft from "./TeamGameQuizmasterLeft";
+import TeamQuestionClosed from "./TeamVraagGeslotenMelding";
+import TeamRondeEindMelding from "./TeamRondeEindMelding";
+import TeamGameEnded from "./TeamGameEndeMelding";
+import TeamQuizMasterDcMelding from "./TeamQuizMasterDcMelding";
 
 class TeamsAppUI extends React.Component {
 
     render() {
         if (this.props.currentGameStatus === 'choose_categories' && this.props.teamNameStatus === 'success') {
-            return <TeamCategory/>
+            return <TeamCategorieMelding/>
         }
         if (this.props.currentGameStatus === 'choose_question' && this.props.teamNameStatus === 'success') {
-            return <TeamQuestions/>
+            return <TeamVragen/>
         }
         if (this.props.currentGameStatus === 'asking_question' && this.props.teamNameStatus === 'success') {
-            return <TeamAnswerQuestion/>
+            return <TeamBeantwoordVraag/>
         }
         if (this.props.currentGameStatus === 'question_closed' && this.props.teamNameStatus === 'success') {
             return <TeamQuestionClosed/>
         }
         if (this.props.currentGameStatus === 'round_ended') {
-            return <TeamRoundEnded/>
+            return <TeamRondeEindMelding/>
         }
         if (this.props.currentGameStatus === 'end_game') {
             return <TeamGameEnded/>
         }
         if (this.props.currentGameStatus === 'quizmaster_left') {
-            return <TeamGameQuizmasterLeft/>
+            return <TeamQuizMasterDcMelding/>
         }
 
-        //If no match, return CreateGame Component
+        //If no match, return QuizzMasterGameAanmaken Component
         return <TeamAanmaken/>
     }
 }

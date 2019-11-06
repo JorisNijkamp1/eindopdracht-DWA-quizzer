@@ -6,7 +6,7 @@ import Row from "react-bootstrap/Row";
 import {Card} from "react-bootstrap";
 import HeaderTitel from "../HeaderTitel";
 
-class ScorebordEndgameUI extends React.Component {
+class ScorebordEindegameUI extends React.Component {
     getTop3Teams() {
         const allTeams = this.props.currentTeamsScoreboard;
 
@@ -74,4 +74,4 @@ function mapStateToProps(state) {
     }
 }
 
-export const ScorebordEndgame = ReactRedux.connect(mapStateToProps)(ScorebordEndgameUI);
+export const ScorebordEindegame = ReactRedux.connect(mapStateToProps)(ScorebordEindegameUI);

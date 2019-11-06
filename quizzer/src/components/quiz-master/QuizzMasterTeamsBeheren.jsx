@@ -118,4 +118,4 @@ function mapStateToProps(state) {
     }
 }
 
-export const TeamsBeheren = ReactRedux.connect(mapStateToProps)(TeamsBeherenUI);
+export const QuizzMasterTeamsBeheren = ReactRedux.connect(mapStateToProps)(TeamsBeherenUI);

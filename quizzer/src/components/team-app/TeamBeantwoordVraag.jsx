@@ -10,7 +10,7 @@ import Button from "react-bootstrap/Button";
 import {sendGetQuestionAnswersMSG, sendGetTeamIsAnsweredMSG} from "../../websocket";
 import {store} from "react-notifications-component";
 
-class TeamAnswerQuestionUI extends React.Component {
+class TeamBeantwoordVraagUI extends React.Component {
 
     constructor(props) {
         super(props);
@@ -126,4 +126,4 @@ function mapStateToProps(state) {
     }
 }
 
-export const TeamAnswerQuestion = ReactRedux.connect(mapStateToProps)(TeamAnswerQuestionUI);
+export const TeamBeantwoordVraag = ReactRedux.connect(mapStateToProps)(TeamBeantwoordVraagUI);

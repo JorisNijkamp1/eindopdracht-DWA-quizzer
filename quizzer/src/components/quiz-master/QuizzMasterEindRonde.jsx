@@ -44,4 +44,4 @@ function mapStateToProps(state) {
     }
 }
 
-export const EindRonde = ReactRedux.connect(mapStateToProps)(EindRondeUI);
+export const QuizzMasterEindRonde = ReactRedux.connect(mapStateToProps)(EindRondeUI);

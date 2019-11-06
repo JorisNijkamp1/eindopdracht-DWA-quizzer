@@ -132,4 +132,4 @@ function mapDispatchToProps(dispatch) {
     }
 }
 
-export const Vragen = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(VragenUI);
+export const QuizzMasterVragen = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(VragenUI);

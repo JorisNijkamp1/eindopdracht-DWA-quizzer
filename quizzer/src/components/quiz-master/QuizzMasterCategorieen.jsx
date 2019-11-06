@@ -147,4 +147,4 @@ function mapDispatchToProps(dispatch) {
     }
 }
 
-export const Categorieen = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(CategorieenUI);
+export const QuizzMasterCategorieen = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(CategorieenUI);

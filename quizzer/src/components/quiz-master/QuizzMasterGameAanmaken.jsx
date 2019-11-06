@@ -10,13 +10,13 @@ import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Button from "react-bootstrap/Button";
 import {Link} from "react-router-dom";
-import {TeamsBeheren} from "./TeamsBeheren";
+import {QuizzMasterTeamsBeheren} from "./QuizzMasterTeamsBeheren";
 import {openWebSocket} from "../../websocket";
 import Card from "react-bootstrap/Card";
 import Menu from "../Menu";
 import HeaderTitel from "../HeaderTitel";
 
-class CreateGameUI extends React.Component {
+class GameAanmakenUI extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -108,7 +108,7 @@ class CreateGameUI extends React.Component {
             return (
                 <div>
                     <Menu/>
-                    <TeamsBeheren/>
+                    <QuizzMasterTeamsBeheren/>
                 </div>
             )
         } else {
@@ -138,4 +138,4 @@ function mapDispatchToProps(dispatch) {
     }
 }
 
-export const CreateGame = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(CreateGameUI);
+export const QuizzMasterGameAanmaken = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(GameAanmakenUI);

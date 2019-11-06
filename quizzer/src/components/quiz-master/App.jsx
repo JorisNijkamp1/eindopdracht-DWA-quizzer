@@ -1,36 +1,36 @@
 import React from "react";
 import * as ReactRedux from "react-redux";
-import {Categorieen} from "./Categorieen";
-import {Vragen} from "./Vragen";
-import {VragenBeheren} from "./VragenBeheren";
-import {CreateGame} from "./CreateGame";
-import {TeamsBeheren} from "./TeamsBeheren";
-import {EindRonde} from "./EindRonde";
+import {QuizzMasterCategorieen} from "./QuizzMasterCategorieen";
+import {QuizzMasterVragen} from "./QuizzMasterVragen";
+import {QuizzMasterVragenBeheren} from "./QuizzMasterVragenBeheren";
+import {QuizzMasterGameAanmaken} from "./QuizzMasterGameAanmaken";
+import {QuizzMasterTeamsBeheren} from "./QuizzMasterTeamsBeheren";
+import {QuizzMasterEindRonde} from "./QuizzMasterEindRonde";
 
 class QuizMasterAppUI extends React.Component {
 
     render() {
         if (this.props.currentGameStatus === 'in_lobby') {
-            return <TeamsBeheren/>
+            return <QuizzMasterTeamsBeheren/>
         }
         if (this.props.currentGameStatus === 'choose_categories') {
-            return <Categorieen/>
+            return <QuizzMasterCategorieen/>
         }
         if (this.props.currentGameStatus === 'choose_question') {
-            return <Vragen/>
+            return <QuizzMasterVragen/>
         }
         if (this.props.currentGameStatus === 'asking_question' || this.props.currentGameStatus === 'question_closed') {
-            return <VragenBeheren/>
+            return <QuizzMasterVragenBeheren/>
         }
         if (this.props.currentGameStatus === 'round_ended') {
-            return <EindRonde/>
+            return <QuizzMasterEindRonde/>
         }
         if (this.props.currentGameStatus === 'end_game') {
-            return <CreateGame/>
+            return <QuizzMasterGameAanmaken/>
         }
 
-        //If no match, return CreateGame Component
-        return <CreateGame/>
+        //If no match, return QuizzMasterGameAanmaken Component
+        return <QuizzMasterGameAanmaken/>
     }
 }
 

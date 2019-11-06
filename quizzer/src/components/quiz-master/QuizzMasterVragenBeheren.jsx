@@ -162,4 +162,4 @@ mapStateToProps(state) {
     }
 }
 
-export const VragenBeheren = ReactRedux.connect(mapStateToProps)(VragenBeherenUI);
+export const QuizzMasterVragenBeheren = ReactRedux.connect(mapStateToProps)(VragenBeherenUI);
