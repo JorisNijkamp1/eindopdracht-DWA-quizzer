@@ -57,10 +57,4 @@ function mapStateToProps(state) {
     }
 }
 
-function mapDispatchToProps(dispatch) {
-    return {
-        //Do something
-    }
-}
-
-export const ScorebordOverzichtScore = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(ScorebordOverzichtScoreUI);
+export const ScorebordOverzichtScore = ReactRedux.connect(mapStateToProps)(ScorebordOverzichtScoreUI);

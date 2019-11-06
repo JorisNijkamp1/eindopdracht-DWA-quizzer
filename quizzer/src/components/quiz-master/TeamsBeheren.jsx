@@ -119,10 +119,4 @@ function mapStateToProps(state) {
     }
 }
 
-function mapDispatchToProps(dispatch) {
-    return {
-        doChangeGameRoom: (gameRoomName) => dispatch(getGameNameAction(gameRoomName))
-    }
-}
-
-export const TeamsBeheren = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(TeamsBeherenUI);
+export const TeamsBeheren = ReactRedux.connect(mapStateToProps)(TeamsBeherenUI);

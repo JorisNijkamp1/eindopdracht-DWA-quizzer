@@ -42,10 +42,4 @@ function mapStateToProps(state) {
     }
 }
 
-function mapDispatchToProps(dispatch) {
-    return {
-        doChangeStatus: (formValidationScoreboard) => dispatch(createScorebordStatusAction(formValidationScoreboard)),
-    }
-}
-
-export const ScoreboardApp = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(ScoreboardAppUI);
+export const ScoreboardApp = ReactRedux.connect(mapStateToProps)(ScoreboardAppUI);

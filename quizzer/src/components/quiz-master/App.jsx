@@ -41,10 +41,4 @@ function mapStateToProps(state) {
     }
 }
 
-function mapDispatchToProps(dispatch) {
-    return {
-        doChangeGameRoom: (gameRoomName) => dispatch(getGameNameAction(gameRoomName))
-    }
-}
-
-export const QuizMasterApp = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(QuizMasterAppUI);
+export const QuizMasterApp = ReactRedux.connect(mapStateToProps)(QuizMasterAppUI);

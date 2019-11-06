@@ -2,14 +2,10 @@ import React from 'react';
 import './App.css';
 import GameMenu from "./components/GameMenu";
 import {QuizMasterApp} from "./components/quiz-master/App"
-import {EindRonde} from "./components/quiz-master/EindRonde";
 import {Switch, Route} from "react-router-dom";
 import ReactNotification from "react-notifications-component";
 import {TeamsApp} from "./components/team-app/App";
 import {ScoreboardApp} from "./components/score-bord/App";
-import {VragenBeheren} from "./components/quiz-master/VragenBeheren";
-import {ScorebordAntwoorden} from "./components/score-bord/ScorebordAntwoorden";
-import {ScorebordEndgame} from "./components/score-bord/ScorebordEndgame";
 //============================================================================
 //  The React component that renders the UI for the entire App.
 //----------------------------------------------------------------------------
@@ -28,15 +24,6 @@ class App extends React.Component {
                     </Route>
                     <Route path="/team">
                         <TeamsApp/>
-                    </Route>
-                    <Route path="/eind-ronde">
-                        <EindRonde/>
-                    </Route>
-                    <Route path={"/score"}>
-                        <ScorebordAntwoorden/>
-                    </Route>
-                    <Route path={"/vragen-beheren"}>
-                        <VragenBeheren/>
                     </Route>
                     /* SCORE BORD PATHS DIT MOET DENK IK NOG ANDERS SAMEN EMT AARON NAAR KIJKEN */
                     <Route path="/scoreboard">

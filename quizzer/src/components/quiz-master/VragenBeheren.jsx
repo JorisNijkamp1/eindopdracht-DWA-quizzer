@@ -162,11 +162,4 @@ mapStateToProps(state) {
     }
 }
 
-function
-
-mapDispatchToProps(dispatch) {
-    return {}
-}
-
-export const
-    VragenBeheren = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(VragenBeherenUI);
+export const VragenBeheren = ReactRedux.connect(mapStateToProps)(VragenBeherenUI);

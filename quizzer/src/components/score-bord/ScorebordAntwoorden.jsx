@@ -65,10 +65,4 @@ function mapStateToProps(state) {
     }
 }
 
-function mapDispatchToProps(dispatch) {
-    return {
-        // Nog niks nodig? Eventueel later
-    }
-}
-
-export const ScorebordAntwoorden = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(ScorebordAntwoordUI);
+export const ScorebordAntwoorden = ReactRedux.connect(mapStateToProps)(ScorebordAntwoordUI);

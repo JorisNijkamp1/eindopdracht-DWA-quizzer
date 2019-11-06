@@ -250,7 +250,6 @@ function mapDispatchToProps(dispatch) {
         doChangeGameRoomStatus: (gameRoomAccepted) => dispatch(createGameRoomStatusAction(gameRoomAccepted)),
         doChangeTeamNameStatus: (teamNameStatus) => dispatch(createTeamNameStatusAction(teamNameStatus)),
         doChangeTeamName: (teamName) => dispatch(getTeamNameAction(teamName)),
-        doChangeGameRoom: (gameRoomName) => dispatch(getGameNameAction(gameRoomName))
     }
 }
 
