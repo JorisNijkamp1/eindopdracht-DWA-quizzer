@@ -25,7 +25,6 @@ class App extends React.Component {
                     <Route path="/team">
                         <TeamsApp/>
                     </Route>
-                    /* SCORE BORD PATHS DIT MOET DENK IK NOG ANDERS SAMEN EMT AARON NAAR KIJKEN */
                     <Route path="/scoreboard">
                         <ScoreboardApp/>
                     </Route>

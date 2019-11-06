@@ -11,7 +11,8 @@ export class TeamRoundEnded extends React.Component {
                 <Row className="min-vh-100">
                     <HeaderTitel/>
                     <Alert className={"h-25 d-inline-block w-100"} variant="light">
-                        <Alert.Heading className={"text-center"}>💯 De Quiz is afgelopen 💯</Alert.Heading>
+                        <Alert.Heading className={"text-center"}><span role="img" aria-label="end">💯</span> De Quiz is
+                            afgelopen <span role="img" aria-label="success">💯</span></Alert.Heading>
                         <p className={"text-center"}>
                             De Quiz Master heeft het spel beëindigd, bekijk de eindscore op het scorebord.
                         </p>

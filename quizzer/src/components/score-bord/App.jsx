@@ -1,6 +1,5 @@
 import React from "react";
 import * as ReactRedux from "react-redux";
-import {createScorebordStatusAction} from "../../action-reducers/createScorebord-actionReducer";
 import {ScorebordJoinTeam} from "./ScorebordJoinTeam";
 import {ScorebordOverzichtScore} from "./ScorebordOverzichtScore";
 import {ScorebordAntwoorden} from "./ScorebordAntwoorden";

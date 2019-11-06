@@ -1,6 +1,5 @@
 import React from "react";
 import * as ReactRedux from "react-redux";
-import {getGameNameAction} from "../../action-reducers/createTeam-actionReducer";
 import {Categorieen} from "./Categorieen";
 import {Vragen} from "./Vragen";
 import {VragenBeheren} from "./VragenBeheren";

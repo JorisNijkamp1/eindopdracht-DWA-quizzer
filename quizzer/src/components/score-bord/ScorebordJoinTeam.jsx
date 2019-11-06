@@ -116,6 +116,7 @@ function mapDispatchToProps(dispatch) {
         doChangeStatus: (formValidationScoreboard) => dispatch(createScorebordStatusAction(formValidationScoreboard)),
         doAddCurrentTeamsScoreboard: (currentTeamsScoreboard) => dispatch(createAddCurrentTeamsScoreboardAction(currentTeamsScoreboard)),
         doAddGameRoomName: (gameRoomScoreboard) => dispatch(getGameRoomTeamsScoreboardAction(gameRoomScoreboard)),
+        doChangeGameStatus: (currentGameStatus) => dispatch(createCurrentGameStatusAction(currentGameStatus))
     }
 }
 

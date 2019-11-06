@@ -165,7 +165,7 @@ class TeamAanmakenUI extends React.Component {
                                                       autoComplete="off"/>
                                         <div className="invalid-feedback">
                                             Huh, deze game room bestaat niet
-                                            <span role={"img"} aria-label={""}>😨</span>
+                                            <span role={"img"} aria-label={"sad"}>😨</span>
                                         </div>
                                     </Form.Group>
                                     <div className={"text-danger"}>
@@ -181,7 +181,7 @@ class TeamAanmakenUI extends React.Component {
                                                       autoComplete="off"/>
                                         <div className="invalid-feedback">
                                             Huh, deze team naam is bezet
-                                            <span role={"img"} aria-label={""}>😪</span>
+                                            <span role={"img"} aria-label={"sad"}>😪</span>
                                         </div>
                                     </Form.Group>
                                     <Button variant="danger" type="submit">Bevestigen</Button>
@@ -203,7 +203,7 @@ class TeamAanmakenUI extends React.Component {
                     <HeaderTitel/>
                     <Alert className={"h-25 d-inline-block w-100"} variant="light">
                         <Alert.Heading className={"text-center"}><strong>{this.props.teamRoomName}</strong> is
-                            geaccepteerd 🤖</Alert.Heading>
+                            geaccepteerd <span role="img" aria-label="success">🤖</span></Alert.Heading>
                         <p className={"text-center"}>
                             Wacht totdat de Quizz Master van <strong>{this.props.gameRoomName}</strong> de quiz gaat
                             starten.
@@ -250,6 +250,7 @@ function mapDispatchToProps(dispatch) {
         doChangeGameRoomStatus: (gameRoomAccepted) => dispatch(createGameRoomStatusAction(gameRoomAccepted)),
         doChangeTeamNameStatus: (teamNameStatus) => dispatch(createTeamNameStatusAction(teamNameStatus)),
         doChangeTeamName: (teamName) => dispatch(getTeamNameAction(teamName)),
+        doChangeGameRoom: (gameRoomName) => dispatch(getGameNameAction(gameRoomName))
     }
 }
 

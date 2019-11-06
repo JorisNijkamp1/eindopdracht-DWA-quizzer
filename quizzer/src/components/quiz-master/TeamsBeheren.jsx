@@ -6,7 +6,6 @@ import Button from "react-bootstrap/Button";
 import {Card} from "react-bootstrap";
 import {acceptTeam, deleteTeam, startGame} from "../../websocket";
 import Badge from "react-bootstrap/Badge";
-import {getGameNameAction} from "../../action-reducers/createTeam-actionReducer";
 
 class TeamsBeherenUI extends React.Component {
 

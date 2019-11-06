@@ -15,7 +15,7 @@ class ScorebordEndgameUI extends React.Component {
         let firstPlace = (allTeams[0]) ?
             (
                 <div>
-                    <h1 className={"display-2 medal-gold"}>🥇</h1>
+                    <h1 className={"display-2 medal-gold"}><span role="img" aria-label="1">🥇</span></h1>
                     <h1 className={"display-2 titel-1"}>{allTeams[0]._id}</h1>
                     <hr/>
                 </div>
@@ -25,7 +25,7 @@ class ScorebordEndgameUI extends React.Component {
         let secondPlace = (allTeams[1]) ?
             (
                 <div>
-                    <h1 className={"display-2 medal-gold"}>🥈</h1>
+                    <h1 className={"display-2 medal-gold"}><span role="img" aria-label="2">🥈</span></h1>
                     <h1 className={"display-2 titel-1"}>{allTeams[1]._id}</h1>
                     <hr/>
                 </div>
@@ -35,7 +35,7 @@ class ScorebordEndgameUI extends React.Component {
         let thirdPlace = (allTeams[2]) ?
             (
                 <div>
-                    <h1 className={"display-2 medal-gold"}>🥉</h1>
+                    <h1 className={"display-2 medal-gold"}><span role="img" aria-label="3">🥉</span></h1>
                     <h1 className={"display-2 titel-1"}>{allTeams[2]._id}</h1>
                 </div>
             )
