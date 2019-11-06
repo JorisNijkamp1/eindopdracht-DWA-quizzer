@@ -130,6 +130,11 @@ export function openWebSocket() {
                 console.log("END GAME");
                 break;
 
+            case "QUIZ MASTER LEFT GAME":
+                theStore.dispatch(createCurrentGameStatusAction('quizmaster_left'));
+                console.log("QUIZ MASTER LEFT GAME");
+                break;
+
             default:
                 console.log("Unknown messageType:", message);
         }

@@ -296,7 +296,16 @@ websocketServer.on('connection', (socket, req) => {
     });
 
     socket.on('close', function close() {
-        console.log('disconnected');
+        for (var key in players) {
+            if (players.hasOwnProperty(key)) {
+                if (!players[key].scoreBoard && players[key].gameRoomName === gameRoom) {
+                    players[key].send(JSON.stringify({
+                        messageType: "QUIZ MASTER LEFT GAME",
+                    }));
+                }
+            }
+        }
+        console.log('Player disconnected');
     });
 
 });

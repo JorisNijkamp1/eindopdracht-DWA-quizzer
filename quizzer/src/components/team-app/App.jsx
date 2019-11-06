@@ -7,6 +7,7 @@ import {TeamAanmaken} from "./TeamAanmaken";
 import TeamQuestionClosed from "./TeamQuestionClosed";
 import TeamRoundEnded from "./TeamRoundEnded";
 import TeamGameEnded from "./TeamGameEnded";
+import TeamGameQuizmasterLeft from "./TeamGameQuizmasterLeft";
 
 class TeamsAppUI extends React.Component {
 
@@ -28,6 +29,9 @@ class TeamsAppUI extends React.Component {
         }
         if (this.props.currentGameStatus === 'end_game') {
             return <TeamGameEnded/>
+        }
+        if (this.props.currentGameStatus === 'quizmaster_left') {
+            return <TeamGameQuizmasterLeft/>
         }
 
         //If no match, return CreateGame Component
