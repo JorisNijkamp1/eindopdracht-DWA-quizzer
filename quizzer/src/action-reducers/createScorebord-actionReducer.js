@@ -41,7 +41,7 @@ export function addTeamQuestionAnswersScoreboardAction(teamAnswers) {
 // Reducer:
 const initialCreateScorebordState = {
     formValidationScoreboard: false,
-    currentTeamsScoreboard: [{_id: "team1", approved: true, team_score: 14}, {_id: "team2", approved: true, team_score: 6}, {_id: "team3", approved: true, team_score: 12}, {_id: "team4", approved: true, team_score: 0.1}],
+    currentTeamsScoreboard: [],
     gameRoomScoreboard: null,
     isAnswered: [],
     teamAnswers: []

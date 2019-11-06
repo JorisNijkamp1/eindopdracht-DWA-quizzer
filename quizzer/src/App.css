@@ -356,6 +356,42 @@ div.alert-heading {
     color: #434343;
 }
 
+.titel-1 {
+    font-size: 3.5rem;
+    font-weight: 300;
+    line-height: 1.2;
+}
+
+.titel-2 {
+    font-size: 3rem;
+    font-weight: 300;
+    line-height: 1.2;
+}
+
+.titel-3 {
+    font-size: 2.5rem;
+    font-weight: 300;
+    line-height: 1.2;
+}
+
+.medal-gold {
+    font-size: 3.5rem;
+    font-weight: 300;
+    line-height: 1.2;
+}
+
+.medal-silver {
+    font-size: 3.0rem;
+    font-weight: 300;
+    line-height: 1.2;
+}
+
+.medal-bronze {
+    font-size: 2.5rem;
+    font-weight: 300;
+    line-height: 1.2;
+}
+
 @media (max-width: 576px) {
     .titel-1 {
         font-size: 3.5rem;

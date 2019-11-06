@@ -12,15 +12,40 @@ class ScorebordEndgameUI extends React.Component {
 
         allTeams.sort((a, b) => (a.team_score < b.team_score) ? 1 : -1);
 
-        const firstPlace = (allTeams[0] ? '🥇' + allTeams[0]._id + '🥇' : '');
-        const secondPlace = (allTeams[1] ? '🥈' + allTeams[1]._id + '🥈' : '');
-        const thirdPlace = (allTeams[2] ? '🥉' + allTeams[2]._id + '🥉' : '');
+        let firstPlace = (allTeams[0]) ?
+            (
+                <div>
+                    <h1 className={"display-2 medal-gold"}>🥇</h1>
+                    <h1 className={"display-2 titel-1"}>{allTeams[0]._id}</h1>
+                    <hr/>
+                </div>
+            )
+            : null
+
+        let secondPlace = (allTeams[1]) ?
+            (
+                <div>
+                    <h1 className={"display-2 medal-gold"}>🥈</h1>
+                    <h1 className={"display-2 titel-1"}>{allTeams[1]._id}</h1>
+                    <hr/>
+                </div>
+            )
+            : null
+
+        let thirdPlace = (allTeams[2]) ?
+            (
+                <div>
+                    <h1 className={"display-2 medal-gold"}>🥉</h1>
+                    <h1 className={"display-2 titel-1"}>{allTeams[2]._id}</h1>
+                </div>
+            )
+            : null
 
         return (
             <div>
-                <h1 className={"display-2 titel-1"}>{firstPlace}</h1>
-                <h1 className={"display-3 titel-2"}>{secondPlace}</h1>
-                <h1 className={"display-4 titel-3"}>{thirdPlace}</h1>
+                {firstPlace}
+                {secondPlace}
+                {thirdPlace}
             </div>
         )
     }
@@ -29,7 +54,7 @@ class ScorebordEndgameUI extends React.Component {
         return (
             <Container>
                 <Row className="min-vh-100">
-                    <HeaderTitel subTitle={"Eindscore van de Quizzer Night"}/>
+                    <HeaderTitel/>
                     <Col md={{span: 12}} className={"text-white text-center"}>
                         <Card text="dark">
                             <Card.Body className={"text-center"}>
