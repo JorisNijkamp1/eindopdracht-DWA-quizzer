@@ -10,12 +10,15 @@ class ScorebordOverzichtScoreUI extends React.Component {
     getTeams() {
         return (
             this.props.currentTeamsScoreboard.map(teamName => {
+                let vraag = (teamName.round_score === 1) ? 'vraag' : 'vragen';
                 return (
                     <Col md={{span: 6}} key={teamName._id}>
                         <Card>
                             <Card.Body>
                                 <Card.Title><strong>{teamName._id}</strong></Card.Title>
                                 <Card.Text>Team score: <strong>{teamName.team_score}</strong></Card.Text>
+                                <Card.Text>Deze ronde <strong>{teamName.round_score}</strong> {vraag} van de 12
+                                    goed</Card.Text>
                             </Card.Body>
                         </Card>
                     </Col>

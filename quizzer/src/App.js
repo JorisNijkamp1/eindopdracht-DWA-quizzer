@@ -38,9 +38,6 @@ class App extends React.Component {
                     <Route path={"/vragen-beheren"}>
                         <VragenBeheren/>
                     </Route>
-                    <Route path={"/endgame"}>
-                        <ScorebordEndgame/>
-                    </Route>
                     /* SCORE BORD PATHS DIT MOET DENK IK NOG ANDERS SAMEN EMT AARON NAAR KIJKEN */
                     <Route path="/scoreboard">
                         <ScoreboardApp/>
