@@ -115,6 +115,7 @@ export function openWebSocket() {
 
             case "END ROUND":
                 theStore.dispatch(createCurrentGameStatusAction('round_ended'));
+                getTeams();
                 console.log("END ROUND");
                 break;
 
