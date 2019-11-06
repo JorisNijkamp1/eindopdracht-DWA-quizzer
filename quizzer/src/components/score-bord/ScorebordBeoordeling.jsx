@@ -16,7 +16,7 @@ class ScorebordBeoordelingUI extends React.Component {
                     correctOrWrong = (
                         <span className={"text-center"} style={{color: '#28a745'}}>
                             <i>
-                                <strong>U heeft het juiste antwoord gegeven!</strong>
+                                <strong>Antwoord goedgekeurd door Quiz Master</strong>
                             </i>
                         </span>
                     )
@@ -26,7 +26,7 @@ class ScorebordBeoordelingUI extends React.Component {
                     correctOrWrong = (
                         <span className={"text-center"} style={{color: '#dc3545'}}>
                             <i>
-                                <strong>U heeft het verkeerde antwoord gegeven!</strong>
+                                <strong>Antwoord afgewezen door Quiz Master</strong>
                             </i>
                         </span>
                     )
