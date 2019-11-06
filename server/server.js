@@ -222,6 +222,7 @@ app.post('/api/team', async (req, res) => {
                 currentGame.teams.push({
                     _id: teamName,
                     approved: false,
+                    round_score: 0,
                     team_score: 0
                 });
 
@@ -343,6 +344,11 @@ app.post('/api/games/:gameRoom/ronde', async (req, res) => {
                 //Change current game status to choose_question
                 currentGame.game_status = 'choose_question';
 
+                //Reset round score
+                currentGame.teams.map(team => {
+                    team.round_score = 0;
+                });
+
                 //Save to mongoDB
                 currentGame.save(function (err) {
                     if (err) return console.error(err);
@@ -410,7 +416,8 @@ app.get('/api/game/:gameRoom/ronde/:rondeID/questions', async (req, res) => {
 
         //Get all questions
         let allQuestions = await Questions.find(
-            {category: {$in: currentGame.rondes[rondeID].categories}});
+            {category: {$in: currentGame.rondes[rondeID].categories}}
+        );
 
         //Remove already asked questions
         allQuestions.map((questionListItem, key) => {
@@ -423,11 +430,15 @@ app.get('/api/game/:gameRoom/ronde/:rondeID/questions', async (req, res) => {
             })
         });
 
-        //push 10 random questions in a array
+        //push max 10 random questions in a array
         const questions = [];
         let totalQuestions = (allQuestions.length < 10) ? allQuestions.length : 10;
         for (let i = 0; i < totalQuestions; i++) {
-            questions.push(allQuestions[Math.floor(Math.random() * allQuestions.length)])
+            if (totalQuestions < 10) {
+                questions.push(allQuestions[i])
+            } else {
+                questions.push(allQuestions[Math.floor(Math.random() * allQuestions.length)])
+            }
         }
 
         await res.json({
@@ -715,6 +726,14 @@ app.put('/api/game/:gameRoom/ronde/:rondeID/question/:questionID/team/:teamName/
 
         if (isAnswered) {
             currentGame.rondes[roundID].vragen[questionID].team_antwoorden[teamKey].correct = isCorrect;
+
+            if (isCorrect) {
+                currentGame.teams.map(team => {
+                    if (team._id === teamName) {
+                        team.round_score += 1;
+                    }
+                })
+            }
         }
 
         //Save to mongoDB
@@ -731,10 +750,6 @@ app.put('/api/game/:gameRoom/ronde/:rondeID/question/:questionID/team/:teamName/
 
 httpServer.on('upgrade', (req, networkSocket, head) => {
     sessionParser(req, {}, () => {
-        // Everything is fine. We tell the websocket server to
-        // initiate a new websocket connection for this request
-        // and emit a new connection event passing in the
-        // newly created websocket when the setup is complete
         websocketServer.handleUpgrade(req, networkSocket, head, newWebSocket => {
             websocketServer.emit('connection', newWebSocket, req);
         });
@@ -744,9 +759,6 @@ httpServer.on('upgrade', (req, networkSocket, head) => {
 var totalPlayers = 0;
 var players = {};
 websocketServer.on('connection', (socket, req) => {
-
-    req.session.save();
-
     const gameRoom = req.session.gameRoomName;
     const quizMaster = req.session.quizMaster;
     const scoreBoard = req.session.scoreBoard;
