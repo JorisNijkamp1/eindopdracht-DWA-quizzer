@@ -31,7 +31,7 @@ class ScoreboardAppUI extends React.Component {
             return <ScorebordEndgame/>
         }
         //If no match, return ScorebordJoinTeam Component
-        return <ScorebordJoinTeam/>
+        return <ScorebordEndgame/>
     }
 }
 

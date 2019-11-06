@@ -6,6 +6,7 @@ import {Card} from "react-bootstrap";
 import {createGameQuestionsAction} from "../../action-reducers/createGame-actionReducer";
 import * as ReactRedux from "react-redux";
 import {startQuestion} from "../../websocket";
+import HeaderTitel from "../HeaderTitel";
 
 class VragenUI extends React.Component {
     constructor(props) {
@@ -85,11 +86,8 @@ class VragenUI extends React.Component {
         }
         return (
             <div className="container-fluid px-md-5">
-                <Row className="row py-5 text-white">
-                    <Col lg={4} className={"mx-auto text-center"}>
-                        <h1 className="display-3">Quizzer Night</h1>
-                        <p className="lead mb-0">Kies hier de vraag.</p>
-                    </Col>
+                <Row className="row pb-5 text-white">
+                    <HeaderTitel subTitle={"Kies hier  vraag"} />
                 </Row>
                 <div className="rounded">
                     <Row>

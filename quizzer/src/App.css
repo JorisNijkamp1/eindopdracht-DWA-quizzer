@@ -350,3 +350,7 @@ body .base.close .section-static {
     float: left;
     z-index: 9999;
 }
+
+div.alert-heading {
+    color: #434343;
+}

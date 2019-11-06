@@ -74,7 +74,7 @@ class ScorebordJoinTeamUI extends React.Component {
                     <Menu/>
                 </div>
                 <Row className="min-vh-100">
-                    <HeaderTitel/>
+                    <HeaderTitel subTitle={"Bekijk hier een huidig spel"}/>
                     <Col md={{span: 8, offset: 2}} className="h-100">
                         <Form onSubmit={this.handleSubmit}>
                             <Card bg="dark" border="danger" text="white">

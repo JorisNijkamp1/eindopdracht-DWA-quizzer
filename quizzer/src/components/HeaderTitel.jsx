@@ -1,12 +1,12 @@
 import React from "react";
-import Col from "react-bootstrap/Col";
 
 export class HeaderTitel extends React.Component {
     render() {
         return (
-            <Col md={{span: 8, offset: 2}}>
-                <h1 className="text-center display-3">Quizzer Night</h1>
-            </Col>
+            <div className="mx-auto text-center text-white pt-5">
+                <h1 className="display-3">Quizzer Night</h1>
+                <p className="lead mb-0">{this.props.subTitle}</p>
+            </div>
         )
     }
 }

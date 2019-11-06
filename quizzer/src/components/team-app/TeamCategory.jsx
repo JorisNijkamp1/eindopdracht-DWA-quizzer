@@ -10,11 +10,10 @@ export class TeamCategory extends React.Component {
             <Container>
                 <Row className="min-vh-100">
                     <HeaderTitel/>
-                    <Alert className={"h-25 d-inline-block w-100"} variant="success">
-                        <Alert.Heading className={"text-center"}>De Quiz Master is categorieën aan het
-                            kiezen.</Alert.Heading>
+                    <Alert className={"h-25 d-inline-block w-100"} variant="light">
+                        <Alert.Heading className={"text-center"}>⏳ Nog even gedult... ⏳</Alert.Heading>
                         <p className={"text-center"}>
-                            Nog even geduld.
+                            De Quiz Master is momenteel categorieën aan het selecteren.
                         </p>
                     </Alert>
                 </Row>

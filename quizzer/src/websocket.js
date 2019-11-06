@@ -16,8 +16,6 @@ const serverHostname = `${window.location.hostname}:${port}`;
 let theSocket;
 
 export function openWebSocket() {
-    const store = theStore.getState();
-
     if (theSocket) {
         theSocket.onerror = null;
         theSocket.onopen = null;
@@ -122,6 +120,10 @@ export function openWebSocket() {
 
             case "END GAME":
                 theStore.dispatch(createCurrentGameStatusAction('end_game'));
+                theStore.dispatch(increaseGameRoundNumberAction(null));
+                theStore.dispatch(increaseQuestionNumberAction(null));
+                theStore.dispatch(getGameRoomTeamsAction([]));
+
                 console.log("END GAME");
                 break;
 

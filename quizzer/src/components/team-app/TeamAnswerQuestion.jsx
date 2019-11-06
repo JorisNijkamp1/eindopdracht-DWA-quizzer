@@ -69,12 +69,25 @@ class TeamAnswerQuestionUI extends React.Component {
         return (
             <Container>
                 <Row className="min-vh-100">
-                    <HeaderTitel/>
-                    <Col md={{span: 8, offset: 2}}>
-                        <p className="center-text">Vraag: {this.props.questionNumber}</p>
-                        <h1 className="text-center display-5">{this.props.currentQuestion}</h1>
+                    <HeaderTitel subTitle={"Beantwoord met je team de huidige vraag"}/>
+                    <Col md={{span: 10, offset: 1}}>
+                        <Card>
+                            <Card.Body>
+                                <blockquote className="blockquote mb-0">
+                                    <p className={"text-center"}>
+                                        {this.props.currentQuestion}
+                                    </p>
+                                    <footer className="blockquote-footer te">
+                                        Categorie:
+                                        <cite title="Source Title"> <b>{this.props.currentQuestionCategory}</b>
+                                            <span className={"float-right"}>{this.props.questionNumber}/12</span>
+                                        </cite>
+                                    </footer>
+                                </blockquote>
+                            </Card.Body>
+                        </Card>
                     </Col>
-                    <Col md={{span: 8, offset: 2}}>
+                    <Col md={{span: 10, offset: 1}}>
                         <Card bg="dark" border="danger" text="white">
                             <Card.Header>Beantwoord hier de vraag!</Card.Header>
                             <Card.Body>
@@ -105,7 +118,6 @@ function mapStateToProps(state) {
     return {
         currentQuestion: state.createGame.currentQuestion,
         currentQuestionCategory: state.createGame.currentQuestionCategory,
-
         gameRoomName: state.createTeam.gameRoomName,
         teamName: state.createTeam.teamRoomName,
         roundNumber: state.createGame.roundNumber,
@@ -113,10 +125,4 @@ function mapStateToProps(state) {
     }
 }
 
-function mapDispatchToProps(dispatch) {
-    return {
-        //Do something
-    }
-}
-
-export const TeamAnswerQuestion = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(TeamAnswerQuestionUI);
+export const TeamAnswerQuestion = ReactRedux.connect(mapStateToProps)(TeamAnswerQuestionUI);

@@ -4,24 +4,22 @@ import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import {Card} from "react-bootstrap";
+import HeaderTitel from "../HeaderTitel";
 
 class ScorebordEndgameUI extends React.Component {
     render() {
         return (
             <Container>
                 <Row className="min-vh-100">
-                    <Col md={{span: 8, offset: 2}} className={"text-white text-center"}>
-                        <h1 className="display-3">Quizzer Night</h1>
-                        <h1 className="py-2 display-5">De winnaar van de Quiz is:</h1>
-                        <Card text="success">
-                            <Card.Header className={"text-center display-1"}><strong>Team han</strong></Card.Header>
+                    <HeaderTitel subTitle={"Eindscore van de Quizzer Night"}/>
+                    <Col md={{span: 12}} className={"text-white text-center"}>
+                        <Card text="dark">
+                            <Card.Body className={"text-center"}>
+                                <h1 className={"display-2"}>🥇Teamh han🥇</h1>
+                                <h1 className={"display-3"}>🥈Team sjon🥈</h1>
+                                <h1 className={"display-4"}>🥉Team p#t🥉</h1>
+                            </Card.Body>
                         </Card>
-                    </Col>
-                    <Col md={{span: 12, offset: 0}}>
-                        <h2 className="text-center">De nummer 2 is:</h2>
-                        <h2 className="text-center">Team2</h2>
-                        <h3 className="text-center">De nummer 3 is:</h3>
-                        <h3 className="text-center">Team3</h3>
                     </Col>
                 </Row>
             </Container>

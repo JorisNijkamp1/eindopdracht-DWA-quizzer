@@ -149,7 +149,7 @@ class TeamAanmakenUI extends React.Component {
         return (
             <Container>
                 <Row className="min-vh-100">
-                    <HeaderTitel/>
+                    <HeaderTitel subTitle={"Join hier een bestaande nieuwe Quizzer"}/>
                     <Col md={{span: 8, offset: 2}} className="h-100">
                         <Card bg="dark" border="danger" text="white">
                             <Card.Header>Join een bestaande Quizzer</Card.Header>
@@ -201,12 +201,12 @@ class TeamAanmakenUI extends React.Component {
             <Container>
                 <Row className="min-vh-100">
                     <HeaderTitel/>
-                    <Alert className={"h-25 d-inline-block w-100"} variant="success">
+                    <Alert className={"h-25 d-inline-block w-100"} variant="light">
                         <Alert.Heading className={"text-center"}><strong>{this.props.teamRoomName}</strong> is
-                            geaccepteerd!!</Alert.Heading>
+                            geaccepteerd 🤖</Alert.Heading>
                         <p className={"text-center"}>
-                            Wacht totdat de Quizz Master van <strong>{this.props.gameRoomName}</strong> het spel gaat
-                            starten!
+                            Wacht totdat de Quizz Master van <strong>{this.props.gameRoomName}</strong> de quiz gaat
+                            starten.
                         </p>
                     </Alert>
                 </Row>

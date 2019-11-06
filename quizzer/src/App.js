@@ -26,7 +26,7 @@ class App extends React.Component {
                     <Route path="/quiz-master">
                         <QuizMasterApp/>
                     </Route>
-                    <Route path="/new-team">
+                    <Route path="/team">
                         <TeamsApp/>
                     </Route>
                     <Route path="/eind-ronde">

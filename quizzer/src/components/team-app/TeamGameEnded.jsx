@@ -4,16 +4,16 @@ import Row from "react-bootstrap/Row";
 import Alert from "react-bootstrap/Alert";
 import HeaderTitel from "../HeaderTitel";
 
-export class TeamQuestions extends React.Component {
+export class TeamRoundEnded extends React.Component {
     render() {
         return (
             <Container>
                 <Row className="min-vh-100">
                     <HeaderTitel/>
                     <Alert className={"h-25 d-inline-block w-100"} variant="light">
-                        <Alert.Heading className={"text-center"}>🍀 Vraag gesloten 🍀</Alert.Heading>
+                        <Alert.Heading className={"text-center"}>💯 De Quiz is afgelopen 💯</Alert.Heading>
                         <p className={"text-center"}>
-                            Bekijk op het scorebord of je antwoord is goedgekeurd.
+                            De Quiz Master heeft het spel beëindigd, bekijk de eindscore op het scorebord.
                         </p>
                     </Alert>
                 </Row>
@@ -22,4 +22,4 @@ export class TeamQuestions extends React.Component {
     }
 }
 
-export default TeamQuestions
+export default TeamRoundEnded

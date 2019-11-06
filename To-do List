@@ -5,6 +5,8 @@ prio
 4. Vragen die al gekoze zijn toevoegen aan een lisjt met vragen die al geweest zijn. Dus vragen kunnen maar 1  x voor komen.
 5. Scorebord rondes hoeveel goed van de aantal vragen laten zien.
 
+6. Scorebord eindresultaat responsive maken
+
 ...... Websocket data mee sturen uithalen
 ...... Team eruit halen als die niet approved is in verder schermen
 

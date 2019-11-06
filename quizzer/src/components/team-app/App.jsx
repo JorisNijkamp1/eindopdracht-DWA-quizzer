@@ -6,6 +6,7 @@ import {TeamAnswerQuestion} from "./TeamAnswerQuestion";
 import {TeamAanmaken} from "./TeamAanmaken";
 import TeamQuestionClosed from "./TeamQuestionClosed";
 import TeamRoundEnded from "./TeamRoundEnded";
+import TeamGameEnded from "./TeamGameEnded";
 
 class TeamsAppUI extends React.Component {
 
@@ -25,6 +26,9 @@ class TeamsAppUI extends React.Component {
         if (this.props.currentGameStatus === 'round_ended') {
             return <TeamRoundEnded/>
         }
+        if (this.props.currentGameStatus === 'end_game') {
+            return <TeamGameEnded/>
+        }
 
         //If no match, return CreateGame Component
         return <TeamAanmaken/>
@@ -33,18 +37,9 @@ class TeamsAppUI extends React.Component {
 
 function mapStateToProps(state) {
     return {
-        gameRoomAccepted: state.createTeam.gameRoomAccepted,
+        currentGameStatus: state.createGame.currentGameStatus,
         teamNameStatus: state.createTeam.teamNameStatus,
-        teamRoomName: state.createTeam.teamRoomName,
-        gameRoomName: state.createTeam.gameRoomName,
-        currentGameStatus: state.createGame.currentGameStatus
     }
 }
 
-function mapDispatchToProps(dispatch) {
-    return {
-        //
-    }
-}
-
-export const TeamsApp = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(TeamsAppUI);
+export const TeamsApp = ReactRedux.connect(mapStateToProps)(TeamsAppUI);

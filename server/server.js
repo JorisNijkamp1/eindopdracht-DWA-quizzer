@@ -412,9 +412,21 @@ app.get('/api/game/:gameRoom/ronde/:rondeID/questions', async (req, res) => {
         let allQuestions = await Questions.find(
             {category: {$in: currentGame.rondes[rondeID].categories}});
 
+        //Remove already asked questions
+        allQuestions.map((questionListItem, key) => {
+            currentGame.rondes.map(round => {
+                round.vragen.map(question => {
+                    if (questionListItem.question === question.vraag) {
+                        allQuestions.splice(key, 1)
+                    }
+                })
+            })
+        });
+
         //push 10 random questions in a array
         const questions = [];
-        for (let i = 0; i < 10; i++) {
+        let totalQuestions = (allQuestions.length < 10) ? allQuestions.length : 10;
+        for (let i = 0; i < totalQuestions; i++) {
             questions.push(allQuestions[Math.floor(Math.random() * allQuestions.length)])
         }
 
@@ -474,7 +486,7 @@ app.post('/api/game/:gameRoom/ronde/:roundID/question', async (req, res) => {
             currentGame.rondes[roundID].ronde_status = 'choosing_question';
 
             //Check if round is ended
-            const maxQuestions = 1;
+            const maxQuestions = 2;
             let currentRounds = currentGame.rondes[roundID].vragen.length;
 
             //Check if round ended
@@ -582,17 +594,10 @@ app.post('/api/game/:gameRoom/ronde/:rondeID/question/:questionID/team/:teamName
     const questionID = (req.params.questionID - 1);
     const teamName = req.params.teamName;
 
-    console.log(gameRoomName)
-    console.log(roundID)
-    console.log(questionID)
-    console.log(teamName)
-
     //Check of isset session gameRoomName & is quizMaster
     if (req.session.gameRoomName === gameRoomName) {
 
         const teamAnswer = req.body.teamAnswer
-
-        console.log(teamAnswer)
 
         //Get current game
         let currentGame = await Games.findOne({_id: gameRoomName});

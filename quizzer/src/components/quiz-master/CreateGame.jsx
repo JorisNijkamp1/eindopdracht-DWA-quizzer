@@ -104,7 +104,7 @@ class CreateGameUI extends React.Component {
     }
 
     render() {
-        if (this.props.formValidation === "success") {
+        if (this.props.formValidation === "success" && this.props.currentGameStatus !== 'end_game') {
             return (
                 <div>
                     <Menu/>
@@ -126,6 +126,7 @@ function mapStateToProps(state) {
     return {
         formValidation: state.createGame.formValidation,
         gameRoom: state.createGame.gameRoom,
+        currentGameStatus: state.createGame.currentGameStatus
     }
 }
 

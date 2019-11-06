@@ -41,7 +41,7 @@ export class Menu extends React.Component {
                 <div className="section">
                     <div className="cover1">
                         <div className="cover2">
-                            <Link to="/new-team" className="content"/>
+                            <Link to="/team" className="content"/>
                         </div>
                     </div>
                 </div>

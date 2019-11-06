@@ -26,6 +26,9 @@ class QuizMasterAppUI extends React.Component {
         if (this.props.currentGameStatus === 'round_ended') {
             return <EindRonde/>
         }
+        if (this.props.currentGameStatus === 'end_game') {
+            return <CreateGame/>
+        }
 
         //If no match, return CreateGame Component
         return <CreateGame/>
