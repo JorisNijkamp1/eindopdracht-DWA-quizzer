@@ -10,6 +10,10 @@ const teamScheme = new mongoose.Schema({
         type: Boolean,
         required: true,
     },
+    round_score: {
+        type: Number,
+        required: true,
+    },
     team_score: {
         type: Number,
         required: true,

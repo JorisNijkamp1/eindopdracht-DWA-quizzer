@@ -452,7 +452,6 @@ function sendRoundEndMSG() {
 export function getQuestionAnswers() {
     const store = theStore.getState();
 
-
     let gameRoom = store.createGame.gameRoom;
     const roundNumber = store.createGame.roundNumber;
     const question = store.createGame.questionNumber;
