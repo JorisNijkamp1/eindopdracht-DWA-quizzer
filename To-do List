@@ -1,11 +1,7 @@
-prio
-1. Meerdere rondes
-2. Games sluiten
-3. Responsive nalopen
-4. Vragen die al gekoze zijn toevoegen aan een lisjt met vragen die al geweest zijn. Dus vragen kunnen maar 1  x voor komen.
-5. Scorebord rondes hoeveel goed van de aantal vragen laten zien.
 
-6. Scorebord eindresultaat responsive maken
+3. Responsive nalopen
+
+quizz info ../12 aanpassen
 
 ...... Websocket data mee sturen uithalen
 ...... Team eruit halen als die niet approved is in verder schermen
@@ -14,7 +10,7 @@ prio
 BIJ TIJD OVER:
 1. kijken of we websocket zonder data versturen kunnen done
 2. Foto meesturen.
-3. app.js in rout leeg maken
+
 
 
 alle beide cwd en swd opdrachten inleverne via isas

@@ -470,7 +470,7 @@ router.post('/game/:gameRoom/ronde/:roundID/question', async (req, res) => {
             currentGame.rondes[roundID].ronde_status = 'choosing_question';
 
             //Check if round is ended
-            const maxQuestions = 2;
+            const maxQuestions = 12;
             let currentRounds = currentGame.rondes[roundID].vragen.length;
 
             //Check if round ended

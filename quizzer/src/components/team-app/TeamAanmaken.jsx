@@ -44,6 +44,7 @@ class TeamAanmakenUI extends React.Component {
                     duration: 3000
                 }
             })
+            this.props.doChangeTeamNameStatus('');
         }
     }
 

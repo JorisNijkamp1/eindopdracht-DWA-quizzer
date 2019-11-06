@@ -122,7 +122,7 @@ class VragenBeherenUI extends React.Component {
                                 <hr/>
                                 <p><b>Gameroom naam:</b><br/>{this.props.gameRoom}</p>
                                 <p><b>Ronde:</b><br/>{this.props.roundNumber}</p>
-                                <p><b>Vraag nr.:</b><br/>{this.props.questionNumber} / 10</p>
+                                <p><b>Vraag nr.:</b><br/>{this.props.questionNumber} / 12</p>
 
                                 {this.closeQuestion()}
                             </div>
