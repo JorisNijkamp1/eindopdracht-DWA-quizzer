@@ -63,6 +63,8 @@ export function openWebSocket() {
 
             case "CHOOSE QUESTION":
                 theStore.dispatch(createCurrentGameStatusAction('choose_question'));
+                //Get current teams
+                getTeams();
                 console.log('CHOOSE QUESTION');
                 break;
 
@@ -80,7 +82,7 @@ export function openWebSocket() {
 
                 if (theStore.getState().createGame.questionNumber) {
                     theStore.dispatch(increaseQuestionNumberAction((theStore.getState().createGame.questionNumber + 1)));
-                }else {
+                } else {
                     theStore.dispatch(increaseQuestionNumberAction(1));
                 }
 
@@ -337,7 +339,7 @@ export function startRound(gameRoom, categories) {
                 credentials: 'include',
                 mode: 'cors'
             };
-        }else {
+        } else {
             options = {
                 method: 'POST',
                 headers: {
@@ -354,7 +356,7 @@ export function startRound(gameRoom, categories) {
                 if (data.success) {
                     if (data.chooseCategories) {
                         sendChooseCategoriesMSG();
-                    }else {
+                    } else {
                         sendChooseQuestionsMSG();
                     }
                 }
@@ -395,7 +397,7 @@ export function startQuestion(gameRoom, rondeID, question) {
                 credentials: 'include',
                 mode: 'cors'
             };
-        }else {
+        } else {
             options = {
                 method: 'POST',
                 headers: {
@@ -411,9 +413,9 @@ export function startQuestion(gameRoom, rondeID, question) {
             response.json().then(data => {
                 if (data.success && data.show_questions && data.round_ended === false) {
                     sendChooseQuestionsMSG();
-                }else if(data.success && data.show_questions === false && data.round_ended === false){
+                } else if (data.success && data.show_questions === false && data.round_ended === false) {
                     sendAskingQuestionsMSG(data.question, data.category, data.answer);
-                }else if (data.success && data.round_ended === true) {
+                } else if (data.success && data.round_ended === true) {
                     sendRoundEndMSG();
                 }
             });
